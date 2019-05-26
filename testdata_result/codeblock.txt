@@ -1,0 +1,29 @@
+    Here is a piece of code:
+
+    [32;1m┃ [0m[1m[32mpackage[0m main
+    [32;1m┃ [0m
+    [32;1m┃ [0m[1m[32mimport[0m [31m"fmt"[0m
+    [32;1m┃ [0m
+    [32;1m┃ [0m[1m[32mfunc[0m [94mmain[0m() {
+    [32;1m┃ [0m    fmt.[94mPrintln[0m([31m"Hello world"[0m)
+    [32;1m┃ [0m}
+
+    Another one, tagged as well with the
+    language name
+
+    [32;1m┃ [0m[90m#include[0m [90m<stdio.h>[0m[90m
+    [32;1m┃ [0m[0m[35mint[0m [94mmain[0m()
+    [32;1m┃ [0m{
+    [32;1m┃ [0m   printf([31m"Hello, World!"[0m);
+    [32;1m┃ [0m   [1m[32mreturn[0m [90m0[0m;
+    [32;1m┃ [0m}
+
+    This one is not:
+
+    [32;1m┃ [0m#include <stdio.h>
+    [32;1m┃ [0mint main()
+    [32;1m┃ [0m{
+    [32;1m┃ [0m   printf("Hello, World!");
+    [32;1m┃ [0m   return 0;
+    [32;1m┃ [0m}
+

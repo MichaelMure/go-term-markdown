@@ -1,0 +1,8 @@
+    Emphasis, aka italics, with
+    [3masterisks[0m or [3munderscores[0m.
+
+    Strong emphasis, aka bold, with
+    [1masterisks[0m or [1munderscores[0m.
+
+    Strikethrough uses two tildes.
+    [9mScratch this.[0m
