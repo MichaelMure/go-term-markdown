@@ -139,7 +139,7 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 	case blackfriday.Hardbreak:
 
 	case blackfriday.Code:
-		//fmt.Println(node)
+		r.paragraph.WriteString(colors.BlueBgItalic(string(node.Literal)))
 
 	case blackfriday.HTMLSpan:
 
