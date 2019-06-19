@@ -1,0 +1,14 @@
+    Just a [URL]([34m/url/[0m).
+
+    [URL and title]([34m/url/[0m title).
+
+    [URL and title]([34m/url/[0m title preceded
+    by two spaces).
+
+    [URL and title]([34m/url/[0m title preceded
+    by a tab).
+
+    [URL and title]([34m/url/[0m title has
+    spaces afterward).
+
+    [Empty]().

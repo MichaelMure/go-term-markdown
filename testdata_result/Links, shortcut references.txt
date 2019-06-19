@@ -1,0 +1,10 @@
+    This is the [simple case]([34m/simple[0m).
+
+    This one has a [line
+    break]([34m/foo[0m).
+
+    This one has a [line]([34m/foo[0m) with a
+    line-ending space.
+
+    [this]([34m/that[0m) and the
+    [other]([34m/other[0m)

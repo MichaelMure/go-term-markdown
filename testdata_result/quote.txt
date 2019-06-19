@@ -1,12 +1,12 @@
     A paragraph.
-    Quoted text.
-    Quoted text.
-    Quoted text.
-    > Quoted quote.
-    > Quoted quote.
-    Quoted text.
-    Quoted text.
+    [32;1m┃ [0mQuoted text.
+    [32;1m┃ [0mQuoted text.
+    [32;1m┃ [0mQuoted text
+    [32;1m┃ [0m[32;1m┃ [0mQuoted quote.
+    [32;1m┃ [0m[32;1m┃ [0mQuoted quote.
+    [32;1m┃ [0mQuoted text.
+    [32;1m┃ [0mQuoted text.
     A paragraph.
-      • Quoted
-      • List
+    [32;1m┃ [0m  • Quoted
+    [32;1m┃ [0m  • List
     A paragraph.

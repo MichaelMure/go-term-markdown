@@ -1,0 +1,5 @@
+    [32;1m┃ [0mA list within a blockquote:
+
+    [32;1m┃ [0m  • asterisk 1
+    [32;1m┃ [0m  • asterisk 2
+    [32;1m┃ [0m  • asterisk 3

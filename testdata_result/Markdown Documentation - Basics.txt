@@ -1,0 +1,384 @@
+[32;1m    1 Markdown: Basics[0m
+    ────────────────────────────────────
+
+[32;1m    1.1 Getting the Gist of Markdown's …[0m
+
+    This page offers a brief overview of
+    what it's like to use Markdown.
+    The [syntax
+    page]([34m/projects/markdown/syntax[0m
+    Markdown Syntax) provides complete,
+    detailed documentation for
+    every feature, but Markdown should
+    be very easy to pick up simply by
+    looking at a few examples of it in
+    action. The examples on this page
+    are written in a before/after style,
+    showing example syntax and the
+    HTML output produced by Markdown.
+
+    It's also helpful to simply try
+    Markdown out; the
+    [Dingus]([34m/projects/markdown/dingus[0m
+    Markdown Dingus) is a
+    web application that allows you type
+    your own Markdown-formatted text
+    and translate it to XHTML.
+
+    [1mNote:[0m This document is itself
+    written using Markdown; you
+    can [see the source for it by adding
+    '.text' to the URL]([34m/projects/markd
+    own/basics.text[0m).
+
+[32;1m    1.2 Paragraphs, Headers, Blockquotes[0m
+
+    A paragraph is simply one or more
+    consecutive lines of text, separated
+    by one or more blank lines. (A blank
+    line is any line that looks like a
+    blank line -- a line containing
+    nothing spaces or tabs is considered
+    blank.) Normal paragraphs should not
+    be intended with spaces or tabs.
+
+    Markdown offers two styles of
+    headers: [3mSetext[0m and [3matx[0m.
+    Setext-style headers for [44;3m<h1>[0m and
+    [44;3m<h2>[0m are created by
+    "underlining" with equal signs ([44;3m=[0m)
+    and hyphens ([44;3m-[0m), respectively.
+    To create an atx-style header, you
+    put 1-6 hash marks ([44;3m#[0m) at the
+    beginning of the line -- the number
+    of hashes equals the resulting
+    HTML header level.
+
+    Blockquotes are indicated using
+    email-style '[44;3m>[0m' angle brackets.
+
+    Markdown:
+
+    [32;1m┃ [0mA First Level Header
+    [32;1m┃ [0m====================
+    [32;1m┃ [0m
+    [32;1m┃ [0mA Second Level Header
+    [32;1m┃ [0m---------------------
+    [32;1m┃ [0m
+    [32;1m┃ [0mNow is the time for all good men
+    [32;1m┃ [0mto come to
+    [32;1m┃ [0mthe aid of their country. This is
+    [32;1m┃ [0mjust a
+    [32;1m┃ [0mregular paragraph.
+    [32;1m┃ [0m
+    [32;1m┃ [0mThe quick brown fox jumped over
+    [32;1m┃ [0mthe lazy
+    [32;1m┃ [0mdog's back.
+    [32;1m┃ [0m
+    [32;1m┃ [0m### Header 3
+    [32;1m┃ [0m
+    [32;1m┃ [0m> This is a blockquote.
+    [32;1m┃ [0m>
+    [32;1m┃ [0m> This is the second paragraph in
+    [32;1m┃ [0mthe blockquote.
+    [32;1m┃ [0m>
+    [32;1m┃ [0m> ## This is an H2 in a blockquote
+
+    Output:
+
+    [32;1m┃ [0m<h1>A First Level Header</h1>
+    [32;1m┃ [0m
+    [32;1m┃ [0m<h2>A Second Level Header</h2>
+    [32;1m┃ [0m
+    [32;1m┃ [0m<p>Now is the time for all good
+    [32;1m┃ [0mmen to come to
+    [32;1m┃ [0mthe aid of their country. This is
+    [32;1m┃ [0mjust a
+    [32;1m┃ [0mregular paragraph.</p>
+    [32;1m┃ [0m
+    [32;1m┃ [0m<p>The quick brown fox jumped over
+    [32;1m┃ [0mthe lazy
+    [32;1m┃ [0mdog's back.</p>
+    [32;1m┃ [0m
+    [32;1m┃ [0m<h3>Header 3</h3>
+    [32;1m┃ [0m
+    [32;1m┃ [0m<blockquote>
+    [32;1m┃ [0m    <p>This is a blockquote.</p>
+    [32;1m┃ [0m
+    [32;1m┃ [0m    <p>This is the second
+    [32;1m┃ [0mparagraph in the blockquote.</p>
+    [32;1m┃ [0m
+    [32;1m┃ [0m    <h2>This is an H2 in a
+    [32;1m┃ [0mblockquote</h2>
+    [32;1m┃ [0m</blockquote>
+
+[92m    1.2.1 Phrase Emphasis[0m
+
+    Markdown uses asterisks and
+    underscores to indicate spans of
+    emphasis.
+
+    Markdown:
+
+    [32;1m┃ [0mSome of these words *are
+    [32;1m┃ [0memphasized*.
+    [32;1m┃ [0mSome of these words _are
+    [32;1m┃ [0memphasized also_.
+    [32;1m┃ [0m
+    [32;1m┃ [0mUse two asterisks for **strong
+    [32;1m┃ [0memphasis**.
+    [32;1m┃ [0mOr, if you prefer, __use two
+    [32;1m┃ [0munderscores instead__.
+
+    Output:
+
+    [32;1m┃ [0m<p>Some of these words <em>are
+    [32;1m┃ [0memphasized</em>.
+    [32;1m┃ [0mSome of these words <em>are
+    [32;1m┃ [0memphasized also</em>.</p>
+    [32;1m┃ [0m
+    [32;1m┃ [0m<p>Use two asterisks for
+    [32;1m┃ [0m<strong>strong emphasis</strong>.
+    [32;1m┃ [0mOr, if you prefer, <strong>use two
+    [32;1m┃ [0munderscores instead</strong>.</p>
+
+[32;1m    1.3 Lists[0m
+
+    Unordered (bulleted) lists use
+    asterisks, pluses, and hyphens ([44;3m*[0m,
+    [44;3m+[0m, and [44;3m-[0m) as list markers. These
+    three markers are
+    interchangable; this:
+
+    [32;1m┃ [0m*   Candy.
+    [32;1m┃ [0m*   Gum.
+    [32;1m┃ [0m*   Booze.
+
+    this:
+
+    [32;1m┃ [0m+   Candy.
+    [32;1m┃ [0m+   Gum.
+    [32;1m┃ [0m+   Booze.
+
+    and this:
+
+    [32;1m┃ [0m-   Candy.
+    [32;1m┃ [0m-   Gum.
+    [32;1m┃ [0m-   Booze.
+
+    all produce the same output:
+
+    [32;1m┃ [0m<ul>
+    [32;1m┃ [0m<li>Candy.</li>
+    [32;1m┃ [0m<li>Gum.</li>
+    [32;1m┃ [0m<li>Booze.</li>
+    [32;1m┃ [0m</ul>
+
+    Ordered (numbered) lists use regular
+    numbers, followed by periods, as
+    list markers:
+
+    [32;1m┃ [0m1.  Red
+    [32;1m┃ [0m2.  Green
+    [32;1m┃ [0m3.  Blue
+
+    Output:
+
+    [32;1m┃ [0m<ol>
+    [32;1m┃ [0m<li>Red</li>
+    [32;1m┃ [0m<li>Green</li>
+    [32;1m┃ [0m<li>Blue</li>
+    [32;1m┃ [0m</ol>
+
+    If you put blank lines between
+    items, you'll get [44;3m<p>[0m tags for the
+    list item text. You can create
+    multi-paragraph list items by
+    indenting
+    the paragraphs by 4 spaces or 1 tab:
+
+    [32;1m┃ [0m*   A list item.
+    [32;1m┃ [0m
+    [32;1m┃ [0m    With multiple paragraphs.
+    [32;1m┃ [0m
+    [32;1m┃ [0m*   Another item in the list.
+
+    Output:
+
+    [32;1m┃ [0m<ul>
+    [32;1m┃ [0m<li><p>A list item.</p>
+    [32;1m┃ [0m<p>With multiple
+    [32;1m┃ [0mparagraphs.</p></li>
+    [32;1m┃ [0m<li><p>Another item in the
+    [32;1m┃ [0mlist.</p></li>
+    [32;1m┃ [0m</ul>
+
+[92m    1.3.1 Links[0m
+
+    Markdown supports two styles for
+    creating links: [3minline[0m and
+    [3mreference[0m. With both styles, you use
+    square brackets to delimit the
+    text you want to turn into a link.
+
+    Inline-style links use parentheses
+    immediately after the link text.
+    For example:
+
+    [32;1m┃ [0mThis is an [example
+    [32;1m┃ [0mlink](http://example.com/).
+
+    Output:
+
+    [32;1m┃ [0m<p>This is an <a
+    [32;1m┃ [0mhref="http://example.com/">
+    [32;1m┃ [0mexample link</a>.</p>
+
+    Optionally, you may include a title
+    attribute in the parentheses:
+
+    [32;1m┃ [0mThis is an [example
+    [32;1m┃ [0mlink](http://example.com/ "With a
+    [32;1m┃ [0mTitle").
+
+    Output:
+
+    [32;1m┃ [0m<p>This is an <a
+    [32;1m┃ [0mhref="http://example.com/"
+    [32;1m┃ [0mtitle="With a Title">
+    [32;1m┃ [0mexample link</a>.</p>
+
+    Reference-style links allow you to
+    refer to your links by names, which
+    you define elsewhere in your
+    document:
+
+    [32;1m┃ [0mI get 10 times more traffic from
+    [32;1m┃ [0m[Google][1] than from
+    [32;1m┃ [0m[Yahoo][2] or [MSN][3].
+    [32;1m┃ [0m
+    [32;1m┃ [0m[1]: http://google.com/
+    [32;1m┃ [0m"Google"
+    [32;1m┃ [0m[2]: http://search.yahoo.com/
+    [32;1m┃ [0m"Yahoo Search"
+    [32;1m┃ [0m[3]: http://search.msn.com/
+    [32;1m┃ [0m"MSN Search"
+
+    Output:
+
+    [32;1m┃ [0m<p>I get 10 times more traffic
+    [32;1m┃ [0mfrom <a href="http://google.com/"
+    [32;1m┃ [0mtitle="Google">Google</a> than
+    [32;1m┃ [0mfrom <a
+    [32;1m┃ [0mhref="http://search.yahoo.com/"
+    [32;1m┃ [0mtitle="Yahoo Search">Yahoo</a> or
+    [32;1m┃ [0m<a href="http://search.msn.com/"
+    [32;1m┃ [0mtitle="MSN Search">MSN</a>.</p>
+
+    The title attribute is optional.
+    Link names may contain letters,
+    numbers and spaces, but are [3mnot[0m case
+    sensitive:
+
+    [32;1m┃ [0mI start my morning with a cup of
+    [32;1m┃ [0mcoffee and
+    [32;1m┃ [0m[The New York Times][NY Times].
+    [32;1m┃ [0m
+    [32;1m┃ [0m[ny times]:
+    [32;1m┃ [0mhttp://www.nytimes.com/
+
+    Output:
+
+    [32;1m┃ [0m<p>I start my morning with a cup
+    [32;1m┃ [0mof coffee and
+    [32;1m┃ [0m<a
+    [32;1m┃ [0mhref="http://www.nytimes.com/">The
+    [32;1m┃ [0mNew York Times</a>.</p>
+
+[92m    1.3.2 Images[0m
+
+    Image syntax is very much like link
+    syntax.
+
+    Inline (titles are optional):
+
+    [32;1m┃ [0m![alt text](/path/to/img.jpg
+    [32;1m┃ [0m"Title")
+
+    Reference-style:
+
+    [32;1m┃ [0m![alt text][id]
+    [32;1m┃ [0m
+    [32;1m┃ [0m[id]: /path/to/img.jpg "Title"
+
+    Both of the above examples produce
+    the same output:
+
+    [32;1m┃ [0m<img src="/path/to/img.jpg"
+    [32;1m┃ [0malt="alt text" title="Title" />
+
+[92m    1.3.3 Code[0m
+
+    In a regular paragraph, you can
+    create code span by wrapping text in
+    backtick quotes. Any ampersands ([44;3m&[0m)
+    and angle brackets ([44;3m<[0m or
+    [44;3m>[0m) will automatically be translated
+    into HTML entities. This makes
+    it easy to use Markdown to write
+    about HTML example code:
+
+    [32;1m┃ [0mI strongly recommend against using
+    [32;1m┃ [0many `<blink>` tags.
+    [32;1m┃ [0m
+    [32;1m┃ [0mI wish SmartyPants used named
+    [32;1m┃ [0mentities like `&mdash;`
+    [32;1m┃ [0minstead of decimal-encoded entites
+    [32;1m┃ [0mlike `&#8212;`.
+
+    Output:
+
+    [32;1m┃ [0m<p>I strongly recommend against
+    [32;1m┃ [0musing any
+    [32;1m┃ [0m<code>&lt;blink&gt;</code>
+    [32;1m┃ [0mtags.</p>
+    [32;1m┃ [0m
+    [32;1m┃ [0m<p>I wish SmartyPants used named
+    [32;1m┃ [0mentities like
+    [32;1m┃ [0m<code>&amp;mdash;</code> instead
+    [32;1m┃ [0mof decimal-encoded
+    [32;1m┃ [0mentites like
+    [32;1m┃ [0m<code>&amp;#8212;</code>.</p>
+
+    To specify an entire block of
+    pre-formatted code, indent every
+    line of
+    the block by 4 spaces or 1 tab. Just
+    like with code spans, [44;3m&[0m, [44;3m<[0m,
+    and [44;3m>[0m characters will be escaped
+    automatically.
+
+    Markdown:
+
+    [32;1m┃ [0mIf you want your page to validate
+    [32;1m┃ [0munder XHTML 1.0 Strict,
+    [32;1m┃ [0myou've got to put paragraph tags
+    [32;1m┃ [0min your blockquotes:
+    [32;1m┃ [0m
+    [32;1m┃ [0m    <blockquote>
+    [32;1m┃ [0m        <p>For example.</p>
+    [32;1m┃ [0m    </blockquote>
+
+    Output:
+
+    [32;1m┃ [0m<p>If you want your page to
+    [32;1m┃ [0mvalidate under XHTML 1.0 Strict,
+    [32;1m┃ [0myou've got to put paragraph tags
+    [32;1m┃ [0min your blockquotes:</p>
+    [32;1m┃ [0m
+    [32;1m┃ [0m<pre><code>&lt;blockquote&gt;
+    [32;1m┃ [0m    &lt;p&gt;For
+    [32;1m┃ [0mexample.&lt;/p&gt;
+    [32;1m┃ [0m&lt;/blockquote&gt;
+    [32;1m┃ [0m</code></pre>
+

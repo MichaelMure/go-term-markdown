@@ -1,0 +1,15 @@
+    [32;1m┃ [0mcode block on the first line
+
+    Regular text.
+
+    [32;1m┃ [0mcode block indented by spaces
+
+    Regular text.
+
+    [32;1m┃ [0mthe lines in this block
+    [32;1m┃ [0mall contain trailing spaces
+
+    Regular Text.
+
+    [32;1m┃ [0mcode block on the last line
+

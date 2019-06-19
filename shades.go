@@ -1,14 +1,10 @@
 package markdown
 
-import (
-	"github.com/MichaelMure/git-bug/util/colors"
-)
-
 var headingShades = []func(a ...interface{}) string{
-	colors.GreenBold,
-	colors.GreenBold,
-	colors.HiGreen,
-	colors.Green,
+	GreenBold,
+	GreenBold,
+	HiGreen,
+	Green,
 }
 
 // Return the color function corresponding to the level.
@@ -24,10 +20,10 @@ func headingShade(level int) func(a ...interface{}) string {
 }
 
 var quoteShades = []func(a ...interface{}) string{
-	colors.GreenBold,
-	colors.GreenBold,
-	colors.HiGreen,
-	colors.Green,
+	GreenBold,
+	GreenBold,
+	HiGreen,
+	Green,
 }
 
 // Return the color function corresponding to the level.
@@ -35,8 +31,8 @@ func quoteShade(level int) func(a ...interface{}) string {
 	if level < 1 {
 		level = 1
 	}
-	if level > len(headingShades) {
-		level = len(headingShades)
+	if level > len(quoteShades) {
+		level = len(quoteShades)
 	}
-	return headingShades[level-1]
+	return quoteShades[level-1]
 }

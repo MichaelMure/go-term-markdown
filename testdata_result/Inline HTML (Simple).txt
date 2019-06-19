@@ -1,0 +1,25 @@
+    Here's a simple block:
+    This should be a code block, though:
+
+    [32;1m┃ [0m<div>
+    [32;1m┃ [0m    foo
+    [32;1m┃ [0m</div>
+
+    As should this:
+
+    [32;1m┃ [0m<div>foo</div>
+
+    Now, nested:
+    This should just be an HTML comment:
+    Multiline:
+    Code block:
+
+    [32;1m┃ [0m<!-- Comment -->
+
+    Just plain comment, with trailing
+    spaces on the line:
+    Code:
+
+    [32;1m┃ [0m<hr />
+
+    Hr's:

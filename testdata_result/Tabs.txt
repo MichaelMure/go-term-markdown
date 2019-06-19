@@ -1,0 +1,23 @@
+      • this is a list item
+      indented with tabs
+      • this is a list item
+      indented with spaces
+
+    Code:
+
+    [32;1m┃ [0mthis code block is indented by one
+    [32;1m┃ [0mtab
+
+    And:
+
+    [32;1m┃ [0m    this code block is indented by
+    [32;1m┃ [0mtwo tabs
+
+    And:
+
+    [32;1m┃ [0m+    this is an example list item
+    [32;1m┃ [0m    indented with tabs
+    [32;1m┃ [0m
+    [32;1m┃ [0m+   this is an example list item
+    [32;1m┃ [0m    indented with spaces
+

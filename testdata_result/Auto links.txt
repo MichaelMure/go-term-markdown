@@ -1,0 +1,19 @@
+    Link: [http://example.com/]([34mhttp://e
+    xample.com/[0m).
+
+    With an ampersand: [http://example.c
+    om/?foo=1&bar=2]([34mhttp://example.com/
+    ?foo=1&bar=2[0m)
+
+      • In a list?
+      • [http://example.com/]([34mhttp://exa
+      mple.com/[0m)
+      • It should.
+
+    [32;1m┃ [0mBlockquoted: [http://example.com/]
+    [32;1m┃ [0m([34mhttp://example.com/[0m)
+    Auto-links should not occur here:
+    [44;3m<http://example.com/>[0m
+
+    [32;1m┃ [0mor here: <http://example.com/>
+

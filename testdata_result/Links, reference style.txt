@@ -1,0 +1,56 @@
+    Foo [bar]([34m/url/[0m Title).
+
+    Foo [bar]([34m/url/[0m Title).
+
+    Foo [bar]([34m/url/[0m Title).
+
+    With [embedded [brackets]]([34m/url/[0m).
+
+    Indented [once]([34m/url[0m).
+
+    Indented [twice]([34m/url[0m).
+
+    Indented [thrice]([34m/url[0m).
+
+    Indented [four][] times.
+
+    [32;1m┃ [0m[four]: /url
+
+    ────────────────────────────────────
+
+    [this]([34mfoo[0m) should work
+
+    So should [this]([34mfoo[0m).
+
+    And [this]([34mfoo[0m).
+
+    And [this]([34mfoo[0m).
+
+    And [this]([34mfoo[0m).
+
+    But not [that] [].
+
+    Nor [that][].
+
+    Nor [that].
+
+    [Something in brackets like
+    [this]([34mfoo[0m) should work]
+
+    [Same with [this]([34mfoo[0m).]
+
+    In this case,
+    [this]([34m/somethingelse/[0m) points to
+    something else.
+
+    Backslashing should suppress [this]
+    and [this].
+
+    ────────────────────────────────────
+
+    Here's one where the [link
+    breaks]([34m/url/[0m) across lines.
+
+    Here's another where the
+    [link]([34m/url/[0m) across lines, but with
+    a line-ending space.

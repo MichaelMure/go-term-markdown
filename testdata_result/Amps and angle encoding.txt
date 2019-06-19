@@ -1,0 +1,23 @@
+    AT&T has an ampersand in their name.
+
+    AT&T is another way to write it.
+
+    This & that.
+
+    4 < 5.
+
+    6 > 5.
+
+    Here's a [link]([34mhttp://example.com/?
+    foo=1&bar=2[0m) with an ampersand in
+    the URL.
+
+    Here's a link with an amersand in
+    the link text:
+    [AT&T]([34mhttp://att.com/[0m AT&T).
+
+    Here's an inline
+    [link]([34m/script?foo=1&bar=2[0m).
+
+    Here's an inline
+    [link]([34m/script?foo=1&bar=2[0m).
