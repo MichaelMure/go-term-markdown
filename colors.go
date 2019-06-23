@@ -1,6 +1,6 @@
 package markdown
 
-import "github.com/fatih/color"
+import "github.com/MichaelMure/color"
 
 var (
 	Bold       = color.New(color.Bold).SprintFunc()

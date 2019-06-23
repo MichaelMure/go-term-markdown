@@ -6,11 +6,11 @@ import (
 	"io"
 	"strings"
 
+	"github.com/MichaelMure/color"
 	"github.com/alecthomas/chroma"
 	"github.com/alecthomas/chroma/formatters"
 	"github.com/alecthomas/chroma/lexers"
 	"github.com/alecthomas/chroma/styles"
-	"github.com/fatih/color"
 	"github.com/mattn/go-runewidth"
 	"gopkg.in/russross/blackfriday.v2"
 
