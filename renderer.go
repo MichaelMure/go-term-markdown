@@ -37,21 +37,45 @@ Document --> HorizontalRule
 Document --> HTMLBlock
 Document --> List
 Document --> Paragraph
+Document --> Table
 Emph --> Text
+Heading --> Code
+Heading --> Del
+Heading --> Emph
+Heading --> HTMLSpan
+Heading --> Image
+Heading --> Link
+Heading --> Strong
 Heading --> Text
+Image --> Text
 Item --> List
 Item --> Paragraph
+Link --> Image
 Link --> Text
 List --> Item
 Paragraph --> Code
 Paragraph --> Del
 Paragraph --> Emph
 Paragraph --> HTMLSpan
+Paragraph --> Image
 Paragraph --> Link
 Paragraph --> Strong
 Paragraph --> Text
 Strong --> Emph
 Strong --> Text
+TableBody --> TableRow
+TableCell --> Code
+TableCell --> Del
+TableCell --> Emph
+TableCell --> HTMLSpan
+TableCell --> Image
+TableCell --> Link
+TableCell --> Strong
+TableCell --> Text
+TableHead --> TableRow
+TableRow --> TableCell
+Table --> TableBody
+Table --> TableHead
 
 @enduml
 
