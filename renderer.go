@@ -11,6 +11,7 @@ import (
 	"github.com/alecthomas/chroma/formatters"
 	"github.com/alecthomas/chroma/lexers"
 	"github.com/alecthomas/chroma/styles"
+	"github.com/kyokomi/emoji"
 	"github.com/mattn/go-runewidth"
 	"gopkg.in/russross/blackfriday.v2"
 
@@ -235,7 +236,9 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 	case blackfriday.Image:
 
 	case blackfriday.Text:
-		r.paragraph.Write(node.Literal)
+		// emoji support !
+		emojed := emoji.Sprint(string(node.Literal))
+		r.paragraph.WriteString(emojed)
 
 	case blackfriday.HTMLBlock:
 
