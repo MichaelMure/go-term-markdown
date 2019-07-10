@@ -3,9 +3,9 @@ package markdown
 import "github.com/MichaelMure/color"
 
 var (
-	Bold       = color.New(color.Bold).SprintFunc()
-	Italic     = color.New(color.Italic).SprintFunc()
-	CrossedOut = color.New(color.CrossedOut).SprintFunc()
+	Bold       = color.New(color.Bold)
+	Italic     = color.New(color.Italic)
+	CrossedOut = color.New(color.CrossedOut)
 
 	Green        = color.New(color.FgGreen).SprintFunc()
 	HiGreen      = color.New(color.FgHiGreen).SprintFunc()

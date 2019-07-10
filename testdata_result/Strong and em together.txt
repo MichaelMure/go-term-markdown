@@ -1,7 +1,0 @@
-    [1m[0m
-
-    So is [1m[0m word.
-
-    [1m[0m
-
-    So is [1m[0m word.

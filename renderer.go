@@ -29,6 +29,8 @@ BlockQuote --> BlockQuote
 BlockQuote --> CodeBlock
 BlockQuote --> List
 BlockQuote --> Paragraph
+Del --> Emph
+Del --> Strong
 Del --> Text
 Document --> BlockQuote
 Document --> CodeBlock
@@ -234,16 +236,25 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 		_, _ = fmt.Fprintf(w, "%s%s\n\n", r.pad(), strings.Repeat("─", r.lineWidth-r.leftPad))
 
 	case blackfriday.Emph:
-		r.paragraph.WriteString(Italic(string(node.FirstChild.Literal)))
-		return blackfriday.SkipChildren
+		if entering {
+			r.paragraph.WriteString(Italic.Format())
+		} else {
+			r.paragraph.WriteString(Italic.Unformat())
+		}
 
 	case blackfriday.Strong:
-		r.paragraph.WriteString(Bold(string(node.FirstChild.Literal)))
-		return blackfriday.SkipChildren
+		if entering {
+			r.paragraph.WriteString(Bold.Format())
+		} else {
+			r.paragraph.WriteString(Bold.Unformat())
+		}
 
 	case blackfriday.Del:
-		r.paragraph.WriteString(CrossedOut(string(node.FirstChild.Literal)))
-		return blackfriday.SkipChildren
+		if entering {
+			r.paragraph.WriteString(CrossedOut.Format())
+		} else {
+			r.paragraph.WriteString(CrossedOut.Unformat())
+		}
 
 	case blackfriday.Link:
 		r.paragraph.WriteString("[")

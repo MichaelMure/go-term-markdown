@@ -4,5 +4,14 @@
     Strong emphasis, aka bold, with
     [1masterisks[0m or [1munderscores[0m.
 
+    Bold and italic with [1m[3masterisks[0m[0m or
+    [1m[3munderscores[0m[0m.
+
     Strikethrough uses two tildes.
     [9mScratch this.[0m
+
+    [9m[3mstriked italic[0m[0m
+
+    [9m[1mstriked bold[0m[0m
+
+    [9m[1m[3mstriked bold and italic[0m[0m[0m
