@@ -94,13 +94,13 @@ type renderer struct {
 	// all the custom left paddings, without the fixed space from leftPad
 	padAccumulator []string
 
-	// Count the number of line in the rendered output
-	// lines int
-
 	// record and render the heading numbering
 	headingNumbering headingNumbering
 
-	paragraph strings.Builder
+	// for Heading, Paragraph and TableCell, accumulate the content of
+	// the child nodes (Link, Text, Image, formatting ...). The result
+	// is then rendered appropriately when exiting the node.
+	inlineAccumulator strings.Builder
 
 	blockQuoteLevel int
 }
@@ -164,23 +164,23 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 					itemNumber++
 				}
 				prefix := fmt.Sprintf("%d. ", itemNumber)
-				r.paragraph.WriteString(prefix)
+				r.inlineAccumulator.WriteString(prefix)
 				r.addPad(strings.Repeat(" ", text.WordLen(prefix)))
 
 			// content of a definition
 			case node.ListData.ListFlags&blackfriday.ListTypeTerm != 0:
-				r.paragraph.WriteString("  ")
+				r.inlineAccumulator.WriteString("  ")
 				r.addPad("  ")
 
 			// header of a definition
 			case node.ListData.ListFlags&blackfriday.ListTypeDefinition != 0:
-				r.paragraph.WriteString("  ")
-				r.paragraph.WriteString(green.Format())
+				r.inlineAccumulator.WriteString("  ")
+				r.inlineAccumulator.WriteString(green.Format())
 				r.addPad("  ")
 
 			// no flags means it's the normal bullet point list
 			default:
-				r.paragraph.WriteString("• ")
+				r.inlineAccumulator.WriteString("• ")
 				r.addPad("  ")
 			}
 		} else {
@@ -192,7 +192,7 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 
 	case blackfriday.Paragraph:
 		if !entering {
-			out, _ := text.WrapWithPad(r.paragraph.String(), r.lineWidth, r.pad())
+			out, _ := text.WrapWithPad(r.inlineAccumulator.String(), r.lineWidth, r.pad())
 			_, _ = fmt.Fprint(w, out, "\n")
 
 			// extra line break in some cases
@@ -207,65 +207,65 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 					_, _ = fmt.Fprintln(w)
 				}
 			}
-			r.paragraph.Reset()
+			r.inlineAccumulator.Reset()
 		}
 
 	case blackfriday.Heading:
-		// the child node of a heading is a blackfriday.Text. We render the whole thing
-		// in one go and skip the child.
+		if !entering {
+			content := r.inlineAccumulator.String()
+			r.inlineAccumulator.Reset()
 
-		// render the full line with the headingNumbering
-		r.headingNumbering.Observe(node.Level)
-		rendered := fmt.Sprintf("%s%s %s", r.pad(), r.headingNumbering.Render(), string(node.FirstChild.Literal))
+			// render the full line with the headingNumbering
+			r.headingNumbering.Observe(node.Level)
+			rendered := fmt.Sprintf("%s%s %s", r.pad(), r.headingNumbering.Render(), content)
 
-		// output the text, truncated if needed, no line break
-		truncated := runewidth.Truncate(rendered, r.lineWidth, "…")
-		colored := headingShade(node.Level)(truncated)
-		_, _ = fmt.Fprintln(w, colored)
+			// output the text, truncated if needed, no line break
+			truncated := runewidth.Truncate(rendered, r.lineWidth, "…")
+			colored := headingShade(node.Level)(truncated)
+			_, _ = fmt.Fprintln(w, colored)
 
-		// render the underline, if any
-		if node.Level == 1 {
-			_, _ = fmt.Fprintf(w, "%s%s\n", r.pad(), strings.Repeat("─", r.lineWidth-r.leftPad))
+			// render the underline, if any
+			if node.Level == 1 {
+				_, _ = fmt.Fprintf(w, "%s%s\n", r.pad(), strings.Repeat("─", r.lineWidth-r.leftPad))
+			}
+
+			_, _ = fmt.Fprintln(w)
 		}
-
-		_, _ = fmt.Fprintln(w)
-
-		return blackfriday.SkipChildren
 
 	case blackfriday.HorizontalRule:
 		_, _ = fmt.Fprintf(w, "%s%s\n\n", r.pad(), strings.Repeat("─", r.lineWidth-r.leftPad))
 
 	case blackfriday.Emph:
 		if entering {
-			r.paragraph.WriteString(Italic.Format())
+			r.inlineAccumulator.WriteString(Italic.Format())
 		} else {
-			r.paragraph.WriteString(Italic.Unformat())
+			r.inlineAccumulator.WriteString(Italic.Unformat())
 		}
 
 	case blackfriday.Strong:
 		if entering {
-			r.paragraph.WriteString(Bold.Format())
+			r.inlineAccumulator.WriteString(Bold.Format())
 		} else {
-			r.paragraph.WriteString(Bold.Unformat())
+			r.inlineAccumulator.WriteString(Bold.Unformat())
 		}
 
 	case blackfriday.Del:
 		if entering {
-			r.paragraph.WriteString(CrossedOut.Format())
+			r.inlineAccumulator.WriteString(CrossedOut.Format())
 		} else {
-			r.paragraph.WriteString(CrossedOut.Unformat())
+			r.inlineAccumulator.WriteString(CrossedOut.Unformat())
 		}
 
 	case blackfriday.Link:
-		r.paragraph.WriteString("[")
-		r.paragraph.WriteString(string(node.FirstChild.Literal))
-		r.paragraph.WriteString("](")
-		r.paragraph.WriteString(Blue(string(node.LinkData.Destination)))
+		r.inlineAccumulator.WriteString("[")
+		r.inlineAccumulator.WriteString(string(node.FirstChild.Literal))
+		r.inlineAccumulator.WriteString("](")
+		r.inlineAccumulator.WriteString(Blue(string(node.LinkData.Destination)))
 		if len(node.LinkData.Title) > 0 {
-			r.paragraph.WriteString(" ")
-			r.paragraph.WriteString(string(node.LinkData.Title))
+			r.inlineAccumulator.WriteString(" ")
+			r.inlineAccumulator.WriteString(string(node.LinkData.Title))
 		}
-		r.paragraph.WriteString(")")
+		r.inlineAccumulator.WriteString(")")
 		return blackfriday.SkipChildren
 
 	case blackfriday.Image:
@@ -273,7 +273,7 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 	case blackfriday.Text:
 		// emoji support !
 		emojed := emoji.Sprint(string(node.Literal))
-		r.paragraph.WriteString(emojed)
+		r.inlineAccumulator.WriteString(emojed)
 
 	case blackfriday.HTMLBlock:
 
@@ -285,7 +285,7 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 	case blackfriday.Hardbreak:
 
 	case blackfriday.Code:
-		r.paragraph.WriteString(BlueBgItalic(string(node.Literal)))
+		r.inlineAccumulator.WriteString(BlueBgItalic(string(node.Literal)))
 
 	case blackfriday.HTMLSpan:
 
