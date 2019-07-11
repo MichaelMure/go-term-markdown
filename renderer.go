@@ -201,6 +201,7 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 		}
 
 	case blackfriday.Paragraph:
+		// on exiting, collect and format the accumulated content
 		if !entering {
 			content := r.inlineAccumulator.String()
 			r.inlineAccumulator.Reset()
@@ -299,8 +300,11 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 		r.renderCodeBlock(w, node)
 
 	case blackfriday.Softbreak:
+		// not actually implemented in blackfriday
+		r.inlineAccumulator.WriteString("\n")
 
 	case blackfriday.Hardbreak:
+		r.inlineAccumulator.WriteString("\n")
 
 	case blackfriday.Code:
 		r.inlineAccumulator.WriteString(BlueBgItalic(string(node.Literal)))
