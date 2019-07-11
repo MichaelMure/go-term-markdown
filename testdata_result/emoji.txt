@@ -1,4 +1,4 @@
-        Emoji support !
+    Emoji support !
 
     :bowtie:😄 :simple_smile:😆 😊 😃 ☺
     😏 😍 😘 😚 😳 😌 😆 😄 😉 😜 😝 😀

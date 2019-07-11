@@ -1,11 +1,17 @@
 package markdown
 
-import "github.com/MichaelMure/color"
+import "github.com/fatih/color"
 
 var (
-	Bold       = color.New(color.Bold)
-	Italic     = color.New(color.Italic)
-	CrossedOut = color.New(color.CrossedOut)
+	// we need a bunch of escape code for manual formatting
+	boldOn        = "\x1b[1m"
+	boldOff       = "\x1b[21m"
+	italicOn      = "\x1b[3m"
+	italicOff     = "\x1b[23m"
+	crossedOutOn  = "\x1b[9m"
+	crossedOutOff = "\x1b[29m"
+	greenOn       = "\x1b[32m"
+	colorOff      = "\x1b[39m"
 
 	Green        = color.New(color.FgGreen).SprintFunc()
 	HiGreen      = color.New(color.FgHiGreen).SprintFunc()

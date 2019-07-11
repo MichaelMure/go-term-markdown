@@ -1,7 +1,8 @@
 [32;1m    1 Markdown: Basics[0m
     ────────────────────────────────────
 
-[32;1m    1.1 Getting the Gist of Markdown's …[0m
+[32;1m    1.1 Getting the Gist of Markdown's
+Formatting Syntax[0m
 
     This page offers a brief overview of
     what it's like to use Markdown.
@@ -25,7 +26,7 @@
     your own Markdown-formatted text
     and translate it to XHTML.
 
-    [1mNote:[0m This document is itself
+    [1mNote:[21m This document is itself
     written using Markdown; you
     can [see the source for it by adding
     '.text' to the URL]([34m/projects/markd
@@ -43,7 +44,7 @@
     be intended with spaces or tabs.
 
     Markdown offers two styles of
-    headers: [3mSetext[0m and [3matx[0m.
+    headers: [3mSetext[23m and [3matx[23m.
     Setext-style headers for [44;3m<h1>[0m and
     [44;3m<h2>[0m are created by
     "underlining" with equal signs ([44;3m=[0m)
@@ -216,8 +217,8 @@
 [92m    1.3.1 Links[0m
 
     Markdown supports two styles for
-    creating links: [3minline[0m and
-    [3mreference[0m. With both styles, you use
+    creating links: [3minline[23m and
+    [3mreference[23m. With both styles, you use
     square brackets to delimit the
     text you want to turn into a link.
 
@@ -277,7 +278,7 @@
 
     The title attribute is optional.
     Link names may contain letters,
-    numbers and spaces, but are [3mnot[0m case
+    numbers and spaces, but are [3mnot[23m case
     sensitive:
 
     [32;1m┃ [0mI start my morning with a cup of

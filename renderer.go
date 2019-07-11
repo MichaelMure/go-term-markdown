@@ -6,13 +6,12 @@ import (
 	"io"
 	"strings"
 
-	"github.com/MichaelMure/color"
 	"github.com/alecthomas/chroma"
 	"github.com/alecthomas/chroma/formatters"
 	"github.com/alecthomas/chroma/lexers"
 	"github.com/alecthomas/chroma/styles"
+	"github.com/fatih/color"
 	"github.com/kyokomi/emoji"
-	"github.com/mattn/go-runewidth"
 	"gopkg.in/russross/blackfriday.v2"
 
 	"github.com/MichaelMure/git-bug/util/text"
@@ -94,13 +93,16 @@ type renderer struct {
 	// all the custom left paddings, without the fixed space from leftPad
 	padAccumulator []string
 
-	// record and render the heading numbering
-	headingNumbering headingNumbering
+	// one-shot indent for the first line of the inline content
+	indent string
 
 	// for Heading, Paragraph and TableCell, accumulate the content of
 	// the child nodes (Link, Text, Image, formatting ...). The result
 	// is then rendered appropriately when exiting the node.
 	inlineAccumulator strings.Builder
+
+	// record and render the heading numbering
+	headingNumbering headingNumbering
 
 	blockQuoteLevel int
 }
@@ -126,9 +128,8 @@ func (r *renderer) popPad() {
 }
 
 func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool) blackfriday.WalkStatus {
+	// TODO: remove
 	fmt.Println(node.Type, string(node.Literal), entering)
-
-	green := color.New(color.FgGreen)
 
 	switch node.Type {
 	case blackfriday.Document:
@@ -152,8 +153,6 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 		}
 
 	case blackfriday.Item:
-		fmt.Println(node.ListFlags)
-
 		// write the prefix, add a padding if needed, and let Paragraph handle the rest
 		if entering {
 			switch {
@@ -164,35 +163,55 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 					itemNumber++
 				}
 				prefix := fmt.Sprintf("%d. ", itemNumber)
-				r.inlineAccumulator.WriteString(prefix)
+				r.indent = r.pad() + Green(prefix)
 				r.addPad(strings.Repeat(" ", text.WordLen(prefix)))
 
-			// content of a definition
-			case node.ListData.ListFlags&blackfriday.ListTypeTerm != 0:
-				r.inlineAccumulator.WriteString("  ")
-				r.addPad("  ")
-
 			// header of a definition
+			case node.ListData.ListFlags&blackfriday.ListTypeTerm != 0:
+				r.inlineAccumulator.WriteString(greenOn)
+
+			// content of a definition
 			case node.ListData.ListFlags&blackfriday.ListTypeDefinition != 0:
-				r.inlineAccumulator.WriteString("  ")
-				r.inlineAccumulator.WriteString(green.Format())
 				r.addPad("  ")
 
 			// no flags means it's the normal bullet point list
 			default:
-				r.inlineAccumulator.WriteString("• ")
+				r.indent = r.pad() + Green("• ")
 				r.addPad("  ")
 			}
 		} else {
-			r.popPad()
-			if node.ListData.ListFlags&blackfriday.ListTypeDefinition != 0 {
+			switch {
+			// numbered list
+			case node.ListData.ListFlags&blackfriday.ListTypeOrdered != 0:
+				r.popPad()
 
+			// header of a definition
+			case node.ListData.ListFlags&blackfriday.ListTypeTerm != 0:
+				r.inlineAccumulator.WriteString(colorOff)
+
+			// content of a definition
+			case node.ListData.ListFlags&blackfriday.ListTypeDefinition != 0:
+				r.popPad()
+				_, _ = fmt.Fprintln(w)
+
+			// no flags means it's the normal bullet point list
+			default:
+				r.popPad()
 			}
 		}
 
 	case blackfriday.Paragraph:
 		if !entering {
-			out, _ := text.WrapWithPad(r.inlineAccumulator.String(), r.lineWidth, r.pad())
+			content := r.inlineAccumulator.String()
+			r.inlineAccumulator.Reset()
+
+			var out string
+			if r.indent != "" {
+				out, _ = text.WrapWithPadIndent(content, r.lineWidth, r.indent, r.pad())
+				r.indent = ""
+			} else {
+				out, _ = text.WrapWithPad(content, r.lineWidth, r.pad())
+			}
 			_, _ = fmt.Fprint(w, out, "\n")
 
 			// extra line break in some cases
@@ -207,7 +226,6 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 					_, _ = fmt.Fprintln(w)
 				}
 			}
-			r.inlineAccumulator.Reset()
 		}
 
 	case blackfriday.Heading:
@@ -219,9 +237,9 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 			r.headingNumbering.Observe(node.Level)
 			rendered := fmt.Sprintf("%s%s %s", r.pad(), r.headingNumbering.Render(), content)
 
-			// output the text, truncated if needed, no line break
-			truncated := runewidth.Truncate(rendered, r.lineWidth, "…")
-			colored := headingShade(node.Level)(truncated)
+			// wrap if needed
+			wrapped, _ := text.Wrap(rendered, r.lineWidth)
+			colored := headingShade(node.Level)(wrapped)
 			_, _ = fmt.Fprintln(w, colored)
 
 			// render the underline, if any
@@ -237,23 +255,23 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 
 	case blackfriday.Emph:
 		if entering {
-			r.inlineAccumulator.WriteString(Italic.Format())
+			r.inlineAccumulator.WriteString(italicOn)
 		} else {
-			r.inlineAccumulator.WriteString(Italic.Unformat())
+			r.inlineAccumulator.WriteString(italicOff)
 		}
 
 	case blackfriday.Strong:
 		if entering {
-			r.inlineAccumulator.WriteString(Bold.Format())
+			r.inlineAccumulator.WriteString(boldOn)
 		} else {
-			r.inlineAccumulator.WriteString(Bold.Unformat())
+			r.inlineAccumulator.WriteString(boldOff)
 		}
 
 	case blackfriday.Del:
 		if entering {
-			r.inlineAccumulator.WriteString(CrossedOut.Format())
+			r.inlineAccumulator.WriteString(crossedOutOn)
 		} else {
-			r.inlineAccumulator.WriteString(CrossedOut.Unformat())
+			r.inlineAccumulator.WriteString(crossedOutOff)
 		}
 
 	case blackfriday.Link:

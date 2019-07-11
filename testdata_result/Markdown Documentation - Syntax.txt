@@ -1,30 +1,28 @@
 [32;1m    1 Markdown: Syntax[0m
     ────────────────────────────────────
 
-      • [Overview]([34m#overview[0m)
-        • [Philosophy]([34m#philosophy[0m)
-        • [Inline HTML]([34m#html[0m)
-        • [Automatic Escaping for
-        Special Characters]([34m#autoescape[0m)
-      • [Block Elements]([34m#block[0m)
-        • [Paragraphs and Line
-        Breaks]([34m#p[0m)
-        • [Headers]([34m#header[0m)
-        • [Blockquotes]([34m#blockquote[0m)
-        • [Lists]([34m#list[0m)
-        • [Code Blocks]([34m#precode[0m)
-        • [Horizontal Rules]([34m#hr[0m)
-      • [Span Elements]([34m#span[0m)
-        • [Links]([34m#link[0m)
-        • [Emphasis]([34m#em[0m)
-        • [Code]([34m#code[0m)
-        • [Images]([34m#img[0m)
-      • [Miscellaneous]([34m#misc[0m)
-        • [Backslash
-        Escapes]([34m#backslash[0m)
-        • [Automatic Links]([34m#autolink[0m)
+    [32m• [0m[Overview]([34m#overview[0m)
+      [32m• [0m[Philosophy]([34m#philosophy[0m)
+      [32m• [0m[Inline HTML]([34m#html[0m)
+      [32m• [0m[Automatic Escaping for Special
+        Characters]([34m#autoescape[0m)
+    [32m• [0m[Block Elements]([34m#block[0m)
+      [32m• [0m[Paragraphs and Line Breaks]([34m#p[0m)
+      [32m• [0m[Headers]([34m#header[0m)
+      [32m• [0m[Blockquotes]([34m#blockquote[0m)
+      [32m• [0m[Lists]([34m#list[0m)
+      [32m• [0m[Code Blocks]([34m#precode[0m)
+      [32m• [0m[Horizontal Rules]([34m#hr[0m)
+    [32m• [0m[Span Elements]([34m#span[0m)
+      [32m• [0m[Links]([34m#link[0m)
+      [32m• [0m[Emphasis]([34m#em[0m)
+      [32m• [0m[Code]([34m#code[0m)
+      [32m• [0m[Images]([34m#img[0m)
+    [32m• [0m[Miscellaneous]([34m#misc[0m)
+      [32m• [0m[Backslash Escapes]([34m#backslash[0m)
+      [32m• [0m[Automatic Links]([34m#autolink[0m)
 
-    [1mNote:[0m This document is itself
+    [1mNote:[21m This document is itself
     written using Markdown; you
     can [see the source for it by adding
     '.text' to the URL]([34m/projects/markd
@@ -76,20 +74,20 @@
     used email.
     Markdown's syntax is intended for
     one purpose: to be used as a
-    format for [3mwriting[0m for the web.
+    format for [3mwriting[23m for the web.
 
     Markdown is not a replacement for
     HTML, or even close to it. Its
     syntax is very small, corresponding
     only to a very small subset of
-    HTML tags. The idea is [3mnot[0m to create
+    HTML tags. The idea is [3mnot[23m to create
     a syntax that makes it easier
     to insert HTML tags. In my opinion,
     HTML tags are already easy to
     insert. The idea for Markdown is to
     make it easy to read, write, and
-    edit prose. HTML is a [3mpublishing[0m
-    format; Markdown is a [3mwriting[0m
+    edit prose. HTML is a [3mpublishing[23m
+    format; Markdown is a [3mwriting[23m
     format. Thus, Markdown's formatting
     syntax only addresses issues that
     can be conveyed in plain text.
@@ -148,7 +146,7 @@
     ahead.
 
     Unlike block-level HTML tags,
-    Markdown syntax [3mis[0m processed within
+    Markdown syntax [3mis[23m processed within
     span-level tags.
     In HTML, there are two characters
     that demand special treatment: [44;3m<[0m
@@ -223,7 +221,7 @@
 
     However, inside Markdown code spans
     and blocks, angle brackets and
-    ampersands are [3malways[0m encoded
+    ampersands are [3malways[23m encoded
     automatically. This makes it easy to
     use
     Markdown to write about HTML code.
@@ -258,7 +256,7 @@
     character in a paragraph into a [44;3m<br
     />[0m tag.
 
-    When you [3mdo[0m want to insert a [44;3m<br />[0m
+    When you [3mdo[23m want to insert a [44;3m<br />[0m
     break tag using Markdown, you
     end a line with two or more spaces,
     then type return.
@@ -589,7 +587,7 @@
 
     To put a code block within a list
     item, the code block needs
-    to be indented [3mtwice[0m -- 8 spaces or
+    to be indented [3mtwice[23m -- 8 spaces or
     two tabs:
 
     [32;1m┃ [0m*   A list item with a code block:
@@ -604,7 +602,7 @@
     [32;1m┃ [0m1986. What a great season.
 
     In other words, a
-    [3mnumber-period-space[0m sequence at the
+    [3mnumber-period-space[23m sequence at the
     beginning of a
     line. To avoid this, you can
     backslash-escape the period:
@@ -718,7 +716,7 @@
     ────────────────────────────────────
 
     Markdown supports two style of
-    links: [3minline[0m and [3mreference[0m.
+    links: [3minline[23m and [3mreference[23m.
 
     In both styles, the link text is
     delimited by [square brackets].
@@ -728,7 +726,7 @@
     after the link text's closing square
     bracket. Inside the parentheses,
     put the URL where you want the link
-    to point, along with an [3moptional[0m
+    to point, along with an [3moptional[23m
     title for the link, surrounded in
     quotes. For example:
 
@@ -781,16 +779,15 @@
 
     That is:
 
-      • Square brackets containing the
+    [32m• [0mSquare brackets containing the
       link identifier (optionally
       indented from the left margin
       using up to three spaces);
-      • followed by a colon;
-      • followed by one or more spaces
-      (or tabs);
-      • followed by the URL for the
-      link;
-      • optionally followed by a title
+    [32m• [0mfollowed by a colon;
+    [32m• [0mfollowed by one or more spaces (or
+      tabs);
+    [32m• [0mfollowed by the URL for the link;
+    [32m• [0moptionally followed by a title
       attribute for the link, enclosed
       in double or single quotes.
 
@@ -816,7 +813,7 @@
 
     Link definition names may constist
     of letters, numbers, spaces, and
-    punctuation -- but they are [3mnot[0m case
+    punctuation -- but they are [3mnot[23m case
     sensitive. E.g. these two links:
 
     [32;1m┃ [0m[link text][a]
@@ -824,7 +821,7 @@
 
     are equivalent.
 
-    The [3mimplicit link name[0m shortcut
+    The [3mimplicit link name[23m shortcut
     allows you to omit the name of the
     link, in which case the link text
     itself is used as the name.
@@ -1076,7 +1073,7 @@
     Markdown uses an image syntax that
     is intended to resemble the syntax
     for links, allowing for two styles:
-    [3minline[0m and [3mreference[0m.
+    [3minline[23m and [3mreference[23m.
 
     Inline image syntax looks like this:
 
@@ -1087,13 +1084,12 @@
 
     That is:
 
-      • An exclamation mark: [44;3m![0m;
-      • followed by a set of square
+    [32m• [0mAn exclamation mark: [44;3m![0m;
+    [32m• [0mfollowed by a set of square
       brackets, containing the [44;3malt[0m
       attribute text for the image;
-      • followed by a set of
-      parentheses, containing the URL or
-      path to
+    [32m• [0mfollowed by a set of parentheses,
+      containing the URL or path to
       the image, and an optional [44;3mtitle[0m
       attribute enclosed in double
       or single quotes.

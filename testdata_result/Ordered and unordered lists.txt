@@ -2,106 +2,106 @@
 
     Asterisks tight:
 
-      • asterisk 1
-      • asterisk 2
-      • asterisk 3
+    [32m• [0masterisk 1
+    [32m• [0masterisk 2
+    [32m• [0masterisk 3
 
     Asterisks loose:
 
-      • asterisk 1
-      • asterisk 2
-      • asterisk 3
+    [32m• [0masterisk 1
+    [32m• [0masterisk 2
+    [32m• [0masterisk 3
 
     ────────────────────────────────────
 
     Pluses tight:
 
-      • Plus 1
-      • Plus 2
-      • Plus 3
+    [32m• [0mPlus 1
+    [32m• [0mPlus 2
+    [32m• [0mPlus 3
 
     Pluses loose:
 
-      • Plus 1
-      • Plus 2
-      • Plus 3
+    [32m• [0mPlus 1
+    [32m• [0mPlus 2
+    [32m• [0mPlus 3
 
     ────────────────────────────────────
 
     Minuses tight:
 
-      • Minus 1
-      • Minus 2
-      • Minus 3
+    [32m• [0mMinus 1
+    [32m• [0mMinus 2
+    [32m• [0mMinus 3
 
     Minuses loose:
 
-      • Minus 1
-      • Minus 2
-      • Minus 3
+    [32m• [0mMinus 1
+    [32m• [0mMinus 2
+    [32m• [0mMinus 3
 
 [32;1m    0.2 Ordered[0m
 
     Tight:
 
-       1. First
-       2. Second
-       3. Third
+    [32m1. [0mFirst
+    [32m2. [0mSecond
+    [32m3. [0mThird
 
     and:
 
-       1. One
-       2. Two
-       3. Three
+    [32m1. [0mOne
+    [32m2. [0mTwo
+    [32m3. [0mThree
 
     Loose using tabs:
 
-       1. First
-       2. Second
-       3. Third
+    [32m1. [0mFirst
+    [32m2. [0mSecond
+    [32m3. [0mThird
 
     and using spaces:
 
-       1. One
-       2. Two
-       3. Three
+    [32m1. [0mOne
+    [32m2. [0mTwo
+    [32m3. [0mThree
 
     Multiple paragraphs:
 
-       1. Item 1, graf one.
+    [32m1. [0mItem 1, graf one.
 
        Item 2. graf two. The quick brown
        fox jumped over the lazy dog's
        back.
-       2. Item 2.
-       3. Item 3.
+    [32m2. [0mItem 2.
+    [32m3. [0mItem 3.
 
 [32;1m    0.3 Nested[0m
 
-      • Tab
-        • Tab
-          • Tab
+    [32m• [0mTab
+      [32m• [0mTab
+        [32m• [0mTab
 
     Here's another:
 
-       1. First
-       2. Second:
-         • Fee
-         • Fie
-         • Foe
-       3. Third
+    [32m1. [0mFirst
+    [32m2. [0mSecond:
+       [32m• [0mFee
+       [32m• [0mFie
+       [32m• [0mFoe
+    [32m3. [0mThird
 
     Same thing but with paragraphs:
 
-       1. First
-       2. Second:
-         • Fee
-         • Fie
-         • Foe
-       3. Third
+    [32m1. [0mFirst
+    [32m2. [0mSecond:
+       [32m• [0mFee
+       [32m• [0mFie
+       [32m• [0mFoe
+    [32m3. [0mThird
 
     This was an error in Markdown 1.0.1:
 
-      • this
-        • sub
+    [32m• [0mthis
+      [32m• [0msub
       that

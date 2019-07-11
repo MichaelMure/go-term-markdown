@@ -1,12 +1,18 @@
-       1. First ordered list item
-       2. Another item
-         • Unordered sub-list.
-       3. Actual numbers don't matter,
-       just that it's a number
-          1. Ordered sub-list
-       4. And another item.
+    [32m1. [0mFirst ordered list item
+    [32m2. [0mAnother item
+       [32m• [0mUnordered sub-list.
+    [32m3. [0mActual numbers don't matter, just
+       that it's a number
+       [32m1. [0mOrdered sub-list
+    [32m4. [0mAnd another item.
 
     A definition list:
 
-        Markdown
-        [32mText-to-HTML conversion tool
+    [32mMarkdown
+      [39mText-to-HTML conversion tool
+
+    [32mWith a link
+    [url]([34mhttp://example.com[0m)
+      [39mThat's a definition list with an
+      url in the header
+

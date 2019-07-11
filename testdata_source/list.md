@@ -9,3 +9,6 @@ A definition list:
 
 Markdown
 :  Text-to-HTML conversion tool
+
+With a link [url](http://example.com)
+:  That's a definition list with an url in the header
