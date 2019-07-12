@@ -1,6 +1,28 @@
 [32;1m    1 Markdown: Syntax[0m
     ────────────────────────────────────
 
+    [31m<ul id="ProjectSubmenu">
+        <li><a
+    href="/projects/markdown/"
+    title="Markdown Project
+    Page">Main</a></li>
+        <li><a
+    href="/projects/markdown/basics"
+    title="Markdown
+    Basics">Basics</a></li>
+        <li><a class="selected"
+    title="Markdown Syntax
+    Documentation">Syntax</a></li>
+        <li><a
+    href="/projects/markdown/license"
+    title="Pricing and License
+    Information">License</a></li>
+        <li><a
+    href="/projects/markdown/dingus"
+    title="Online Markdown Web
+    Form">Dingus</a></li>
+    </ul>[0m
+
     [32m• [0m[Overview]([34m#overview[0m)
       [32m• [0m[Philosophy]([34m#philosophy[0m)
       [32m• [0m[Inline HTML]([34m#html[0m)
@@ -29,6 +51,10 @@
     own/syntax.text[0m).
 
     ────────────────────────────────────
+
+    [31m<h2 id="overview">Overview</h2>[0m
+
+    [31m<h3 id="philosophy">Philosophy</h3>[0m
 
     Markdown is intended to be as
     easy-to-read and easy-to-write as is
@@ -72,6 +98,9 @@
     passages of text, assuming you've
     ever
     used email.
+
+    [31m<h3 id="html">Inline HTML</h3>[0m
+
     Markdown's syntax is intended for
     one purpose: to be used as a
     format for [3mwriting[23m for the web.
@@ -148,6 +177,10 @@
     Unlike block-level HTML tags,
     Markdown syntax [3mis[23m processed within
     span-level tags.
+
+    [31m<h3 id="autoescape">Automatic
+    Escaping for Special Characters</h3>[0m
+
     In HTML, there are two characters
     that demand special treatment: [44;3m<[0m
     and [44;3m&[0m. Left angle brackets are used
@@ -233,6 +266,11 @@
 
     ────────────────────────────────────
 
+    [31m<h2 id="block">Block Elements</h2>[0m
+
+    [31m<h3 id="p">Paragraphs and Line
+    Breaks</h3>[0m
+
     A paragraph is simply one or more
     consecutive lines of text, separated
     by one or more blank lines. (A blank
@@ -270,6 +308,9 @@
     multi-paragraph [list items]([34m#list[0m)
     work best -- and look better -- when
     you format them with hard breaks.
+
+    [31m<h3 id="header">Headers</h3>[0m
+
     Markdown supports two styles of
     headers, [Setext]([34mhttp://docutils.so
     urceforge.net/mirror/setext.html[0m)
@@ -317,6 +358,8 @@
     [32;1m┃ [0m## This is an H2 ##
     [32;1m┃ [0m
     [32;1m┃ [0m### This is an H3 ######
+
+    [31m<h3 id="blockquote">Blockquotes</h3>[0m
 
     Markdown uses email-style [44;3m>[0m
     characters for blockquoting. If
@@ -397,6 +440,9 @@
     example, with BBEdit, you can make a
     selection and choose Increase
     Quote Level from the Text menu.
+
+    [31m<h3 id="list">Lists</h3>[0m
+
     Markdown supports ordered (numbered)
     and unordered (bulleted) lists.
 
@@ -609,6 +655,8 @@
 
     [32;1m┃ [0m1986\. What a great season.
 
+    [31m<h3 id="precode">Code Blocks</h3>[0m
+
     Pre-formatted code blocks are used
     for writing about programming or
     markup source code. Rather than
@@ -690,6 +738,9 @@
     within a code block. This means
     it's also easy to use Markdown to
     write about Markdown's own syntax.
+
+    [31m<h3 id="hr">Horizontal Rules</h3>[0m
+
     You can produce a horizontal rule
     tag ([44;3m<hr />[0m) by placing three or
     more hyphens, asterisks, or
@@ -714,6 +765,10 @@
     [32;1m┃ [0m_ _ _
 
     ────────────────────────────────────
+
+    [31m<h2 id="span">Span Elements</h2>[0m
+
+    [31m<h3 id="link">Links</h3>[0m
 
     Markdown supports two style of
     links: [3minline[23m and [3mreference[23m.
@@ -937,6 +992,9 @@
     interrupting the narrative flow of
     your
     prose.
+
+    [31m<h3 id="em">Emphasis</h3>[0m
+
     Markdown treats asterisks ([44;3m*[0m) and
     underscores ([44;3m_[0m) as indicators of
     emphasis. Text wrapped with one [44;3m*[0m or
@@ -987,6 +1045,8 @@
 
     [32;1m┃ [0m\*this text is surrounded by
     [32;1m┃ [0mliteral asterisks\*
+
+    [31m<h3 id="code">Code</h3>[0m
 
     To indicate a span of code, wrap it
     with backtick quotes ([44;3m`[0m).
@@ -1065,6 +1125,8 @@
     [32;1m┃ [0mequivalent of
     [32;1m┃ [0m<code>&amp;mdash;</code>.</p>
 
+    [31m<h3 id="img">Images</h3>[0m
+
     Admittedly, it's fairly difficult to
     devise a "natural" syntax for
     placing images into a plain text
@@ -1114,6 +1176,11 @@
     use regular HTML [44;3m<img>[0m tags.
 
     ────────────────────────────────────
+
+    [31m<h2 id="misc">Miscellaneous</h2>[0m
+
+    [31m<h3 id="autolink">Automatic
+    Links</h3>[0m
 
     Markdown supports a shortcut style
     for creating "automatic" links for
@@ -1169,6 +1236,10 @@
     an address published in this way
     will probably eventually start
     receiving spam.)
+
+    [31m<h3 id="backslash">Backslash
+    Escapes</h3>[0m
+
     Markdown allows you to use backslash
     escapes to generate literal
     characters which would otherwise

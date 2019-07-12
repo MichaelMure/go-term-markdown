@@ -18,4 +18,5 @@ var (
 	GreenBold    = color.New(color.FgGreen, color.Bold).SprintFunc()
 	Blue         = color.New(color.FgBlue).SprintFunc()
 	BlueBgItalic = color.New(color.BgBlue, color.Italic).SprintFunc()
+	Red          = color.New(color.FgRed).SprintFunc()
 )

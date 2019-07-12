@@ -1,9 +1,10 @@
     Colons can be used to align columns.
     TablesAreCoolcol 3
     isright-aligned$1600col 2
-    iscentered$12zebra stripesare
-    neat$1item1item2See the listfrom the
-    first column[URL and title]([34m/url/[0m
+    iscentered$12zebra stripesare neat$1
+    [31m<ul>[0m[31m<li>[0mitem1[31m</li>[0m[31m<li>[0mitem2[31m</li>[0m[31m</ul
+    >[0mSee the listfrom the first
+    column[URL and title]([34m/url/[0m
     title).Emphasis, aka italics, with
     [3masterisks[23m or [3munderscores[23m.Strong
     emphasis, aka bold, with [1masterisks[21m

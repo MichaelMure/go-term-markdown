@@ -1,2 +1,16 @@
     Simple block on one line:
+
+    [31m<div>foo</div>[0m
+
     And nested without indentation:
+
+    [31m<div>
+    <div>
+    <div>
+    foo
+    </div>
+    <div style=">"/>
+    </div>
+    <div>bar</div>
+    </div>[0m
+

@@ -219,7 +219,7 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 			if node.Next != nil {
 				switch node.Next.Type {
 				case blackfriday.Paragraph, blackfriday.Heading, blackfriday.HorizontalRule,
-					blackfriday.CodeBlock:
+					blackfriday.CodeBlock, blackfriday.HTMLBlock:
 					_, _ = fmt.Fprintln(w)
 				}
 
@@ -295,6 +295,9 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 		r.inlineAccumulator.WriteString(emojed)
 
 	case blackfriday.HTMLBlock:
+		content := Red(string(node.Literal))
+		out, _ := text.WrapWithPad(content, r.lineWidth, r.pad())
+		_, _ = fmt.Fprint(w, out, "\n\n")
 
 	case blackfriday.CodeBlock:
 		r.renderCodeBlock(w, node)
@@ -310,6 +313,7 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 		r.inlineAccumulator.WriteString(BlueBgItalic(string(node.Literal)))
 
 	case blackfriday.HTMLSpan:
+		r.inlineAccumulator.WriteString(Red(string(node.Literal)))
 
 	case blackfriday.Table:
 

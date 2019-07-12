@@ -1,4 +1,9 @@
     Here's a simple block:
+
+    [31m<div>
+        foo
+    </div>[0m
+
     This should be a code block, though:
 
     [32;1m┃ [0m<div>
@@ -10,16 +15,56 @@
     [32;1m┃ [0m<div>foo</div>
 
     Now, nested:
+
+    [31m<div>
+        <div>
+            <div>
+                foo
+            </div>
+        </div>
+    </div>[0m
+
     This should just be an HTML comment:
+
+    [31m<!-- Comment -->[0m
+
     Multiline:
+
+    [31m<!--
+    Blah
+    Blah
+    -->[0m
+
     Code block:
 
     [32;1m┃ [0m<!-- Comment -->
 
     Just plain comment, with trailing
     spaces on the line:
+
+    [31m<!-- foo -->   [0m
+
     Code:
 
     [32;1m┃ [0m<hr />
 
     Hr's:
+
+    [31m<hr>[0m
+
+    [31m<hr/>[0m
+
+    [31m<hr />[0m
+
+    [31m<hr>   [0m
+
+    [31m<hr/>  [0m
+
+    [31m<hr /> [0m
+
+    [31m<hr class="foo" id="bar" />[0m
+
+    [31m<hr class="foo" id="bar"/>[0m
+
+    [31m<hr class="foo" id="bar" >[0m
+
