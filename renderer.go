@@ -57,6 +57,7 @@ List --> Item
 Paragraph --> Code
 Paragraph --> Del
 Paragraph --> Emph
+Paragraph --> Hardbreak
 Paragraph --> HTMLSpan
 Paragraph --> Image
 Paragraph --> Link
