@@ -106,6 +106,8 @@ type renderer struct {
 	headingNumbering headingNumbering
 
 	blockQuoteLevel int
+
+	table *tableRenderer
 }
 
 func newRenderer(lineWidth int, leftPad int) *renderer {
@@ -317,14 +319,35 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 		r.inlineAccumulator.WriteString(Red(string(node.Literal)))
 
 	case blackfriday.Table:
+		if entering {
+			r.table = newTableRenderer()
+		} else {
+			r.table.Render(w, r.lineWidth)
+			r.table = nil
+		}
 
 	case blackfriday.TableCell:
+		if !entering {
+			content := r.inlineAccumulator.String()
+			r.inlineAccumulator.Reset()
+
+			if node.TableCellData.IsHeader {
+				r.table.AddHeaderCell(content, node.TableCellData.Align)
+			} else {
+				r.table.AddBodyCell(content)
+			}
+		}
 
 	case blackfriday.TableHead:
+		// nothing to do
 
 	case blackfriday.TableBody:
+		// nothing to do
 
 	case blackfriday.TableRow:
+		if entering && node.Parent.Type == blackfriday.TableBody {
+			r.table.NextBodyRow()
+		}
 
 	default:
 		panic("Unknown node type " + node.Type.String())

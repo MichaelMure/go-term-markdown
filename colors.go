@@ -11,7 +11,9 @@ var (
 	crossedOutOn  = "\x1b[9m"
 	crossedOutOff = "\x1b[29m"
 	greenOn       = "\x1b[32m"
-	colorOff      = "\x1b[39m"
+
+	resetAll = "\x1b[0m"
+	colorOff = "\x1b[39m"
 
 	Green        = color.New(color.FgGreen).SprintFunc()
 	HiGreen      = color.New(color.FgHiGreen).SprintFunc()

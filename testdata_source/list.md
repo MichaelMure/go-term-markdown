@@ -12,3 +12,11 @@ Markdown
 
 With a link [url](http://example.com)
 :  That's a definition list with an url in the header
+
+- [x] Write the press release
+- [ ] Update the website
+- [ ] Contact the media
+
+1. [x] Write the press release
+1. [ ] Update the website
+1. [ ] Contact the media
