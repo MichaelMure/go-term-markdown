@@ -44,23 +44,24 @@ func (tr *tableRenderer) AddBodyCell(content string) {
 	tr.body[len(tr.body)-1] = row
 }
 
-func (tr *tableRenderer) Render(w io.Writer, lineWidth int) {
-	columnWidths := tr.columnWidths(lineWidth)
+func (tr *tableRenderer) Render(w io.Writer, leftPad int, lineWidth int) {
+	columnWidths := tr.columnWidths(lineWidth - leftPad)
+	pad := strings.Repeat(" ", leftPad)
 
-	drawTopLine(w, columnWidths)
+	drawTopLine(w, pad, columnWidths)
 
-	drawRow(w, tr.header, columnWidths)
+	drawRow(w, pad, tr.header, columnWidths)
 
-	drawHeaderUnderline(w, columnWidths)
+	drawHeaderUnderline(w, pad, columnWidths)
 
 	for i, row := range tr.body {
-		drawRow(w, row, columnWidths)
+		drawRow(w, pad, row, columnWidths)
 		if i != len(tr.body)-1 {
-			drawRowLine(w, columnWidths)
+			drawRowLine(w, pad, columnWidths)
 		}
 	}
 
-	drawBottomLine(w, columnWidths)
+	drawBottomLine(w, pad, columnWidths)
 }
 
 func (tr *tableRenderer) columnWidths(lineWidth int) []int {
@@ -120,7 +121,8 @@ func (tr *tableRenderer) columnWidths(lineWidth int) []int {
 	return result
 }
 
-func drawTopLine(w io.Writer, columnWidths []int) {
+func drawTopLine(w io.Writer, pad string, columnWidths []int) {
+	_, _ = w.Write([]byte(pad))
 	_, _ = w.Write([]byte("┌"))
 	for i, width := range columnWidths {
 		_, _ = w.Write([]byte(strings.Repeat("─", width)))
@@ -132,7 +134,8 @@ func drawTopLine(w io.Writer, columnWidths []int) {
 	_, _ = w.Write([]byte("\n"))
 }
 
-func drawHeaderUnderline(w io.Writer, columnWidths []int) {
+func drawHeaderUnderline(w io.Writer, pad string, columnWidths []int) {
+	_, _ = w.Write([]byte(pad))
 	_, _ = w.Write([]byte("╞"))
 	for i, width := range columnWidths {
 		_, _ = w.Write([]byte(strings.Repeat("═", width)))
@@ -144,7 +147,8 @@ func drawHeaderUnderline(w io.Writer, columnWidths []int) {
 	_, _ = w.Write([]byte("\n"))
 }
 
-func drawBottomLine(w io.Writer, columnWidths []int) {
+func drawBottomLine(w io.Writer, pad string, columnWidths []int) {
+	_, _ = w.Write([]byte(pad))
 	_, _ = w.Write([]byte("└"))
 	for i, width := range columnWidths {
 		_, _ = w.Write([]byte(strings.Repeat("─", width)))
@@ -156,7 +160,8 @@ func drawBottomLine(w io.Writer, columnWidths []int) {
 	_, _ = w.Write([]byte("\n"))
 }
 
-func drawRowLine(w io.Writer, columnWidths []int) {
+func drawRowLine(w io.Writer, pad string, columnWidths []int) {
+	_, _ = w.Write([]byte(pad))
 	_, _ = w.Write([]byte("├"))
 	for i, width := range columnWidths {
 		_, _ = w.Write([]byte(strings.Repeat("─", width)))
@@ -168,7 +173,7 @@ func drawRowLine(w io.Writer, columnWidths []int) {
 	_, _ = w.Write([]byte("\n"))
 }
 
-func drawRow(w io.Writer, cells []tableCell, columnWidths []int) {
+func drawRow(w io.Writer, pad string, cells []tableCell, columnWidths []int) {
 	contents := make([][]string, len(cells))
 
 	// As we draw the row line by line, we need a way to reset and recover
@@ -198,6 +203,7 @@ func drawRow(w io.Writer, cells []tableCell, columnWidths []int) {
 
 	// Draw the row line by line
 	for i := 0; i < maxLength; i++ {
+		_, _ = w.Write([]byte(pad))
 		_, _ = w.Write([]byte("│"))
 		for j, width := range columnWidths {
 			content := ""

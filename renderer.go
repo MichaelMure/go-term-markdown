@@ -322,7 +322,7 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 		if entering {
 			r.table = newTableRenderer()
 		} else {
-			r.table.Render(w, r.lineWidth)
+			r.table.Render(w, r.leftPad, r.lineWidth)
 			r.table = nil
 		}
 
