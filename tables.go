@@ -181,8 +181,6 @@ func drawRow(w io.Writer, pad string, cells []tableCell, columnWidths []int) {
 	// the ongoing series of ANSI escape sequence for each cell and output them
 	// again each time we switch to the next cell so we end up in the exact same
 	// state. Inefficient but works.
-	// TODO: this could use a way to compress the sequences into a few escape
-	// sequences instead of growing unbounded.
 	formatting := make([]strings.Builder, len(cells))
 
 	accFormatting := func(cellIndex int, items []text.EscapeItem) {
@@ -209,15 +207,37 @@ func drawRow(w io.Writer, pad string, cells []tableCell, columnWidths []int) {
 			content := ""
 			if len(contents[j]) > i {
 				content = contents[j][i]
-				_, _ = w.Write([]byte(formatting[j].String()))
-				_, _ = w.Write([]byte(content))
+				trimmed, _, _ := text.TrimSpace(content)
+
+				switch cells[j].alignment {
+				case blackfriday.TableAlignmentLeft, 0:
+					_, _ = w.Write([]byte(formatting[j].String()))
+					_, _ = w.Write([]byte(trimmed))
+					_, _ = w.Write([]byte(resetAll))
+					_, _ = w.Write([]byte(strings.Repeat(" ", width-text.WordLen(trimmed))))
+
+				case blackfriday.TableAlignmentCenter:
+					spaces := width - text.WordLen(trimmed)
+					_, _ = w.Write([]byte(strings.Repeat(" ", spaces/2)))
+					_, _ = w.Write([]byte(formatting[j].String()))
+					_, _ = w.Write([]byte(trimmed))
+					_, _ = w.Write([]byte(resetAll))
+					_, _ = w.Write([]byte(strings.Repeat(" ", spaces-(spaces/2))))
+
+				case blackfriday.TableAlignmentRight:
+					_, _ = w.Write([]byte(strings.Repeat(" ", width-text.WordLen(trimmed))))
+					_, _ = w.Write([]byte(formatting[j].String()))
+					_, _ = w.Write([]byte(trimmed))
+					_, _ = w.Write([]byte(resetAll))
+				}
+
 				// extract and accumulate the formatting
 				_, seqs := text.ExtractTermEscapes(content)
 				accFormatting(j, seqs)
-				_, _ = w.Write([]byte(resetAll))
+			} else {
+				padding := strings.Repeat(" ", width-text.WordLen(content))
+				_, _ = w.Write([]byte(padding))
 			}
-			padding := strings.Repeat(" ", width-text.WordLen(content))
-			_, _ = w.Write([]byte(padding))
 			_, _ = w.Write([]byte("│"))
 		}
 		_, _ = w.Write([]byte("\n"))
