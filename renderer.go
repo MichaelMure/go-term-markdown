@@ -131,7 +131,7 @@ func (r *renderer) popPad() {
 
 func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool) blackfriday.WalkStatus {
 	// TODO: remove
-	fmt.Println(node.Type, string(node.Literal), entering)
+	// fmt.Println(node.Type, string(node.Literal), entering)
 
 	switch node.Type {
 	case blackfriday.Document:
@@ -355,13 +355,9 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 	return blackfriday.GoToNext
 }
 
-func (*renderer) RenderHeader(w io.Writer, ast *blackfriday.Node) {
-	fmt.Println(ast)
-}
+func (*renderer) RenderHeader(w io.Writer, ast *blackfriday.Node) {}
 
-func (*renderer) RenderFooter(w io.Writer, ast *blackfriday.Node) {
-	fmt.Println(ast)
-}
+func (*renderer) RenderFooter(w io.Writer, ast *blackfriday.Node) {}
 
 func (r *renderer) renderCodeBlock(w io.Writer, node *blackfriday.Node) {
 	code := string(node.Literal)
