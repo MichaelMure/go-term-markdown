@@ -4,9 +4,8 @@ import (
 	"io"
 	"strings"
 
-	"gopkg.in/russross/blackfriday.v2"
-
-	"github.com/MichaelMure/git-bug/util/text"
+	"github.com/MichaelMure/go-term-text"
+	"github.com/russross/blackfriday"
 )
 
 type tableCell struct {

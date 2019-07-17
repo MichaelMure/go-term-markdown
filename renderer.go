@@ -6,15 +6,14 @@ import (
 	"io"
 	"strings"
 
+	"github.com/MichaelMure/go-term-text"
 	"github.com/alecthomas/chroma"
 	"github.com/alecthomas/chroma/formatters"
 	"github.com/alecthomas/chroma/lexers"
 	"github.com/alecthomas/chroma/styles"
 	"github.com/fatih/color"
 	"github.com/kyokomi/emoji"
-	"gopkg.in/russross/blackfriday.v2"
-
-	"github.com/MichaelMure/git-bug/util/text"
+	"github.com/russross/blackfriday"
 )
 
 /*

@@ -5,7 +5,7 @@ import (
 	"io"
 	"os"
 
-	"gopkg.in/russross/blackfriday.v2"
+	"github.com/russross/blackfriday"
 )
 
 func Render(source string, lineWidth int, leftPad int) []byte {
