@@ -8,6 +8,8 @@ import (
 	"github.com/russross/blackfriday"
 )
 
+const minColumnCompactedWidth = 5
+
 type tableCell struct {
 	content   string
 	alignment blackfriday.CellAlignFlags
@@ -44,26 +46,26 @@ func (tr *tableRenderer) AddBodyCell(content string) {
 }
 
 func (tr *tableRenderer) Render(w io.Writer, leftPad int, lineWidth int) {
-	columnWidths := tr.columnWidths(lineWidth - leftPad)
+	columnWidths, truncated := tr.columnWidths(lineWidth - leftPad)
 	pad := strings.Repeat(" ", leftPad)
 
-	drawTopLine(w, pad, columnWidths)
+	drawTopLine(w, pad, columnWidths, truncated)
 
-	drawRow(w, pad, tr.header, columnWidths)
+	drawRow(w, pad, tr.header, columnWidths, truncated)
 
-	drawHeaderUnderline(w, pad, columnWidths)
+	drawHeaderUnderline(w, pad, columnWidths, truncated)
 
 	for i, row := range tr.body {
-		drawRow(w, pad, row, columnWidths)
+		drawRow(w, pad, row, columnWidths, truncated)
 		if i != len(tr.body)-1 {
-			drawRowLine(w, pad, columnWidths)
+			drawRowLine(w, pad, columnWidths, truncated)
 		}
 	}
 
-	drawBottomLine(w, pad, columnWidths)
+	drawBottomLine(w, pad, columnWidths, truncated)
 }
 
-func (tr *tableRenderer) columnWidths(lineWidth int) []int {
+func (tr *tableRenderer) columnWidths(lineWidth int) (widths []int, truncated bool) {
 	maxWidth := make([]int, len(tr.header))
 
 	for i, cell := range tr.header {
@@ -76,21 +78,32 @@ func (tr *tableRenderer) columnWidths(lineWidth int) []int {
 		}
 	}
 
-	sum := 0
+	sumWidth := 1
+	minWidth := 1
 	for _, width := range maxWidth {
-		sum += width
+		sumWidth += width + 1
+		minWidth += min(width, minColumnCompactedWidth) + 1
 	}
 
-	available := lineWidth - len(tr.header) - 1
-
-	// the easy case, content is not large enough to overflow
-	if sum <= available {
-		return maxWidth
+	// Strategy 1: the easy case, content is not large enough to overflow
+	if sumWidth <= lineWidth {
+		return maxWidth, false
 	}
 
+	// Strategy 2: overflow, but still enough room
+	if minWidth < lineWidth {
+		return tr.overflowColumnWidths(lineWidth, maxWidth), false
+	}
+
+	// Strategy 3: too much columns, we need to truncate
+	return tr.truncateColumnWidths(lineWidth, maxWidth), true
+}
+
+func (tr *tableRenderer) overflowColumnWidths(lineWidth int, maxWidth []int) []int {
 	// We have an overflow. First, we take as is the columns that are thinner
 	// than the space equally divided.
 	// Integer division, rounded lower.
+	available := lineWidth - len(tr.header) - 1
 	fairSpace := available / len(tr.header)
 
 	result := make([]int, len(tr.header))
@@ -120,7 +133,26 @@ func (tr *tableRenderer) columnWidths(lineWidth int) []int {
 	return result
 }
 
-func drawTopLine(w io.Writer, pad string, columnWidths []int) {
+func (tr *tableRenderer) truncateColumnWidths(lineWidth int, maxWidth []int) []int {
+	var result []int
+	used := 1
+
+	// Pack as much column as possible without compacting them too much
+	for _, width := range maxWidth {
+		w := min(width, minColumnCompactedWidth)
+
+		if used+w+1 > lineWidth {
+			return result
+		}
+
+		result = append(result, w)
+		used += w + 1
+	}
+
+	return result
+}
+
+func drawTopLine(w io.Writer, pad string, columnWidths []int, truncated bool) {
 	_, _ = w.Write([]byte(pad))
 	_, _ = w.Write([]byte("┌"))
 	for i, width := range columnWidths {
@@ -130,10 +162,13 @@ func drawTopLine(w io.Writer, pad string, columnWidths []int) {
 		}
 	}
 	_, _ = w.Write([]byte("┐"))
+	if truncated {
+		_, _ = w.Write([]byte("…"))
+	}
 	_, _ = w.Write([]byte("\n"))
 }
 
-func drawHeaderUnderline(w io.Writer, pad string, columnWidths []int) {
+func drawHeaderUnderline(w io.Writer, pad string, columnWidths []int, truncated bool) {
 	_, _ = w.Write([]byte(pad))
 	_, _ = w.Write([]byte("╞"))
 	for i, width := range columnWidths {
@@ -143,10 +178,13 @@ func drawHeaderUnderline(w io.Writer, pad string, columnWidths []int) {
 		}
 	}
 	_, _ = w.Write([]byte("╡"))
+	if truncated {
+		_, _ = w.Write([]byte("…"))
+	}
 	_, _ = w.Write([]byte("\n"))
 }
 
-func drawBottomLine(w io.Writer, pad string, columnWidths []int) {
+func drawBottomLine(w io.Writer, pad string, columnWidths []int, truncated bool) {
 	_, _ = w.Write([]byte(pad))
 	_, _ = w.Write([]byte("└"))
 	for i, width := range columnWidths {
@@ -156,10 +194,13 @@ func drawBottomLine(w io.Writer, pad string, columnWidths []int) {
 		}
 	}
 	_, _ = w.Write([]byte("┘"))
+	if truncated {
+		_, _ = w.Write([]byte("…"))
+	}
 	_, _ = w.Write([]byte("\n"))
 }
 
-func drawRowLine(w io.Writer, pad string, columnWidths []int) {
+func drawRowLine(w io.Writer, pad string, columnWidths []int, truncated bool) {
 	_, _ = w.Write([]byte(pad))
 	_, _ = w.Write([]byte("├"))
 	for i, width := range columnWidths {
@@ -169,10 +210,13 @@ func drawRowLine(w io.Writer, pad string, columnWidths []int) {
 		}
 	}
 	_, _ = w.Write([]byte("┤"))
+	if truncated {
+		_, _ = w.Write([]byte("…"))
+	}
 	_, _ = w.Write([]byte("\n"))
 }
 
-func drawRow(w io.Writer, pad string, cells []tableCell, columnWidths []int) {
+func drawRow(w io.Writer, pad string, cells []tableCell, columnWidths []int, truncated bool) {
 	contents := make([][]string, len(cells))
 
 	// As we draw the row line by line, we need a way to reset and recover
@@ -188,18 +232,18 @@ func drawRow(w io.Writer, pad string, cells []tableCell, columnWidths []int) {
 		}
 	}
 
-	maxLength := 0
+	maxHeight := 0
 
 	// Wrap each cell content into multiple lines, depending on
 	// how wide each cell is.
 	for i, cell := range cells {
 		wrapped, lines := text.Wrap(cell.content, columnWidths[i])
 		contents[i] = strings.Split(wrapped, "\n")
-		maxLength = max(maxLength, lines)
+		maxHeight = max(maxHeight, lines)
 	}
 
 	// Draw the row line by line
-	for i := 0; i < maxLength; i++ {
+	for i := 0; i < maxHeight; i++ {
 		_, _ = w.Write([]byte(pad))
 		_, _ = w.Write([]byte("│"))
 		for j, width := range columnWidths {
@@ -239,8 +283,18 @@ func drawRow(w io.Writer, pad string, cells []tableCell, columnWidths []int) {
 			}
 			_, _ = w.Write([]byte("│"))
 		}
+		if truncated {
+			_, _ = w.Write([]byte("…"))
+		}
 		_, _ = w.Write([]byte("\n"))
 	}
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
 }
 
 func max(a, b int) int {
