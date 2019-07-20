@@ -292,8 +292,9 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 	case blackfriday.Image:
 
 	case blackfriday.Text:
+		cleaned := strings.ReplaceAll(string(node.Literal), "\n", "")
 		// emoji support !
-		emojed := emoji.Sprint(string(node.Literal))
+		emojed := emoji.Sprint(cleaned)
 		r.inlineAccumulator.WriteString(emojed)
 
 	case blackfriday.HTMLBlock:
