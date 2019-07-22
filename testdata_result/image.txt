@@ -1,2 +1,1 @@
-    GitHub Logo
-    Format: Alt Text
+    GitHub Logo Format: Alt Text
