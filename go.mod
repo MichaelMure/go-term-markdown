@@ -1,6 +1,6 @@
 module github.com/MichaelMure/go-term-markdown
 
-go 1.12
+go 1.11
 
 require (
 	github.com/MichaelMure/go-term-text v0.1.1-0.20190717181658-6dbdb6381e67
