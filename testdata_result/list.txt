@@ -7,7 +7,6 @@
     [32m4. [0mAnd another item.
 
     A definition list:
-
     [32mMarkdown
       [39mText-to-HTML conversion tool
 
@@ -16,15 +15,9 @@
       [39mThat's a definition list with an
       url in the header
 
-      [x] Write the press release
-
-      [ ] Update the website
-
-      [ ] Contact the media
-
-      [x] Write the press release
-
-      [ ] Update the website
-
-      [ ] Contact the media
-
+    [32m• [0m[x] Write the press release
+    [32m• [0m[ ] Update the website
+    [32m• [0m[ ] Contact the media
+    [32m1. [0m[x] Write the press release
+    [32m2. [0m[ ] Update the website
+    [32m3. [0m[ ] Contact the media

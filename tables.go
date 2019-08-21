@@ -5,14 +5,14 @@ import (
 	"strings"
 
 	"github.com/MichaelMure/go-term-text"
-	"github.com/russross/blackfriday"
+	"github.com/gomarkdown/markdown/ast"
 )
 
 const minColumnCompactedWidth = 5
 
 type tableCell struct {
 	content   string
-	alignment blackfriday.CellAlignFlags
+	alignment ast.CellAlignFlags
 }
 
 type tableRenderer struct {
@@ -24,7 +24,7 @@ func newTableRenderer() *tableRenderer {
 	return &tableRenderer{}
 }
 
-func (tr *tableRenderer) AddHeaderCell(content string, alignment blackfriday.CellAlignFlags) {
+func (tr *tableRenderer) AddHeaderCell(content string, alignment ast.CellAlignFlags) {
 	tr.header = append(tr.header, tableCell{
 		content:   content,
 		alignment: alignment,
@@ -253,13 +253,13 @@ func drawRow(w io.Writer, pad string, cells []tableCell, columnWidths []int, tru
 				trimmed, _, _ := text.TrimSpace(content)
 
 				switch cells[j].alignment {
-				case blackfriday.TableAlignmentLeft, 0:
+				case ast.TableAlignmentLeft, 0:
 					_, _ = w.Write([]byte(formatting[j].String()))
 					_, _ = w.Write([]byte(trimmed))
 					_, _ = w.Write([]byte(resetAll))
 					_, _ = w.Write([]byte(strings.Repeat(" ", width-text.WordLen(trimmed))))
 
-				case blackfriday.TableAlignmentCenter:
+				case ast.TableAlignmentCenter:
 					spaces := width - text.WordLen(trimmed)
 					_, _ = w.Write([]byte(strings.Repeat(" ", spaces/2)))
 					_, _ = w.Write([]byte(formatting[j].String()))
@@ -267,7 +267,7 @@ func drawRow(w io.Writer, pad string, cells []tableCell, columnWidths []int, tru
 					_, _ = w.Write([]byte(resetAll))
 					_, _ = w.Write([]byte(strings.Repeat(" ", spaces-(spaces/2))))
 
-				case blackfriday.TableAlignmentRight:
+				case ast.TableAlignmentRight:
 					_, _ = w.Write([]byte(strings.Repeat(" ", width-text.WordLen(trimmed))))
 					_, _ = w.Write([]byte(formatting[j].String()))
 					_, _ = w.Write([]byte(trimmed))

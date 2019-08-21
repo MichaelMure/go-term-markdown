@@ -4,7 +4,6 @@
     With an ampersand: [http://example.c
     om/?foo=1&bar=2]([34mhttp://example.com/
     ?foo=1&bar=2[0m)
-
     [32m• [0mIn a list?
     [32m• [0m[http://example.com/]([34mhttp://examp
       le.com/[0m)

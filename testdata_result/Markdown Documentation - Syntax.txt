@@ -805,7 +805,6 @@
     [32;1m┃ [0m"Optional Title Here"
 
     That is:
-
     [32m• [0mSquare brackets containing the
       link identifier (optionally
       indented from the left margin
@@ -1112,7 +1111,6 @@
     [32;1m┃ [0m"Optional title")
 
     That is:
-
     [32m• [0mAn exclamation mark: [44;3m![0m;
     [32m• [0mfollowed by a set of square
       brackets, containing the [44;3malt[0m

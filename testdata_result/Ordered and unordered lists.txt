@@ -1,13 +1,11 @@
 [32;1m    0.1 Unordered[0m
 
     Asterisks tight:
-
     [32m• [0masterisk 1
     [32m• [0masterisk 2
     [32m• [0masterisk 3
 
     Asterisks loose:
-
     [32m• [0masterisk 1
     [32m• [0masterisk 2
     [32m• [0masterisk 3
@@ -15,13 +13,11 @@
     ────────────────────────────────────
 
     Pluses tight:
-
     [32m• [0mPlus 1
     [32m• [0mPlus 2
     [32m• [0mPlus 3
 
     Pluses loose:
-
     [32m• [0mPlus 1
     [32m• [0mPlus 2
     [32m• [0mPlus 3
@@ -29,13 +25,11 @@
     ────────────────────────────────────
 
     Minuses tight:
-
     [32m• [0mMinus 1
     [32m• [0mMinus 2
     [32m• [0mMinus 3
 
     Minuses loose:
-
     [32m• [0mMinus 1
     [32m• [0mMinus 2
     [32m• [0mMinus 3
@@ -43,31 +37,26 @@
 [32;1m    0.2 Ordered[0m
 
     Tight:
-
     [32m1. [0mFirst
     [32m2. [0mSecond
     [32m3. [0mThird
 
     and:
-
     [32m1. [0mOne
     [32m2. [0mTwo
     [32m3. [0mThree
 
     Loose using tabs:
-
     [32m1. [0mFirst
     [32m2. [0mSecond
     [32m3. [0mThird
 
     and using spaces:
-
     [32m1. [0mOne
     [32m2. [0mTwo
     [32m3. [0mThree
 
     Multiple paragraphs:
-
     [32m1. [0mItem 1, graf one.
 
        Item 2. graf two. The quick brown
@@ -83,7 +72,6 @@
         [32m• [0mTab
 
     Here's another:
-
     [32m1. [0mFirst
     [32m2. [0mSecond:
        [32m• [0mFee
@@ -92,7 +80,6 @@
     [32m3. [0mThird
 
     Same thing but with paragraphs:
-
     [32m1. [0mFirst
     [32m2. [0mSecond:
        [32m• [0mFee
@@ -101,7 +88,6 @@
     [32m3. [0mThird
 
     This was an error in Markdown 1.0.1:
-
     [32m• [0mthis
       [32m• [0msub
       that

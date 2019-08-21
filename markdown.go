@@ -4,26 +4,35 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 
-	"github.com/russross/blackfriday"
+	md "github.com/gomarkdown/markdown"
+	"github.com/gomarkdown/markdown/ast"
+	"github.com/gomarkdown/markdown/parser"
 )
 
 func Render(source string, lineWidth int, leftPad int) []byte {
+	extensions := parser.CommonExtensions
+	p := parser.NewWithExtensions(extensions)
+
+	nodes := md.Parse([]byte(source), p)
+
 	renderer := newRenderer(lineWidth, leftPad)
 
 	// astRenderer, err := newAstRenderer()
 	// if err != nil {
 	// 	panic(err)
 	// }
-	// blackfriday.Run([]byte(source), blackfriday.WithRenderer(astRenderer))
+	// md.Render(nodes, astRenderer)
 
-	return blackfriday.Run([]byte(source), blackfriday.WithRenderer(renderer))
+	return md.Render(nodes, renderer)
 }
 
-var _ blackfriday.Renderer = &astRenderer{}
+var _ md.Renderer = &astRenderer{}
 
 type astRenderer struct {
-	f *os.File
+	set map[string]struct{}
+	f   *os.File
 }
 
 func newAstRenderer() (*astRenderer, error) {
@@ -32,25 +41,33 @@ func newAstRenderer() (*astRenderer, error) {
 		return nil, err
 	}
 
-	return &astRenderer{f: f}, nil
+	_, _ = fmt.Fprintln(f, "(*) --> Document")
+
+	return &astRenderer{
+		f:   f,
+		set: make(map[string]struct{}),
+	}, nil
 }
 
-func (a *astRenderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool) blackfriday.WalkStatus {
+func (a *astRenderer) RenderNode(w io.Writer, node ast.Node, entering bool) ast.WalkStatus {
 	if entering {
-		for child := node.FirstChild; child != nil; child = child.Next {
-			_, _ = fmt.Fprintf(a.f, "%s --> %s\n", node.Type.String(), child.Type.String())
+		for _, child := range node.GetChildren() {
+			str := fmt.Sprintf("%T --> %T\n", node, child)
+			if _, has := a.set[str]; !has {
+				a.set[str] = struct{}{}
+				_, _ = fmt.Fprintf(a.f, strings.Replace(str, "*ast.", "", -1))
+			}
 		}
 	}
 
-	return blackfriday.GoToNext
+	return ast.GoToNext
 }
 
-func (a *astRenderer) RenderHeader(w io.Writer, ast *blackfriday.Node) {
+func (a *astRenderer) RenderHeader(w io.Writer, ast ast.Node) {
 	// _, _ = fmt.Fprintln(a.f, "@startuml")
-	_, _ = fmt.Fprintln(a.f, "(*) --> Document")
 }
 
-func (a *astRenderer) RenderFooter(w io.Writer, ast *blackfriday.Node) {
+func (a *astRenderer) RenderFooter(w io.Writer, ast ast.Node) {
 	// _, _ = fmt.Fprintln(a.f, "@enduml")
 	_ = a.f.Close()
 }

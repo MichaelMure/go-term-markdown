@@ -13,8 +13,9 @@ import (
 	"github.com/alecthomas/chroma/lexers"
 	"github.com/alecthomas/chroma/styles"
 	"github.com/fatih/color"
+	md "github.com/gomarkdown/markdown"
+	"github.com/gomarkdown/markdown/ast"
 	"github.com/kyokomi/emoji"
-	"github.com/russross/blackfriday"
 )
 
 /*
@@ -49,11 +50,11 @@ Heading --> Link
 Heading --> Strong
 Heading --> Text
 Image --> Text
-Item --> List
-Item --> Paragraph
 Link --> Image
 Link --> Text
-List --> Item
+ListItem --> List
+ListItem --> Paragraph
+List --> ListItem
 Paragraph --> Code
 Paragraph --> Del
 Paragraph --> Emph
@@ -74,16 +75,16 @@ TableCell --> Image
 TableCell --> Link
 TableCell --> Strong
 TableCell --> Text
-TableHead --> TableRow
+TableHeader --> TableRow
 TableRow --> TableCell
 Table --> TableBody
-Table --> TableHead
+Table --> TableHeader
 
 @enduml
 
 */
 
-var _ blackfriday.Renderer = &renderer{}
+var _ md.Renderer = &renderer{}
 
 type renderer struct {
 	// maximum line width allowed
@@ -97,7 +98,7 @@ type renderer struct {
 	// one-shot indent for the first line of the inline content
 	indent string
 
-	// for Heading, Paragraph and TableCell, accumulate the content of
+	// for Heading, Paragraph, HTMLBlock and TableCell, accumulate the content of
 	// the child nodes (Link, Text, Image, formatting ...). The result
 	// is then rendered appropriately when exiting the node.
 	inlineAccumulator strings.Builder
@@ -130,15 +131,15 @@ func (r *renderer) popPad() {
 	r.padAccumulator = r.padAccumulator[:len(r.padAccumulator)-1]
 }
 
-func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool) blackfriday.WalkStatus {
+func (r *renderer) RenderNode(w io.Writer, node ast.Node, entering bool) ast.WalkStatus {
 	// TODO: remove
 	// fmt.Println(node.Type, string(node.Literal), entering)
 
-	switch node.Type {
-	case blackfriday.Document:
+	switch node := node.(type) {
+	case *ast.Document:
 		// Nothing to do
 
-	case blackfriday.BlockQuote:
+	case *ast.BlockQuote:
 		// set and remove a colored bar on the left
 		if entering {
 			r.blockQuoteLevel++
@@ -148,21 +149,27 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 			r.popPad()
 		}
 
-	case blackfriday.List:
-		if !entering && node.Next != nil {
-			if node.Next.Type != blackfriday.List && node.Parent.Type != blackfriday.Item {
+	case *ast.List:
+		if next := ast.GetNextNode(node); !entering && next != nil {
+			_, parentIsListItem := node.GetParent().(*ast.ListItem)
+			_, nextIsList := next.(*ast.List)
+			if !nextIsList && !parentIsListItem {
 				_, _ = fmt.Fprintln(w)
 			}
 		}
 
-	case blackfriday.Item:
+	case *ast.ListItem:
 		// write the prefix, add a padding if needed, and let Paragraph handle the rest
 		if entering {
 			switch {
 			// numbered list
-			case node.ListData.ListFlags&blackfriday.ListTypeOrdered != 0:
+			case node.ListFlags&ast.ListTypeOrdered != 0:
 				itemNumber := 1
-				for prev := node.Prev; prev != nil; prev = prev.Prev {
+				siblings := node.GetParent().GetChildren()
+				for _, sibling := range siblings {
+					if sibling == node {
+						break
+					}
 					itemNumber++
 				}
 				prefix := fmt.Sprintf("%d. ", itemNumber)
@@ -170,11 +177,11 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 				r.addPad(strings.Repeat(" ", text.WordLen(prefix)))
 
 			// header of a definition
-			case node.ListData.ListFlags&blackfriday.ListTypeTerm != 0:
+			case node.ListFlags&ast.ListTypeTerm != 0:
 				r.inlineAccumulator.WriteString(greenOn)
 
 			// content of a definition
-			case node.ListData.ListFlags&blackfriday.ListTypeDefinition != 0:
+			case node.ListFlags&ast.ListTypeDefinition != 0:
 				r.addPad("  ")
 
 			// no flags means it's the normal bullet point list
@@ -185,15 +192,15 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 		} else {
 			switch {
 			// numbered list
-			case node.ListData.ListFlags&blackfriday.ListTypeOrdered != 0:
+			case node.ListFlags&ast.ListTypeOrdered != 0:
 				r.popPad()
 
 			// header of a definition
-			case node.ListData.ListFlags&blackfriday.ListTypeTerm != 0:
+			case node.ListFlags&ast.ListTypeTerm != 0:
 				r.inlineAccumulator.WriteString(colorOff)
 
 			// content of a definition
-			case node.ListData.ListFlags&blackfriday.ListTypeDefinition != 0:
+			case node.ListFlags&ast.ListTypeDefinition != 0:
 				r.popPad()
 				_, _ = fmt.Fprintln(w)
 
@@ -203,7 +210,7 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 			}
 		}
 
-	case blackfriday.Paragraph:
+	case *ast.Paragraph:
 		// on exiting, collect and format the accumulated content
 		if !entering {
 			content := r.inlineAccumulator.String()
@@ -219,20 +226,16 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 			_, _ = fmt.Fprint(w, out, "\n")
 
 			// extra line break in some cases
-			if node.Next != nil {
-				switch node.Next.Type {
-				case blackfriday.Paragraph, blackfriday.Heading, blackfriday.HorizontalRule,
-					blackfriday.CodeBlock, blackfriday.HTMLBlock:
-					_, _ = fmt.Fprintln(w)
-				}
-
-				if node.Next.Type == blackfriday.List && node.Parent.Type != blackfriday.Item {
+			if next := ast.GetNextNode(node); next != nil {
+				switch next.(type) {
+				case *ast.Paragraph, *ast.Heading, *ast.HorizontalRule,
+					*ast.CodeBlock, *ast.HTMLBlock:
 					_, _ = fmt.Fprintln(w)
 				}
 			}
 		}
 
-	case blackfriday.Heading:
+	case *ast.Heading:
 		if !entering {
 			content := r.inlineAccumulator.String()
 			r.inlineAccumulator.Reset()
@@ -254,45 +257,47 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 			_, _ = fmt.Fprintln(w)
 		}
 
-	case blackfriday.HorizontalRule:
+	case *ast.HorizontalRule:
 		_, _ = fmt.Fprintf(w, "%s%s\n\n", r.pad(), strings.Repeat("─", r.lineWidth-r.leftPad))
 
-	case blackfriday.Emph:
+	case *ast.Emph:
 		if entering {
 			r.inlineAccumulator.WriteString(italicOn)
 		} else {
 			r.inlineAccumulator.WriteString(italicOff)
 		}
 
-	case blackfriday.Strong:
+	case *ast.Strong:
 		if entering {
 			r.inlineAccumulator.WriteString(boldOn)
 		} else {
 			r.inlineAccumulator.WriteString(boldOff)
 		}
 
-	case blackfriday.Del:
+	case *ast.Del:
 		if entering {
 			r.inlineAccumulator.WriteString(crossedOutOn)
 		} else {
 			r.inlineAccumulator.WriteString(crossedOutOff)
 		}
 
-	case blackfriday.Link:
-		r.inlineAccumulator.WriteString("[")
-		r.inlineAccumulator.WriteString(string(node.FirstChild.Literal))
-		r.inlineAccumulator.WriteString("](")
-		r.inlineAccumulator.WriteString(Blue(string(node.LinkData.Destination)))
-		if len(node.LinkData.Title) > 0 {
-			r.inlineAccumulator.WriteString(" ")
-			r.inlineAccumulator.WriteString(string(node.LinkData.Title))
+	case *ast.Link:
+		if entering {
+			r.inlineAccumulator.WriteString("[")
+			r.inlineAccumulator.WriteString(string(ast.GetFirstChild(node).AsLeaf().Literal))
+			r.inlineAccumulator.WriteString("](")
+			r.inlineAccumulator.WriteString(Blue(string(node.Destination)))
+			if len(node.Title) > 0 {
+				r.inlineAccumulator.WriteString(" ")
+				r.inlineAccumulator.WriteString(string(node.Title))
+			}
+			r.inlineAccumulator.WriteString(")")
+			return ast.SkipChildren
 		}
-		r.inlineAccumulator.WriteString(")")
-		return blackfriday.SkipChildren
 
-	case blackfriday.Image:
+	case *ast.Image:
 
-	case blackfriday.Text:
+	case *ast.Text:
 		content := string(node.Literal)
 		if shouldCleanText(node) {
 			content = removeLineBreak(content)
@@ -301,28 +306,29 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 		emojed := emoji.Sprint(content)
 		r.inlineAccumulator.WriteString(emojed)
 
-	case blackfriday.HTMLBlock:
+	case *ast.HTMLBlock:
 		content := Red(string(node.Literal))
 		out, _ := text.WrapWithPad(content, r.lineWidth, r.pad())
 		_, _ = fmt.Fprint(w, out, "\n\n")
 
-	case blackfriday.CodeBlock:
+	case *ast.CodeBlock:
 		r.renderCodeBlock(w, node)
 
-	case blackfriday.Softbreak:
-		// not actually implemented in blackfriday
+	case *ast.Softbreak:
+		// not actually implemented in blackfriday/gomarkdown
 		r.inlineAccumulator.WriteString("\n")
 
-	case blackfriday.Hardbreak:
+	case *ast.Hardbreak:
 		r.inlineAccumulator.WriteString("\n")
 
-	case blackfriday.Code:
+	case *ast.Code:
 		r.inlineAccumulator.WriteString(BlueBgItalic(string(node.Literal)))
 
-	case blackfriday.HTMLSpan:
+	case *ast.HTMLSpan:
+		fmt.Println("SPAN:", string(node.Literal))
 		r.inlineAccumulator.WriteString(Red(string(node.Literal)))
 
-	case blackfriday.Table:
+	case *ast.Table:
 		if entering {
 			r.table = newTableRenderer()
 		} else {
@@ -330,46 +336,46 @@ func (r *renderer) RenderNode(w io.Writer, node *blackfriday.Node, entering bool
 			r.table = nil
 		}
 
-	case blackfriday.TableCell:
+	case *ast.TableCell:
 		if !entering {
 			content := r.inlineAccumulator.String()
 			r.inlineAccumulator.Reset()
 
-			if node.TableCellData.IsHeader {
-				r.table.AddHeaderCell(content, node.TableCellData.Align)
+			if node.IsHeader {
+				r.table.AddHeaderCell(content, node.Align)
 			} else {
 				r.table.AddBodyCell(content)
 			}
 		}
 
-	case blackfriday.TableHead:
+	case *ast.TableHeader:
 		// nothing to do
 
-	case blackfriday.TableBody:
+	case *ast.TableBody:
 		// nothing to do
 
-	case blackfriday.TableRow:
-		if entering && node.Parent.Type == blackfriday.TableBody {
+	case *ast.TableRow:
+		if _, ok := node.Parent.(*ast.TableBody); ok && entering {
 			r.table.NextBodyRow()
 		}
 
 	default:
-		panic("Unknown node type " + node.Type.String())
+		panic(fmt.Sprintf("Unknown node type %T", node))
 	}
 
-	return blackfriday.GoToNext
+	return ast.GoToNext
 }
 
-func (*renderer) RenderHeader(w io.Writer, ast *blackfriday.Node) {}
+func (*renderer) RenderHeader(w io.Writer, node ast.Node) {}
 
-func (*renderer) RenderFooter(w io.Writer, ast *blackfriday.Node) {}
+func (*renderer) RenderFooter(w io.Writer, node ast.Node) {}
 
-func (r *renderer) renderCodeBlock(w io.Writer, node *blackfriday.Node) {
+func (r *renderer) renderCodeBlock(w io.Writer, node *ast.CodeBlock) {
 	code := string(node.Literal)
 	var lexer chroma.Lexer
 	// try to get the lexer from the language tag if any
-	if len(node.CodeBlockData.Info) > 0 {
-		lexer = lexers.Get(string(node.CodeBlockData.Info))
+	if len(node.Info) > 0 {
+		lexer = lexers.Get(string(node.Info))
 	}
 	// fallback on detection
 	if lexer == nil {
@@ -441,18 +447,18 @@ func removeLineBreak(text string) string {
 	return strings.Join(lines, " ")
 }
 
-func shouldCleanText(node *blackfriday.Node) bool {
+func shouldCleanText(node ast.Node) bool {
 	for node != nil {
-		switch node.Type {
-		case blackfriday.BlockQuote:
+		switch node.(type) {
+		case *ast.BlockQuote:
 			return false
 
-		case blackfriday.Heading, blackfriday.Image, blackfriday.Link,
-			blackfriday.TableCell, blackfriday.Document, blackfriday.Item:
+		case *ast.Heading, *ast.Image, *ast.Link,
+			*ast.TableCell, *ast.Document, *ast.ListItem:
 			return true
 		}
 
-		node = node.Parent
+		node = node.GetParent()
 	}
 
 	panic("bad markdown document or missing case")
