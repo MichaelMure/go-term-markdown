@@ -1,30 +1,30 @@
-[32;1m    1 Markdown: Basics[0m
+    [32;1m1 Markdown: Basics[0m
     ────────────────────────────────────
 
-    [31m<ul id="ProjectSubmenu">
-        <li><a
+    [31m<ul id="ProjectSubmenu">[0m
+        [31m<li>[0m[31m<a
     href="/projects/markdown/"
     title="Markdown Project
-    Page">Main</a></li>
-        <li><a class="selected"
+    Page">[0mMain[31m</a>[0m[31m</li>[0m
+        [31m<li>[0m[31m<a class="selected"
     title="Markdown
-    Basics">Basics</a></li>
-        <li><a
+    Basics">[0mBasics[31m</a>[0m[31m</li>[0m
+        [31m<li>[0m[31m<a
     href="/projects/markdown/syntax"
     title="Markdown Syntax
-    Documentation">Syntax</a></li>
-        <li><a
+    Documentation">[0mSyntax[31m</a>[0m[31m</li>[0m
+        [31m<li>[0m[31m<a
     href="/projects/markdown/license"
     title="Pricing and License
-    Information">License</a></li>
-        <li><a
+    Information">[0mLicense[31m</a>[0m[31m</li>[0m
+        [31m<li>[0m[31m<a
     href="/projects/markdown/dingus"
     title="Online Markdown Web
-    Form">Dingus</a></li>
-    </ul>[0m
+    Form">[0mDingus[31m</a>[0m[31m</li>[0m
+    [31m</ul>[0m
 
-[32;1m    1.1 Getting the Gist of Markdown's
-Formatting Syntax[0m
+    [32;1m1.1 Getting the Gist of Markdown's
+    Formatting Syntax[0m
 
     This page offers a brief overview of
     what it's like to use Markdown. The
@@ -54,7 +54,7 @@ Formatting Syntax[0m
     to the URL]([34m/projects/markdown/basi
     cs.text[0m).
 
-[32;1m    1.2 Paragraphs, Headers, Blockquotes[0m
+    [32;1m1.2 Paragraphs, Headers, Blockquotes[0m
 
     A paragraph is simply one or more
     consecutive lines of text, separated
@@ -135,7 +135,7 @@ Formatting Syntax[0m
     [32;1m┃ [0mblockquote</h2>
     [32;1m┃ [0m</blockquote>
 
-[92m    1.2.1 Phrase Emphasis[0m
+    [92m1.2.1 Phrase Emphasis[0m
 
     Markdown uses asterisks and
     underscores to indicate spans of
@@ -165,7 +165,7 @@ Formatting Syntax[0m
     [32;1m┃ [0mOr, if you prefer, <strong>use two
     [32;1m┃ [0munderscores instead</strong>.</p>
 
-[32;1m    1.3 Lists[0m
+    [32;1m1.3 Lists[0m
 
     Unordered (bulleted) lists use
     asterisks, pluses, and hyphens ([44;3m*[0m,
@@ -236,7 +236,7 @@ Formatting Syntax[0m
     [32;1m┃ [0mlist.</p></li>
     [32;1m┃ [0m</ul>
 
-[92m    1.3.1 Links[0m
+    [92m1.3.1 Links[0m
 
     Markdown supports two styles for
     creating links: [3minline[23m and
@@ -318,7 +318,7 @@ Formatting Syntax[0m
     [32;1m┃ [0mhref="http://www.nytimes.com/">The
     [32;1m┃ [0mNew York Times</a>.</p>
 
-[92m    1.3.2 Images[0m
+    [92m1.3.2 Images[0m
 
     Image syntax is very much like link
     syntax.
@@ -340,7 +340,7 @@ Formatting Syntax[0m
     [32;1m┃ [0m<img src="/path/to/img.jpg"
     [32;1m┃ [0malt="alt text" title="Title" />
 
-[92m    1.3.3 Code[0m
+    [92m1.3.3 Code[0m
 
     In a regular paragraph, you can
     create code span by wrapping text in

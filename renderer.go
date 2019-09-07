@@ -16,6 +16,7 @@ import (
 	md "github.com/gomarkdown/markdown"
 	"github.com/gomarkdown/markdown/ast"
 	"github.com/kyokomi/emoji"
+	"golang.org/x/net/html"
 )
 
 /*
@@ -102,6 +103,7 @@ type renderer struct {
 	// the child nodes (Link, Text, Image, formatting ...). The result
 	// is then rendered appropriately when exiting the node.
 	inlineAccumulator strings.Builder
+	inlineAlign       text.Alignment
 
 	// record and render the heading numbering
 	headingNumbering headingNumbering
@@ -237,28 +239,11 @@ func (r *renderer) RenderNode(w io.Writer, node ast.Node, entering bool) ast.Wal
 
 	case *ast.Heading:
 		if !entering {
-			content := r.inlineAccumulator.String()
-			r.inlineAccumulator.Reset()
-
-			// render the full line with the headingNumbering
-			r.headingNumbering.Observe(node.Level)
-			rendered := fmt.Sprintf("%s%s %s", r.pad(), r.headingNumbering.Render(), content)
-
-			// wrap if needed
-			wrapped, _ := text.Wrap(rendered, r.lineWidth)
-			colored := headingShade(node.Level)(wrapped)
-			_, _ = fmt.Fprintln(w, colored)
-
-			// render the underline, if any
-			if node.Level == 1 {
-				_, _ = fmt.Fprintf(w, "%s%s\n", r.pad(), strings.Repeat("─", r.lineWidth-r.leftPad))
-			}
-
-			_, _ = fmt.Fprintln(w)
+			r.renderHeading(w, node.Level)
 		}
 
 	case *ast.HorizontalRule:
-		_, _ = fmt.Fprintf(w, "%s%s\n\n", r.pad(), strings.Repeat("─", r.lineWidth-r.leftPad))
+		r.renderHorizontalRule(w)
 
 	case *ast.Emph:
 		if entering {
@@ -307,15 +292,13 @@ func (r *renderer) RenderNode(w io.Writer, node ast.Node, entering bool) ast.Wal
 		r.inlineAccumulator.WriteString(emojed)
 
 	case *ast.HTMLBlock:
-		content := Red(string(node.Literal))
-		out, _ := text.WrapWithPad(content, r.lineWidth, r.pad())
-		_, _ = fmt.Fprint(w, out, "\n\n")
+		r.renderHTMLBlock(w, node)
 
 	case *ast.CodeBlock:
 		r.renderCodeBlock(w, node)
 
 	case *ast.Softbreak:
-		// not actually implemented in blackfriday/gomarkdown
+		// not actually implemented in gomarkdown
 		r.inlineAccumulator.WriteString("\n")
 
 	case *ast.Hardbreak:
@@ -369,6 +352,31 @@ func (r *renderer) RenderNode(w io.Writer, node ast.Node, entering bool) ast.Wal
 func (*renderer) RenderHeader(w io.Writer, node ast.Node) {}
 
 func (*renderer) RenderFooter(w io.Writer, node ast.Node) {}
+
+func (r *renderer) renderHorizontalRule(w io.Writer) {
+	_, _ = fmt.Fprintf(w, "%s%s\n\n", r.pad(), strings.Repeat("─", r.lineWidth-r.leftPad))
+}
+
+func (r *renderer) renderHeading(w io.Writer, level int) {
+	content := r.inlineAccumulator.String()
+	r.inlineAccumulator.Reset()
+
+	// render the full line with the headingNumbering
+	r.headingNumbering.Observe(level)
+	content = fmt.Sprintf("%s %s", r.headingNumbering.Render(), content)
+	content = headingShade(level)(content)
+
+	// wrap if needed
+	wrapped, _ := text.WrapWithPad(content, r.lineWidth, r.pad())
+	_, _ = fmt.Fprintln(w, wrapped)
+
+	// render the underline, if any
+	if level == 1 {
+		_, _ = fmt.Fprintf(w, "%s%s\n", r.pad(), strings.Repeat("─", r.lineWidth-r.leftPad))
+	}
+
+	_, _ = fmt.Fprintln(w)
+}
 
 func (r *renderer) renderCodeBlock(w io.Writer, node *ast.CodeBlock) {
 	code := string(node.Literal)
@@ -425,6 +433,119 @@ func (r *renderer) renderFormattedCodeBlock(w io.Writer, code string) {
 	_, _ = fmt.Fprint(w, output)
 
 	_, _ = fmt.Fprintf(w, "\n\n")
+}
+
+func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
+	z := html.NewTokenizer(bytes.NewReader(node.Literal))
+
+	for {
+		switch z.Next() {
+		case html.ErrorToken:
+			if z.Err() == io.EOF {
+				// normal end of the block
+				content := r.inlineAccumulator.String()
+				out, _ := text.WrapWithPad(content, r.lineWidth, r.pad())
+				_, _ = fmt.Fprint(w, out, "\n\n")
+			}
+			// if there is another error, it's silently dropped and the block
+			// is not rendered
+			r.inlineAccumulator.Reset()
+			return
+
+		case html.TextToken:
+			r.inlineAccumulator.Write(z.Text())
+
+		case html.StartTagToken: // <tag ...>
+			name, _ := z.TagName()
+			switch string(name) {
+
+			case "hr":
+				r.renderHorizontalRule(w)
+
+			case "div":
+				r.handleHTMLAttr(z)
+
+			case "h1", "h2", "h3", "h4", "h5", "h6":
+				// handled in closing tag
+
+			// ol + li
+			// dl + (dt+dd)
+			// ul + li
+
+			// a
+
+			// details
+			// summary
+
+			default:
+				r.inlineAccumulator.WriteString(Red(string(z.Raw())))
+			}
+		case html.EndTagToken: // </tag>
+			name, _ := z.TagName()
+			switch string(name) {
+
+			case "h1":
+				r.renderHeading(w, 1)
+			case "h2":
+				r.renderHeading(w, 2)
+			case "h3":
+				r.renderHeading(w, 3)
+			case "h4":
+				r.renderHeading(w, 4)
+			case "h5":
+				r.renderHeading(w, 5)
+			case "h6":
+				r.renderHeading(w, 6)
+
+			case "div":
+				content := r.inlineAccumulator.String()
+				r.inlineAccumulator.Reset()
+				content, _ = text.WrapWithPadAlign(content, r.lineWidth, r.pad(), r.inlineAlign)
+				_, _ = fmt.Fprint(w, content)
+				r.inlineAlign = text.NoAlign
+
+			case "hr":
+				// handled in opening tag
+
+			default:
+				r.inlineAccumulator.WriteString(Red(string(z.Raw())))
+			}
+
+		case html.SelfClosingTagToken: // <tag ... />
+			name, _ := z.TagName()
+			switch string(name) {
+			case "hr":
+				r.renderHorizontalRule(w)
+			}
+
+		case html.CommentToken, html.DoctypeToken:
+			// Not rendered
+
+		default:
+			panic("unhandled case")
+		}
+	}
+}
+
+func (r *renderer) handleHTMLAttr(z *html.Tokenizer) {
+	for {
+		key, value, more := z.TagAttr()
+		switch string(key) {
+		case "align":
+			switch string(value) {
+			case "left":
+				r.inlineAlign = text.AlignLeft
+			case "center":
+				r.inlineAlign = text.AlignCenter
+			case "right":
+				r.inlineAlign = text.AlignRight
+			}
+		}
+
+		if !more {
+			break
+		}
+	}
 }
 
 func removeLineBreak(text string) string {

@@ -1,4 +1,4 @@
-[32;1m    0.1 Unordered[0m
+    [32;1m0.1 Unordered[0m
 
     Asterisks tight:
     [32m• [0masterisk 1
@@ -34,7 +34,7 @@
     [32m• [0mMinus 2
     [32m• [0mMinus 3
 
-[32;1m    0.2 Ordered[0m
+    [32;1m0.2 Ordered[0m
 
     Tight:
     [32m1. [0mFirst
@@ -65,7 +65,7 @@
     [32m2. [0mItem 2.
     [32m3. [0mItem 3.
 
-[32;1m    0.3 Nested[0m
+    [32;1m0.3 Nested[0m
 
     [32m• [0mTab
       [32m• [0mTab

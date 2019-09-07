@@ -10,3 +10,7 @@
     [32;1m┃ [0m[32;1m┃ [0m    return "working";
     [32;1m┃ [0m[32;1m┃ [0m}
 
+    [32;1m┃ [0mBlockquote
+    [32;1m┃ [0m      with
+    [32;1m┃ [0msome
+    [32;1m┃ [0m        spaces

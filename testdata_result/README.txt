@@ -4,12 +4,12 @@
     c/logo/logo-alpha-flat-bg.svg">[0m [31m</p>
     [0m [31m<h1 align="center">[0mgit-bug[31m</h1>[0m
 
-    [31m<div align="center">
+
 
     [![Build Status](https://travis-ci.o
     rg/MichaelMure/git-bug.svg?branch=ma
     ster)](https://travis-ci.org/Michael
-    Mure/git-bug)
+               Mure/git-bug)
     [![Backers on Open Collective](https
     ://opencollective.com/git-bug/backer
     s/badge.svg)](#backers) [![Sponsors
@@ -18,21 +18,21 @@
     g)](#sponsors) [![License: GPL v3](h
     ttps://img.shields.io/badge/License-
     GPLv3+-blue.svg)](http://www.gnu.org
-    /licenses/gpl-3.0)
+             /licenses/gpl-3.0)
     [![GoDoc](https://godoc.org/github.c
     om/MichaelMure/git-bug?status.svg)](
     https://godoc.org/github.com/Michael
-    Mure/git-bug)
+               Mure/git-bug)
     [![Go Report Card](https://goreportc
     ard.com/badge/github.com/MichaelMure
     /git-bug)](https://goreportcard.com/
     report/github.com/MichaelMure/git-bu
-    g)
+                     g)
     [![Gitter chat](https://badges.gitte
     r.im/gitterHQ/gitter.png)](https://g
-    itter.im/the-git-bug/Lobby)
+        itter.im/the-git-bug/Lobby)
 
-    </div>[0m
+
 
       [1mbridge with other bug trackers[21m:
       [bridges]([34m#bridges[0m) exist to
@@ -45,7 +45,7 @@
     Expect dragons and unfinished
     business. 🚧
 
-[32;1m    0.1 Install[0m
+    [32;1m0.1 Install[0m
 
     [31m<details>[0m[31m<summary>[0mgo get[31m</summary>[0m
 
@@ -83,7 +83,7 @@
 
     [31m</details>[0m
 
-[32;1m    0.2 CLI usage[0m
+    [32;1m0.2 CLI usage[0m
 
     Create a new identity:
 
@@ -122,7 +122,7 @@
     [command's
     documentation]([34mdoc/md/git-bug.md[0m).
 
-[32;1m    0.3 Interactive terminal UI[0m
+    [32;1m0.3 Interactive terminal UI[0m
 
     An interactive terminal UI is
     available using the command [44;3mgit bug
@@ -130,7 +130,7 @@
 
     Termui recording
 
-[32;1m    0.4 Web UI (status: WIP)[0m
+    [32;1m0.4 Web UI (status: WIP)[0m
 
     You can launch a rich Web UI with
     [44;3mgit bug webui[0m.
@@ -147,9 +147,9 @@
     through a GraphQL API. The schema is
     available [here]([34mgraphql/[0m).
 
-[32;1m    0.5 Bridges[0m
+    [32;1m0.5 Bridges[0m
 
-[92m    0.5.1 Importer implementations[0m
+    [92m0.5.1 Importer implementations[0m
 
     ┌─────────────────┬──────┬─────────┐
     │[0m                 │Github[0m│Launchpad[0m│
@@ -181,11 +181,11 @@
     │[1mautomated test[0m   │❌[0m    │   ❌[0m    │
     │[1msuite[21m[0m            │      │         │
     └─────────────────┴──────┴─────────┘
-[92m    0.5.2 Exporter implementations[0m
+    [92m0.5.2 Exporter implementations[0m
 
     Todo !
 
-[32;1m    0.6 Internals[0m
+    [32;1m0.6 Internals[0m
 
     Interested by how it works ? Have a
     look at the [data
@@ -193,7 +193,7 @@
     [internal
     bird-view]([34mdoc/architecture.md[0m).
 
-[32;1m    0.7 Misc[0m
+    [32;1m0.7 Misc[0m
 
     [32m• [0m[Bash
       completion]([34mmisc/bash_completion[0m)
@@ -201,7 +201,7 @@
       completion]([34mmisc/zsh_completion[0m)
     [32m• [0m[ManPages]([34mdoc/man[0m)
 
-[32;1m    0.8 Planned features[0m
+    [32;1m0.8 Planned features[0m
 
     [32m• [0mmedia embedding
     [32m• [0mexporter to github issue
@@ -209,7 +209,7 @@
       arbitrary bug tracker
     [32m• [0minflatable raptor
 
-[32;1m    0.9 Contribute[0m
+    [32;1m0.9 Contribute[0m
 
     PRs accepted. Drop by the [Gitter lo
     bby]([34mhttps://gitter.im/the-git-bug/L
@@ -241,7 +241,7 @@
     at [the dedicated
     Readme.]([34mwebui/Readme.md[0m)
 
-[32;1m    0.10 Contributors ❤[0m
+    [32;1m0.10 Contributors ❤ [0m
 
     This project exists thanks to all
     the people who contribute. [31m<a href="
@@ -251,7 +251,7 @@
     tributors.svg?width=890&button=false
     " />[0m[31m</a>[0m
 
-[32;1m    0.11 Backers[0m
+    [32;1m0.11 Backers[0m
 
     Thank you to all our backers! 🙏
     [[Become a backer]([34mhttps://opencolle
@@ -263,7 +263,7 @@
     encollective.com/git-bug/tiers/backe
     r.svg?width=890">[0m[31m</a>[0m
 
-[32;1m    0.12 Sponsors[0m
+    [32;1m0.12 Sponsors[0m
 
     Support this project by becoming a
     sponsor. Your logo will show up here
@@ -317,7 +317,7 @@
     c="https://opencollective.com/git-bu
     g/tiers/sponsor/9/avatar.svg">[0m[31m</a>[0m
 
-[32;1m    0.13 License[0m
+    [32;1m0.13 License[0m
 
     Unless otherwise stated, this
     project is released under the

@@ -1,14 +1,11 @@
     Paragraph one.
 
-    [31m<!-- This is a simple comment -->[0m
 
-    [31m<!--
-        This is another comment.
-    -->[0m
+
+
 
     Paragraph two.
 
-    [31m<!-- one comment block -- -- with
-    two comments -->[0m
+
 
     The end.
