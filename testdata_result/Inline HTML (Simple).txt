@@ -1,8 +1,6 @@
     Here's a simple block:
 
-
-        foo
-
+    foo
 
     This should be a code block, though:
 
@@ -16,13 +14,11 @@
 
     Now, nested:
 
+    foo
 
+    [32;1m┃ [0m</div>
 
-
-                foo
-
-
-
+    [31m</div>[0m
 
     This should just be an HTML comment:
 

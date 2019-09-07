@@ -463,6 +463,8 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 				r.renderHorizontalRule(w)
 
 			case "div":
+				// align left by default
+				r.inlineAlign = text.AlignLeft
 				r.handleHTMLAttr(z)
 
 			case "h1", "h2", "h3", "h4", "h5", "h6":
@@ -473,6 +475,7 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 			// ul + li
 
 			// a
+			// p
 
 			// details
 			// summary
@@ -500,6 +503,8 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 			case "div":
 				content := r.inlineAccumulator.String()
 				r.inlineAccumulator.Reset()
+				// remove all line breaks, those are fully managed in HTML
+				content = strings.Replace(content, "\n", "", -1)
 				content, _ = text.WrapWithPadAlign(content, r.lineWidth, r.pad(), r.inlineAlign)
 				_, _ = fmt.Fprint(w, content)
 				r.inlineAlign = text.NoAlign

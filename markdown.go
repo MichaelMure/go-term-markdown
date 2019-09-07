@@ -13,10 +13,10 @@ import (
 
 func Render(source string, lineWidth int, leftPad int) []byte {
 	extensions := parser.CommonExtensions
+	extensions |= parser.LaxHTMLBlocks // more in HTMLBlock, less in HTMLSpan
+
 	p := parser.NewWithExtensions(extensions)
-
 	nodes := md.Parse([]byte(source), p)
-
 	renderer := newRenderer(lineWidth, leftPad)
 
 	// astRenderer, err := newAstRenderer()

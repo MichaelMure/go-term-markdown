@@ -1,4 +1,7 @@
+github.com/MichaelMure/go-term-text v0.0.0-20190724191251-f885927b7d24 h1:nPsYyPPzbkHPnMRkDPJZbpjEes5iKXr01fRC6kgrG2E=
 github.com/MichaelMure/go-term-text v0.0.0-20190724191251-f885927b7d24/go.mod h1:vgMpuXPXAhBYN8buVKg8XrLVQ5xp6JYRRZs8bnmPa0I=
+github.com/MichaelMure/go-term-text v0.0.0-20190910175328-eef4ba51d2ef h1:mntcECIROSEWYhQbM/uREAPMd53y3g/EJ0VirjngYsc=
+github.com/MichaelMure/go-term-text v0.0.0-20190910175328-eef4ba51d2ef/go.mod h1:vgMpuXPXAhBYN8buVKg8XrLVQ5xp6JYRRZs8bnmPa0I=
 github.com/MichaelMure/go-term-text v0.1.1-0.20190717181658-6dbdb6381e67 h1:D2bjmiVeCepObQbfN/lR+TFEiJ2lTZOIjOA1C9yQ8sA=
 github.com/MichaelMure/go-term-text v0.1.1-0.20190717181658-6dbdb6381e67/go.mod h1:1N3lVD/geeO4yB1wknjjR0UCeGezWWRXEBKyIwcKkZY=
 github.com/alecthomas/assert v0.0.0-20170929043011-405dbfeb8e38 h1:smF2tmSOzy2Mm+0dGI2AIUHY+w0BUc+4tn40djz7+6U=

@@ -4,13 +4,10 @@
 
     And nested without indentation:
 
-
-
-
     foo
 
 
 
     bar
 
-
+    [31m</div>[0m
