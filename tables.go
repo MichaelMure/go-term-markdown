@@ -250,17 +250,17 @@ func drawRow(w io.Writer, pad string, cells []tableCell, columnWidths []int, tru
 			content := ""
 			if len(contents[j]) > i {
 				content = contents[j][i]
-				trimmed, _, _ := text.TrimSpace(content)
+				trimmed := text.TrimSpace(content)
 
 				switch cells[j].alignment {
 				case ast.TableAlignmentLeft, 0:
 					_, _ = w.Write([]byte(formatting[j].String()))
 					_, _ = w.Write([]byte(trimmed))
 					_, _ = w.Write([]byte(resetAll))
-					_, _ = w.Write([]byte(strings.Repeat(" ", width-text.WordLen(trimmed))))
+					_, _ = w.Write([]byte(strings.Repeat(" ", width-text.Len(trimmed))))
 
 				case ast.TableAlignmentCenter:
-					spaces := width - text.WordLen(trimmed)
+					spaces := width - text.Len(trimmed)
 					_, _ = w.Write([]byte(strings.Repeat(" ", spaces/2)))
 					_, _ = w.Write([]byte(formatting[j].String()))
 					_, _ = w.Write([]byte(trimmed))
@@ -268,7 +268,7 @@ func drawRow(w io.Writer, pad string, cells []tableCell, columnWidths []int, tru
 					_, _ = w.Write([]byte(strings.Repeat(" ", spaces-(spaces/2))))
 
 				case ast.TableAlignmentRight:
-					_, _ = w.Write([]byte(strings.Repeat(" ", width-text.WordLen(trimmed))))
+					_, _ = w.Write([]byte(strings.Repeat(" ", width-text.Len(trimmed))))
 					_, _ = w.Write([]byte(formatting[j].String()))
 					_, _ = w.Write([]byte(trimmed))
 					_, _ = w.Write([]byte(resetAll))
@@ -278,7 +278,7 @@ func drawRow(w io.Writer, pad string, cells []tableCell, columnWidths []int, tru
 				_, seqs := text.ExtractTermEscapes(content)
 				accFormatting(j, seqs)
 			} else {
-				padding := strings.Repeat(" ", width-text.WordLen(content))
+				padding := strings.Repeat(" ", width-text.Len(content))
 				_, _ = w.Write([]byte(padding))
 			}
 			_, _ = w.Write([]byte("│"))

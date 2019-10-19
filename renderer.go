@@ -176,7 +176,7 @@ func (r *renderer) RenderNode(w io.Writer, node ast.Node, entering bool) ast.Wal
 				}
 				prefix := fmt.Sprintf("%d. ", itemNumber)
 				r.indent = r.pad() + Green(prefix)
-				r.addPad(strings.Repeat(" ", text.WordLen(prefix)))
+				r.addPad(strings.Repeat(" ", text.Len(prefix)))
 
 			// header of a definition
 			case node.ListFlags&ast.ListTypeTerm != 0:

@@ -4,6 +4,8 @@ github.com/MichaelMure/go-term-text v0.0.0-20190910175328-eef4ba51d2ef h1:mntcEC
 github.com/MichaelMure/go-term-text v0.0.0-20190910175328-eef4ba51d2ef/go.mod h1:vgMpuXPXAhBYN8buVKg8XrLVQ5xp6JYRRZs8bnmPa0I=
 github.com/MichaelMure/go-term-text v0.1.1-0.20190717181658-6dbdb6381e67 h1:D2bjmiVeCepObQbfN/lR+TFEiJ2lTZOIjOA1C9yQ8sA=
 github.com/MichaelMure/go-term-text v0.1.1-0.20190717181658-6dbdb6381e67/go.mod h1:1N3lVD/geeO4yB1wknjjR0UCeGezWWRXEBKyIwcKkZY=
+github.com/MichaelMure/go-term-text v0.2.0 h1:20Cu+v5loWqKT6isCcx9i7xPD4duB84IUo2s/gowCBU=
+github.com/MichaelMure/go-term-text v0.2.0/go.mod h1:vgMpuXPXAhBYN8buVKg8XrLVQ5xp6JYRRZs8bnmPa0I=
 github.com/alecthomas/assert v0.0.0-20170929043011-405dbfeb8e38 h1:smF2tmSOzy2Mm+0dGI2AIUHY+w0BUc+4tn40djz7+6U=
 github.com/alecthomas/assert v0.0.0-20170929043011-405dbfeb8e38/go.mod h1:r7bzyVFMNntcxPZXK3/+KdruV1H5KSlyVY0gc+NgInI=
 github.com/alecthomas/chroma v0.6.4 h1:Gn37/7W4a1qkmKLzfUpDy2rt3jt4X8CWycb4Gm7L360=
