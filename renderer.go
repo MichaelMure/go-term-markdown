@@ -438,18 +438,26 @@ func (r *renderer) renderFormattedCodeBlock(w io.Writer, code string) {
 func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 	z := html.NewTokenizer(bytes.NewReader(node.Literal))
 
+	var buf bytes.Buffer
+
 	for {
 		switch z.Next() {
 		case html.ErrorToken:
 			if z.Err() == io.EOF {
 				// normal end of the block
 				content := r.inlineAccumulator.String()
+				r.inlineAccumulator.Reset()
 				out, _ := text.WrapWithPad(content, r.lineWidth, r.pad())
+				_, _ = fmt.Fprint(w, buf.String())
 				_, _ = fmt.Fprint(w, out, "\n\n")
+				return
 			}
-			// if there is another error, it's silently dropped and the block
-			// is not rendered
+			// if there is another error, fallback to a simple render
 			r.inlineAccumulator.Reset()
+
+			content := Red(string(node.Literal))
+			out, _ := text.WrapWithPad(content, r.lineWidth, r.pad())
+			_, _ = fmt.Fprint(w, out, "\n\n")
 			return
 
 		case html.TextToken:
@@ -460,7 +468,7 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 			switch string(name) {
 
 			case "hr":
-				r.renderHorizontalRule(w)
+				r.renderHorizontalRule(&buf)
 
 			case "div":
 				// align left by default
@@ -488,17 +496,17 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 			switch string(name) {
 
 			case "h1":
-				r.renderHeading(w, 1)
+				r.renderHeading(&buf, 1)
 			case "h2":
-				r.renderHeading(w, 2)
+				r.renderHeading(&buf, 2)
 			case "h3":
-				r.renderHeading(w, 3)
+				r.renderHeading(&buf, 3)
 			case "h4":
-				r.renderHeading(w, 4)
+				r.renderHeading(&buf, 4)
 			case "h5":
-				r.renderHeading(w, 5)
+				r.renderHeading(&buf, 5)
 			case "h6":
-				r.renderHeading(w, 6)
+				r.renderHeading(&buf, 6)
 
 			case "div":
 				content := r.inlineAccumulator.String()
@@ -506,7 +514,7 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 				// remove all line breaks, those are fully managed in HTML
 				content = strings.Replace(content, "\n", "", -1)
 				content, _ = text.WrapWithPadAlign(content, r.lineWidth, r.pad(), r.inlineAlign)
-				_, _ = fmt.Fprint(w, content)
+				_, _ = fmt.Fprint(&buf, content)
 				r.inlineAlign = text.NoAlign
 
 			case "hr":
@@ -520,7 +528,7 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 			name, _ := z.TagName()
 			switch string(name) {
 			case "hr":
-				r.renderHorizontalRule(w)
+				r.renderHorizontalRule(&buf)
 			}
 
 		case html.CommentToken, html.DoctypeToken:

@@ -3,7 +3,7 @@ module github.com/MichaelMure/go-term-markdown
 go 1.11
 
 require (
-	github.com/MichaelMure/go-term-text v0.2.0
+	github.com/MichaelMure/go-term-text v0.2.1
 	github.com/alecthomas/chroma v0.6.4
 	github.com/fatih/color v1.7.0
 	github.com/gomarkdown/markdown v0.0.0-20190817180551-b0273bd33515
