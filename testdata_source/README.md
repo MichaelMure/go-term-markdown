@@ -100,14 +100,14 @@ You can now use commands like `show`, `comment`, `open` or `close` to display an
 
 An interactive terminal UI is available using the command `git bug termui` to browse and edit bugs.
 
-![Termui recording](misc/termui_recording.gif)
+![Termui recording](testdata_media/termui_recording.gif)
 
 ## Web UI (status: WIP)
 
 You can launch a rich Web UI with `git bug webui`.
 
-![Web UI screenshot 1](misc/webui1.png)
-![Web UI screenshot 2](misc/webui2.png)
+![Web UI screenshot 1](testdata_media/webui1.png)
+![Web UI screenshot 2](testdata_media/webui2.png)
 
 This web UI is entirely packed inside the same go binary and serve static content through a localhost http server.
 
@@ -141,8 +141,8 @@ Interested by how it works ? Have a look at the [data model](doc/model.md) and t
 
 ## Misc
 
-- [Bash completion](misc/bash_completion)
-- [Zsh completion](misc/zsh_completion)
+- [Bash completion](../misc/bash_completion)
+- [Zsh completion](../misc/zsh_completion)
 - [ManPages](doc/man)
 
 ## Planned features
@@ -207,4 +207,4 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 
 Unless otherwise stated, this project is released under the [GPLv3](LICENSE) or later license © Michael Muré.
 
-The git-bug logo by [Viktor Teplov](https://github.com/vandesign) is released under the [Creative Commons Attribution 4.0 International (CC BY 4.0)](misc/logo/LICENSE) license © Viktor Teplov.
+The git-bug logo by [Viktor Teplov](https://github.com/vandesign) is released under the [Creative Commons Attribution 4.0 International (CC BY 4.0)](../misc/logo/LICENSE) license © Viktor Teplov.

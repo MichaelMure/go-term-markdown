@@ -50,7 +50,7 @@ func TestRender(t *testing.T) {
 func Test__DoRender(t *testing.T) {
 	// This is not a real test, it's here to create the output testdata.
 	// uncomment to generate a new test case
-	// t.SkipNow()
+	t.SkipNow()
 
 	color.NoColor = false
 

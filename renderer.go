@@ -3,7 +3,11 @@ package markdown
 import (
 	"bytes"
 	"fmt"
+	stdcolor "image/color"
 	"io"
+	"math"
+	"net/http"
+	"os"
 	"strings"
 	"unicode"
 
@@ -12,6 +16,7 @@ import (
 	"github.com/alecthomas/chroma/formatters"
 	"github.com/alecthomas/chroma/lexers"
 	"github.com/alecthomas/chroma/styles"
+	"github.com/eliukblau/pixterm/ansimage"
 	"github.com/fatih/color"
 	md "github.com/gomarkdown/markdown"
 	"github.com/gomarkdown/markdown/ast"
@@ -135,7 +140,7 @@ func (r *renderer) popPad() {
 
 func (r *renderer) RenderNode(w io.Writer, node ast.Node, entering bool) ast.WalkStatus {
 	// TODO: remove
-	// fmt.Println(node.Type, string(node.Literal), entering)
+	// fmt.Printf("%T, %v\n", node, entering)
 
 	switch node := node.(type) {
 	case *ast.Document:
@@ -281,8 +286,52 @@ func (r *renderer) RenderNode(w io.Writer, node ast.Node, entering bool) ast.Wal
 		}
 
 	case *ast.Image:
+		if entering {
+			var title string
+
+			// the alt text/title is weirdly parsed and is actually
+			// a child text of this node
+			if len(node.Children) == 1 {
+				if t, ok := node.Children[0].(*ast.Text); ok {
+					title = string(t.Literal)
+				}
+			}
+
+			info := fmt.Sprintf("![%s](%s)",
+				Green(string(node.Destination)), Blue(title))
+
+			switch node.GetParent().(type) {
+			case *ast.Paragraph:
+				rendered, err := r.renderImage(
+					string(node.Destination), title,
+					r.lineWidth-r.leftPad,
+				)
+				if err != nil {
+					r.inlineAccumulator.WriteString(Red(fmt.Sprintf("|%s|", err)))
+					r.inlineAccumulator.WriteString("\n")
+					r.inlineAccumulator.WriteString(info)
+					if ast.GetNextNode(node) == nil {
+						r.inlineAccumulator.WriteString("\n")
+					}
+					return ast.SkipChildren
+				}
+
+				r.inlineAccumulator.WriteString(rendered)
+				r.inlineAccumulator.WriteString(info)
+				if ast.GetNextNode(node) == nil {
+					r.inlineAccumulator.WriteString("\n")
+				}
+
+			default:
+				r.inlineAccumulator.WriteString(info)
+			}
+			return ast.SkipChildren
+		}
 
 	case *ast.Text:
+		if string(node.Literal) == "\n" {
+			break
+		}
 		content := string(node.Literal)
 		if shouldCleanText(node) {
 			content = removeLineBreak(content)
@@ -308,7 +357,6 @@ func (r *renderer) RenderNode(w io.Writer, node ast.Node, entering bool) ast.Wal
 		r.inlineAccumulator.WriteString(BlueBgItalic(string(node.Literal)))
 
 	case *ast.HTMLSpan:
-		fmt.Println("SPAN:", string(node.Literal))
 		r.inlineAccumulator.WriteString(Red(string(node.Literal)))
 
 	case *ast.Table:
@@ -486,11 +534,22 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 				flushInline()
 				// align left by default
 				r.inlineAlign = text.AlignLeft
-				r.handleHTMLAttr(z)
+				r.handleDivHTMLAttr(z)
 
 			case "h1", "h2", "h3", "h4", "h5", "h6":
 				// handled in closing tag
 				flushInline()
+
+			case "img":
+				flushInline()
+				src, title := getImgHTMLAttr(z)
+				rendered, err := r.renderImage(src, title, r.lineWidth-r.leftPad)
+				if err != nil {
+					r.inlineAccumulator.WriteString(Red(string(z.Raw())))
+					continue
+				}
+				padded := text.LeftPadLines(rendered, r.leftPad)
+				_, _ = fmt.Fprintln(&buf, padded)
 
 			// ol + li
 			// dl + (dt+dd)
@@ -534,7 +593,7 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 				_, _ = fmt.Fprint(&buf, content, "\n\n")
 				r.inlineAlign = text.NoAlign
 
-			case "hr":
+			case "hr", "img":
 				// handled in opening tag
 
 			default:
@@ -547,6 +606,9 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 			case "hr":
 				flushInline()
 				r.renderHorizontalRule(&buf)
+
+			default:
+				r.inlineAccumulator.WriteString(Red(string(z.Raw())))
 			}
 
 		case html.CommentToken, html.DoctypeToken:
@@ -558,7 +620,7 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 	}
 }
 
-func (r *renderer) handleHTMLAttr(z *html.Tokenizer) {
+func (r *renderer) handleDivHTMLAttr(z *html.Tokenizer) {
 	for {
 		key, value, more := z.TagAttr()
 		switch string(key) {
@@ -577,6 +639,55 @@ func (r *renderer) handleHTMLAttr(z *html.Tokenizer) {
 			break
 		}
 	}
+}
+
+func getImgHTMLAttr(z *html.Tokenizer) (src, title string) {
+	for {
+		key, value, more := z.TagAttr()
+		switch string(key) {
+		case "src":
+			src = string(value)
+		case "alt":
+			title = string(value)
+		}
+
+		if !more {
+			break
+		}
+	}
+	return
+}
+
+func (r *renderer) renderImage(dest string, title string, lineWidth int) (string, error) {
+	reader, err := imageFromDestination(dest)
+	if err != nil {
+		return "", fmt.Errorf("failed to open: %v", err)
+	}
+
+	img, err := ansimage.NewScaledFromReader(reader, math.MaxInt32, r.lineWidth-r.leftPad,
+		stdcolor.Black, ansimage.ScaleModeFit, ansimage.NoDithering)
+
+	if err != nil {
+		return "", fmt.Errorf("failed to open: %v", err)
+	}
+
+	return img.Render(), nil
+}
+
+func imageFromDestination(dest string) (io.ReadCloser, error) {
+	if strings.HasPrefix(dest, "http://") || strings.HasPrefix(dest, "https://") {
+		res, err := http.Get(dest)
+		if err != nil {
+			return nil, err
+		}
+		if res.StatusCode != http.StatusOK {
+			return nil, fmt.Errorf("http: %v", http.StatusText(res.StatusCode))
+		}
+
+		return res.Body, nil
+	}
+
+	return os.Open(dest)
 }
 
 func removeLineBreak(text string) string {
