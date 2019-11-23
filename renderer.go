@@ -97,6 +97,10 @@ type renderer struct {
 	lineWidth int
 	// constant left padding to apply
 	leftPad int
+	// Dithering mode for ansimage
+	// Default is fine directly through a terminal
+	// DitheringWithBlocks is recommended if a terminal UI library is used
+	imageDithering ansimage.DitheringMode
 
 	// all the custom left paddings, without the fixed space from leftPad
 	padAccumulator []string
@@ -118,12 +122,16 @@ type renderer struct {
 	table *tableRenderer
 }
 
-func newRenderer(lineWidth int, leftPad int) *renderer {
-	return &renderer{
+func newRenderer(lineWidth int, leftPad int, opts ...Options) *renderer {
+	r := &renderer{
 		lineWidth:      lineWidth,
 		leftPad:        leftPad,
 		padAccumulator: make([]string, 0, 10),
 	}
+	for _, opt := range opts {
+		opt(r)
+	}
+	return r
 }
 
 func (r *renderer) pad() string {
@@ -664,8 +672,15 @@ func (r *renderer) renderImage(dest string, title string, lineWidth int) (string
 		return "", fmt.Errorf("failed to open: %v", err)
 	}
 
-	img, err := ansimage.NewScaledFromReader(reader, math.MaxInt32, r.lineWidth-r.leftPad,
-		stdcolor.Black, ansimage.ScaleModeFit, ansimage.NoDithering)
+	x := r.lineWidth - r.leftPad
+
+	if r.imageDithering == ansimage.DitheringWithChars || r.imageDithering == ansimage.DitheringWithBlocks {
+		// not sure why this is needed by ansimage
+		x *= 4
+	}
+
+	img, err := ansimage.NewScaledFromReader(reader, math.MaxInt32, x,
+		stdcolor.Black, ansimage.ScaleModeFit, r.imageDithering)
 
 	if err != nil {
 		return "", fmt.Errorf("failed to open: %v", err)
