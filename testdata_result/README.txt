@@ -1,7 +1,9 @@
-    [31m<p align="center">[0m[31m<img width="150px"
-    src="https://cdn.rawgit.com/MichaelM
-    ure/git-bug/master/misc/logo/logo-al
-    pha-flat-bg.svg">[0m[31m</p>[0m
+    [31m<p align="center">[0m
+
+    [31m<img width="150px" src="https://cdn.
+    rawgit.com/MichaelMure/git-bug/maste
+    r/misc/logo/logo-alpha-flat-bg.svg">
+    [0m[31m</p>[0m
 
     [32;1m1 git-bug[0m
     ────────────────────────────────────
