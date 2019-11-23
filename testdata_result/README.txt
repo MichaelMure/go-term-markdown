@@ -1,14 +1,10 @@
-    [31m<p align="center">[0m
-        [31m<img width="150px" src="https://
-    cdn.rawgit.com/MichaelMure/git-bug/m
-    aster/misc/logo/logo-alpha-flat-bg.s
-    vg">[0m
-    [31m</p>[0m
+    [31m<p align="center">[0m[31m<img width="150px"
+    src="https://cdn.rawgit.com/MichaelM
+    ure/git-bug/master/misc/logo/logo-al
+    pha-flat-bg.svg">[0m[31m</p>[0m
 
     [32;1m1 git-bug[0m
     ────────────────────────────────────
-
-
 
     [![Build Status](https://travis-ci.o
     rg/MichaelMure/git-bug.svg?branch=ma
@@ -34,11 +30,32 @@
     er.png)](https://gitter.im/the-git-b
                  ug/Lobby)
 
-      [1mbridge with other bug trackers[21m:
+    [44;3mgit-bug[0m is a bug tracker that:
+    [32m• [0m[1mfully embed in git[21m: you only need
+      your git repository to have a bug
+      tracker
+    [32m• [0m[1mis distributed[21m: use your normal
+      git remote to collaborate, push
+      and pull your bugs !
+    [32m• [0m[1mworks offline[21m: in a plane or under
+      the sea ? keep reading and writing
+      bugs
+    [32m• [0m[1mprevent vendor locking[21m: your usual
+      service is down or went bad ? you
+      already have a full backup
+    [32m• [0m[1mis fast[21m: listing bugs or opening
+      them is a matter of milliseconds
+    [32m• [0m[1mdoesn't pollute your project[21m: no
+      files are added in your project
+    [32m• [0m[1mintegrate with your tooling[21m: use
+      the UI you like (CLI, terminal,
+      web) or integrate with your
+      existing tools through the CLI or
+      the GraphQL API
+    [32m• [0m[1mbridge with other bug trackers[21m:
       [bridges]([34m#bridges[0m) exist to
       import and soon export to other
       trackers.
-
 
     🚧  This is now more than a proof of
     concept, but still not fully stable.

@@ -440,16 +440,23 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 
 	var buf bytes.Buffer
 
+	flushInline := func() {
+		if r.inlineAccumulator.Len() <= 0 {
+			return
+		}
+		content := r.inlineAccumulator.String()
+		r.inlineAccumulator.Reset()
+		out, _ := text.WrapWithPad(content, r.lineWidth, r.pad())
+		_, _ = fmt.Fprint(&buf, out, "\n\n")
+	}
+
 	for {
 		switch z.Next() {
 		case html.ErrorToken:
 			if z.Err() == io.EOF {
 				// normal end of the block
-				content := r.inlineAccumulator.String()
-				r.inlineAccumulator.Reset()
-				out, _ := text.WrapWithPad(content, r.lineWidth, r.pad())
+				flushInline()
 				_, _ = fmt.Fprint(w, buf.String())
-				_, _ = fmt.Fprint(w, out, "\n\n")
 				return
 			}
 			// if there is another error, fallback to a simple render
@@ -461,22 +468,29 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 			return
 
 		case html.TextToken:
-			r.inlineAccumulator.Write(z.Text())
+			t := z.Text()
+			if strings.TrimSpace(string(t)) == "" {
+				continue
+			}
+			r.inlineAccumulator.Write(t)
 
 		case html.StartTagToken: // <tag ...>
 			name, _ := z.TagName()
 			switch string(name) {
 
 			case "hr":
+				flushInline()
 				r.renderHorizontalRule(&buf)
 
 			case "div":
+				flushInline()
 				// align left by default
 				r.inlineAlign = text.AlignLeft
 				r.handleHTMLAttr(z)
 
 			case "h1", "h2", "h3", "h4", "h5", "h6":
 				// handled in closing tag
+				flushInline()
 
 			// ol + li
 			// dl + (dt+dd)
@@ -511,10 +525,13 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 			case "div":
 				content := r.inlineAccumulator.String()
 				r.inlineAccumulator.Reset()
+				if len(content) == 0 {
+					continue
+				}
 				// remove all line breaks, those are fully managed in HTML
 				content = strings.Replace(content, "\n", "", -1)
 				content, _ = text.WrapWithPadAlign(content, r.lineWidth, r.pad(), r.inlineAlign)
-				_, _ = fmt.Fprint(&buf, content)
+				_, _ = fmt.Fprint(&buf, content, "\n\n")
 				r.inlineAlign = text.NoAlign
 
 			case "hr":
@@ -528,6 +545,7 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 			name, _ := z.TagName()
 			switch string(name) {
 			case "hr":
+				flushInline()
 				r.renderHorizontalRule(&buf)
 			}
 

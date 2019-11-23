@@ -1,27 +1,22 @@
     [32;1m1 Markdown: Syntax[0m
     ────────────────────────────────────
 
-    [31m<ul id="ProjectSubmenu">[0m
-        [31m<li>[0m[31m<a
+    [31m<ul id="ProjectSubmenu">[0m[31m<li>[0m[31m<a
     href="/projects/markdown/"
     title="Markdown Project
-    Page">[0mMain[31m</a>[0m[31m</li>[0m
-        [31m<li>[0m[31m<a
+    Page">[0mMain[31m</a>[0m[31m</li>[0m[31m<li>[0m[31m<a
     href="/projects/markdown/basics"
     title="Markdown
-    Basics">[0mBasics[31m</a>[0m[31m</li>[0m
-        [31m<li>[0m[31m<a class="selected"
-    title="Markdown Syntax
-    Documentation">[0mSyntax[31m</a>[0m[31m</li>[0m
-        [31m<li>[0m[31m<a
+    Basics">[0mBasics[31m</a>[0m[31m</li>[0m[31m<li>[0m[31m<a
+    class="selected" title="Markdown
+    Syntax
+    Documentation">[0mSyntax[31m</a>[0m[31m</li>[0m[31m<li>[0m[31m<a
     href="/projects/markdown/license"
     title="Pricing and License
-    Information">[0mLicense[31m</a>[0m[31m</li>[0m
-        [31m<li>[0m[31m<a
+    Information">[0mLicense[31m</a>[0m[31m</li>[0m[31m<li>[0m[31m<a
     href="/projects/markdown/dingus"
     title="Online Markdown Web
-    Form">[0mDingus[31m</a>[0m[31m</li>[0m
-    [31m</ul>[0m
+    Form">[0mDingus[31m</a>[0m[31m</li>[0m[31m</ul>[0m
 
     [32m• [0m[Overview]([34m#overview[0m)
       [32m• [0m[Philosophy]([34m#philosophy[0m)
@@ -54,11 +49,7 @@
 
     [32;1m1.1 Overview[0m
 
-
-
     [92m1.1.1 Philosophy[0m
-
-
 
     Markdown is intended to be as
     easy-to-read and easy-to-write as is
@@ -100,8 +91,6 @@
     you've ever used email.
 
     [92m1.1.2 Inline HTML[0m
-
-
 
     Markdown's syntax is intended for
     one purpose: to be used as a format
@@ -177,8 +166,6 @@
 
     [92m1.1.3 Automatic Escaping for Special
     Characters[0m
-
-
 
     In HTML, there are two characters
     that demand special treatment: [44;3m<[0m and
@@ -261,11 +248,7 @@
 
     [32;1m1.2 Block Elements[0m
 
-
-
     [92m1.2.1 Paragraphs and Line Breaks[0m
-
-
 
     A paragraph is simply one or more
     consecutive lines of text, separated
@@ -304,8 +287,6 @@
     you format them with hard breaks.
 
     [92m1.2.2 Headers[0m
-
-
 
     Markdown supports two styles of
     headers, [Setext]([34mhttp://docutils.so
@@ -355,8 +336,6 @@
     [32;1m┃ [0m### This is an H3 ######
 
     [92m1.2.3 Blockquotes[0m
-
-
 
     Markdown uses email-style [44;3m>[0m
     characters for blockquoting. If
@@ -437,8 +416,6 @@
     Level from the Text menu.
 
     [92m1.2.4 Lists[0m
-
-
 
     Markdown supports ordered (numbered)
     and unordered (bulleted) lists.
@@ -648,8 +625,6 @@
 
     [92m1.2.5 Code Blocks[0m
 
-
-
     Pre-formatted code blocks are used
     for writing about programming or
     markup source code. Rather than
@@ -733,8 +708,6 @@
 
     [92m1.2.6 Horizontal Rules[0m
 
-
-
     You can produce a horizontal rule
     tag ([44;3m<hr />[0m) by placing three or
     more hyphens, asterisks, or
@@ -761,11 +734,7 @@
 
     [32;1m1.3 Span Elements[0m
 
-
-
     [92m1.3.1 Links[0m
-
-
 
     Markdown supports two style of
     links: [3minline[23m and [3mreference[23m.
@@ -988,8 +957,6 @@
 
     [92m1.3.2 Emphasis[0m
 
-
-
     Markdown treats asterisks ([44;3m*[0m) and
     underscores ([44;3m_[0m) as indicators of
     emphasis. Text wrapped with one [44;3m*[0m or
@@ -1041,8 +1008,6 @@
     [32;1m┃ [0mliteral asterisks\*
 
     [92m1.3.3 Code[0m
-
-
 
     To indicate a span of code, wrap it
     with backtick quotes ([44;3m`[0m). Unlike a
@@ -1122,8 +1087,6 @@
 
     [92m1.3.4 Images[0m
 
-
-
     Admittedly, it's fairly difficult to
     devise a "natural" syntax for
     placing images into a plain text
@@ -1175,11 +1138,7 @@
 
     [32;1m1.4 Miscellaneous[0m
 
-
-
     [92m1.4.1 Automatic Links[0m
-
-
 
     Markdown supports a shortcut style
     for creating "automatic" links for
@@ -1237,8 +1196,6 @@
     spam.)
 
     [92m1.4.2 Backslash Escapes[0m
-
-
 
     Markdown allows you to use backslash
     escapes to generate literal

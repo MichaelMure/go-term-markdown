@@ -1,11 +1,5 @@
     Paragraph one.
 
-
-
-
-
     Paragraph two.
-
-
 
     The end.
