@@ -13,7 +13,8 @@ import (
 
 func Render(source string, lineWidth int, leftPad int, opts ...Options) []byte {
 	extensions := parser.CommonExtensions
-	extensions |= parser.LaxHTMLBlocks // more in HTMLBlock, less in HTMLSpan
+	extensions |= parser.LaxHTMLBlocks          // more in HTMLBlock, less in HTMLSpan
+	extensions |= parser.NoEmptyLineBeforeBlock // no need for NL before a list
 
 	p := parser.NewWithExtensions(extensions)
 	nodes := md.Parse([]byte(source), p)
