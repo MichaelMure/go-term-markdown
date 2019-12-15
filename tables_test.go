@@ -4,7 +4,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/gomarkdown/markdown/ast"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -73,11 +72,11 @@ func TestColumnWidths(t *testing.T) {
 		tr := newTableRenderer()
 
 		for _, w := range tc.cellWidths {
-			tr.AddHeaderCell(strings.Repeat("a", w), ast.TableAlignmentLeft)
+			tr.AddHeaderCell(strings.Repeat("a", w), CellAlignLeft)
 		}
 		tr.NextBodyRow()
 		for _, w := range tc.cellWidths {
-			tr.AddBodyCell(strings.Repeat("a", w))
+			tr.AddBodyCell(strings.Repeat("a", w), CellAlignCopyHeader)
 		}
 
 		result, truncated := tr.columnWidths(lineWidth)

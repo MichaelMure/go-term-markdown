@@ -25,6 +25,15 @@ type NodeVisitor interface {
 
 func Walk(n *Node, visitor NodeVisitor) WalkStatus {
 	isContainer := n.FirstChild != nil
+
+	// some special case that are container but can be self closing
+	if n.Type == ElementNode {
+		switch n.Data {
+		case "td":
+			isContainer = true
+		}
+	}
+
 	status := visitor.Visit(n, true)
 
 	if status == Terminate {

@@ -5,14 +5,22 @@ import (
 	"strings"
 
 	"github.com/MichaelMure/go-term-text"
-	"github.com/gomarkdown/markdown/ast"
 )
 
 const minColumnCompactedWidth = 5
 
+type CellAlign int
+
+const (
+	CellAlignLeft CellAlign = iota
+	CellAlignRight
+	CellAlignCenter
+	CellAlignCopyHeader
+)
+
 type tableCell struct {
 	content   string
-	alignment ast.CellAlignFlags
+	alignment CellAlign
 }
 
 type tableRenderer struct {
@@ -24,7 +32,7 @@ func newTableRenderer() *tableRenderer {
 	return &tableRenderer{}
 }
 
-func (tr *tableRenderer) AddHeaderCell(content string, alignment ast.CellAlignFlags) {
+func (tr *tableRenderer) AddHeaderCell(content string, alignment CellAlign) {
 	tr.header = append(tr.header, tableCell{
 		content:   content,
 		alignment: alignment,
@@ -35,17 +43,41 @@ func (tr *tableRenderer) NextBodyRow() {
 	tr.body = append(tr.body, nil)
 }
 
-func (tr *tableRenderer) AddBodyCell(content string) {
+func (tr *tableRenderer) AddBodyCell(content string, alignement CellAlign) {
 	row := tr.body[len(tr.body)-1]
 	column := len(row)
+	if alignement == CellAlignCopyHeader {
+		alignement = tr.header[column].alignment
+	}
 	row = append(row, tableCell{
 		content:   content,
-		alignment: tr.header[column].alignment,
+		alignment: alignement,
 	})
 	tr.body[len(tr.body)-1] = row
 }
 
+// normalize ensure that the table has the same number of cells
+// in each rows, header or not.
+func (tr *tableRenderer) normalize() {
+	width := len(tr.header)
+	for _, row := range tr.body {
+		width = max(width, len(row))
+	}
+
+	for len(tr.header) < width {
+		tr.header = append(tr.header, tableCell{})
+	}
+
+	for i := range tr.body {
+		for len(tr.body[i]) < width {
+			tr.body[i] = append(tr.body[i], tableCell{})
+		}
+	}
+}
+
 func (tr *tableRenderer) Render(w io.Writer, leftPad int, lineWidth int) {
+	tr.normalize()
+
 	columnWidths, truncated := tr.columnWidths(lineWidth - leftPad)
 	pad := strings.Repeat(" ", leftPad)
 
@@ -66,7 +98,12 @@ func (tr *tableRenderer) Render(w io.Writer, leftPad int, lineWidth int) {
 }
 
 func (tr *tableRenderer) columnWidths(lineWidth int) (widths []int, truncated bool) {
-	maxWidth := make([]int, len(tr.header))
+	l := len(tr.header)
+	if len(tr.body) > 0 {
+		l = max(l, len(tr.body[0]))
+	}
+
+	maxWidth := make([]int, l)
 
 	for i, cell := range tr.header {
 		maxWidth[i] = max(maxWidth[i], text.MaxLineLen(cell.content))
@@ -220,23 +257,17 @@ func drawRow(w io.Writer, pad string, cells []tableCell, columnWidths []int, tru
 	contents := make([][]string, len(cells))
 
 	// As we draw the row line by line, we need a way to reset and recover
-	// the formatting when we alternate between cells. To do that, we accumulate
-	// the ongoing series of ANSI escape sequence for each cell and output them
-	// again each time we switch to the next cell so we end up in the exact same
-	// state. Inefficient but works.
-	formatting := make([]strings.Builder, len(cells))
-
-	accFormatting := func(cellIndex int, items []text.EscapeItem) {
-		for _, item := range items {
-			formatting[cellIndex].WriteString(item.Item)
-		}
-	}
+	// the formatting when we alternate between cells. To do that, we witness
+	// the ongoing series of ANSI escape sequence for each cell into a EscapeState.
+	// This component will be able to merge them and to give us a snapshot sequence
+	// that we can use when we start the cell again
+	formatting := make([]text.EscapeState, len(columnWidths))
 
 	maxHeight := 0
 
 	// Wrap each cell content into multiple lines, depending on
 	// how wide each cell is.
-	for i, cell := range cells {
+	for i, cell := range cells[:len(columnWidths)] {
 		wrapped, lines := text.Wrap(cell.content, columnWidths[i])
 		contents[i] = strings.Split(wrapped, "\n")
 		maxHeight = max(maxHeight, lines)
@@ -253,13 +284,13 @@ func drawRow(w io.Writer, pad string, cells []tableCell, columnWidths []int, tru
 				trimmed := text.TrimSpace(content)
 
 				switch cells[j].alignment {
-				case ast.TableAlignmentLeft, 0:
+				case CellAlignLeft:
 					_, _ = w.Write([]byte(formatting[j].String()))
 					_, _ = w.Write([]byte(trimmed))
 					_, _ = w.Write([]byte(resetAll))
 					_, _ = w.Write([]byte(strings.Repeat(" ", width-text.Len(trimmed))))
 
-				case ast.TableAlignmentCenter:
+				case CellAlignCenter:
 					spaces := width - text.Len(trimmed)
 					_, _ = w.Write([]byte(strings.Repeat(" ", spaces/2)))
 					_, _ = w.Write([]byte(formatting[j].String()))
@@ -267,16 +298,15 @@ func drawRow(w io.Writer, pad string, cells []tableCell, columnWidths []int, tru
 					_, _ = w.Write([]byte(resetAll))
 					_, _ = w.Write([]byte(strings.Repeat(" ", spaces-(spaces/2))))
 
-				case ast.TableAlignmentRight:
+				case CellAlignRight:
 					_, _ = w.Write([]byte(strings.Repeat(" ", width-text.Len(trimmed))))
 					_, _ = w.Write([]byte(formatting[j].String()))
 					_, _ = w.Write([]byte(trimmed))
 					_, _ = w.Write([]byte(resetAll))
 				}
 
-				// extract and accumulate the formatting
-				_, seqs := text.ExtractTermEscapes(content)
-				accFormatting(j, seqs)
+				// accumulate the formatting
+				formatting[j].Witness(trimmed)
 			} else {
 				padding := strings.Repeat(" ", width-text.Len(content))
 				_, _ = w.Write([]byte(padding))

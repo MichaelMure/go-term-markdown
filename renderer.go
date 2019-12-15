@@ -373,10 +373,18 @@ func (r *renderer) RenderNode(w io.Writer, node ast.Node, entering bool) ast.Wal
 			content := r.inlineAccumulator.String()
 			r.inlineAccumulator.Reset()
 
+			align := CellAlignLeft
+			switch node.Align {
+			case ast.TableAlignmentRight:
+				align = CellAlignRight
+			case ast.TableAlignmentCenter:
+				align = CellAlignCenter
+			}
+
 			if node.IsHeader {
-				r.table.AddHeaderCell(content, node.Align)
+				r.table.AddHeaderCell(content, align)
 			} else {
-				r.table.AddBodyCell(content)
+				r.table.AddBodyCell(content, CellAlignCopyHeader)
 			}
 		}
 
@@ -508,6 +516,10 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 	}
 
 	htmlWalker.WalkFunc(doc, func(node *html.Node, entering bool) htmlWalker.WalkStatus {
+		if node.Type != html.TextNode {
+			fmt.Println(node.Type, "(", node.Data, ")", entering)
+		}
+
 		switch node.Type {
 		case html.CommentNode, html.DoctypeNode:
 			// Not rendered
@@ -569,9 +581,8 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 			case "img":
 				flushInline()
 				src, title := getImgHTMLAttr(node.Attr)
-				str, _ := r.renderImage(src, title, r.lineWidth-r.leftPad)
-				padded := text.LeftPadLines(str, r.leftPad)
-				_, _ = fmt.Fprintln(&buf, padded)
+				str, _ := r.renderImage(src, title, r.lineWidth-len(r.pad()))
+				r.inlineAccumulator.WriteString(str)
 
 			case "hr":
 				flushInline()
@@ -640,6 +651,41 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 					r.inlineAccumulator.WriteString("\n")
 				}
 
+			case "table":
+				if entering {
+					flushInline()
+					r.table = newTableRenderer()
+				} else {
+					r.table.Render(&buf, r.leftPad, r.lineWidth)
+					r.table = nil
+				}
+
+			case "thead", "tbody":
+				// nothing to do
+
+			case "tr":
+				if entering && node.Parent.Data != "thead" {
+					r.table.NextBodyRow()
+				}
+
+			case "th":
+				if !entering {
+					content := r.inlineAccumulator.String()
+					r.inlineAccumulator.Reset()
+
+					align := getTdHTMLAttr(node.Attr)
+					r.table.AddHeaderCell(content, align)
+				}
+
+			case "td":
+				if !entering {
+					content := r.inlineAccumulator.String()
+					r.inlineAccumulator.Reset()
+
+					align := getTdHTMLAttr(node.Attr)
+					r.table.AddBodyCell(content, align)
+				}
+
 			default:
 				r.inlineAccumulator.WriteString(Red(renderRawHtml(node)))
 			}
@@ -660,12 +706,7 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 	_, _ = fmt.Fprint(w, buf.String())
 	r.inlineAccumulator.Reset()
 
-	// 		// ol + li
 	// 		// dl + (dt+dd)
-	// 		// ul + li
-	//
-	// 		// a
-	// 		// p
 	//
 	// 		// details
 	// 		// summary
@@ -710,6 +751,39 @@ func getAHTMLAttr(attrs []html.Attribute) (href, alt string) {
 		}
 	}
 	return
+}
+
+func getTdHTMLAttr(attrs []html.Attribute) CellAlign {
+	for _, attr := range attrs {
+		switch attr.Key {
+		case "align":
+			switch attr.Val {
+			case "right":
+				return CellAlignRight
+			case "left":
+				return CellAlignLeft
+			case "center":
+				return CellAlignCenter
+			}
+
+		case "style":
+			for _, pair := range strings.Split(attr.Val, " ") {
+				split := strings.Split(pair, ":")
+				if split[0] != "text-align" || len(split) != 2 {
+					continue
+				}
+				switch split[1] {
+				case "right":
+					return CellAlignRight
+				case "left":
+					return CellAlignLeft
+				case "center":
+					return CellAlignCenter
+				}
+			}
+		}
+	}
+	return CellAlignLeft
 }
 
 func renderRawHtml(node *html.Node) string {
@@ -780,7 +854,7 @@ func (r *renderer) renderImage(dest string, title string, lineWidth int) (result
 
 	if r.imageDithering == ansimage.DitheringWithChars || r.imageDithering == ansimage.DitheringWithBlocks {
 		// not sure why this is needed by ansimage
-		x *= 4
+		// x *= 4
 	}
 
 	img, err := ansimage.NewScaledFromReader(reader, math.MaxInt32, x,
