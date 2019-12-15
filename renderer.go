@@ -22,6 +22,8 @@ import (
 	"github.com/gomarkdown/markdown/ast"
 	"github.com/kyokomi/emoji"
 	"golang.org/x/net/html"
+
+	htmlWalker "github.com/MichaelMure/go-term-markdown/html"
 )
 
 /*
@@ -492,8 +494,6 @@ func (r *renderer) renderFormattedCodeBlock(w io.Writer, code string) {
 }
 
 func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
-	z := html.NewTokenizer(bytes.NewReader(node.Literal))
-
 	var buf bytes.Buffer
 
 	flushInline := func() {
@@ -506,6 +506,33 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 		_, _ = fmt.Fprint(&buf, out, "\n\n")
 	}
 
+	doc, err := html.Parse(bytes.NewReader(node.Literal))
+	if err != nil {
+		// if there is a parsing error, fallback to a simple render
+		r.inlineAccumulator.Reset()
+		content := Red(string(node.Literal))
+		out, _ := text.WrapWithPad(content, r.lineWidth, r.pad())
+		_, _ = fmt.Fprint(w, out, "\n\n")
+		return
+	}
+
+	htmlWalker.WalkFunc(doc, func(node *html.Node, entering bool) htmlWalker.WalkStatus {
+		switch node.Type {
+		case html.CommentNode, html.DoctypeNode:
+			// Not rendered
+
+		case html.DocumentNode:
+
+		case html.ElementNode:
+
+		case html.TextNode:
+
+		default:
+			panic("unhandled case")
+
+		}
+	})
+
 	for {
 		switch z.Next() {
 		case html.ErrorToken:
@@ -515,13 +542,7 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 				_, _ = fmt.Fprint(w, buf.String())
 				return
 			}
-			// if there is another error, fallback to a simple render
 			r.inlineAccumulator.Reset()
-
-			content := Red(string(node.Literal))
-			out, _ := text.WrapWithPad(content, r.lineWidth, r.pad())
-			_, _ = fmt.Fprint(w, out, "\n\n")
-			return
 
 		case html.TextToken:
 			t := z.Text()
@@ -620,10 +641,8 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 			}
 
 		case html.CommentToken, html.DoctypeToken:
-			// Not rendered
 
 		default:
-			panic("unhandled case")
 		}
 	}
 }
