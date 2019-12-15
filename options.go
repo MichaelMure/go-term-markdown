@@ -1,6 +1,6 @@
 package markdown
 
-import "github.com/eliukblau/pixterm/ansimage"
+import "github.com/eliukblau/pixterm/pkg/ansimage"
 
 type Options func(r *renderer)
 

@@ -16,12 +16,14 @@ import (
 	"github.com/alecthomas/chroma/formatters"
 	"github.com/alecthomas/chroma/lexers"
 	"github.com/alecthomas/chroma/styles"
-	"github.com/eliukblau/pixterm/ansimage"
+	"github.com/eliukblau/pixterm/pkg/ansimage"
 	"github.com/fatih/color"
 	md "github.com/gomarkdown/markdown"
 	"github.com/gomarkdown/markdown/ast"
 	"github.com/kyokomi/emoji"
 	"golang.org/x/net/html"
+
+	htmlWalker "github.com/MichaelMure/go-term-markdown/html"
 )
 
 /*
@@ -97,6 +99,7 @@ type renderer struct {
 	lineWidth int
 	// constant left padding to apply
 	leftPad int
+
 	// Dithering mode for ansimage
 	// Default is fine directly through a terminal
 	// DitheringWithBlocks is recommended if a terminal UI library is used
@@ -148,7 +151,11 @@ func (r *renderer) popPad() {
 
 func (r *renderer) RenderNode(w io.Writer, node ast.Node, entering bool) ast.WalkStatus {
 	// TODO: remove
-	// fmt.Printf("%T, %v\n", node, entering)
+	// if node.AsLeaf() != nil {
+	// 	fmt.Printf("%T, %v (%s)\n", node, entering, string(node.AsLeaf().Literal))
+	// } else {
+	// 	fmt.Printf("%T, %v\n", node, entering)
+	// }
 
 	switch node := node.(type) {
 	case *ast.Document:
@@ -165,6 +172,7 @@ func (r *renderer) RenderNode(w io.Writer, node ast.Node, entering bool) ast.Wal
 		}
 
 	case *ast.List:
+		// extra new line at the end of a list *if* next is not a list
 		if next := ast.GetNextNode(node); !entering && next != nil {
 			_, parentIsListItem := node.GetParent().(*ast.ListItem)
 			_, nextIsList := next.(*ast.List)
@@ -295,44 +303,29 @@ func (r *renderer) RenderNode(w io.Writer, node ast.Node, entering bool) ast.Wal
 
 	case *ast.Image:
 		if entering {
-			var title string
-
 			// the alt text/title is weirdly parsed and is actually
 			// a child text of this node
+			var title string
 			if len(node.Children) == 1 {
 				if t, ok := node.Children[0].(*ast.Text); ok {
 					title = string(t.Literal)
 				}
 			}
 
-			info := fmt.Sprintf("![%s](%s)",
-				Green(string(node.Destination)), Blue(title))
+			str, rendered := r.renderImage(
+				string(node.Destination), title,
+				r.lineWidth-r.leftPad,
+			)
 
-			switch node.GetParent().(type) {
-			case *ast.Paragraph:
-				rendered, err := r.renderImage(
-					string(node.Destination), title,
-					r.lineWidth-r.leftPad,
-				)
-				if err != nil {
-					r.inlineAccumulator.WriteString(Red(fmt.Sprintf("|%s|", err)))
-					r.inlineAccumulator.WriteString("\n")
-					r.inlineAccumulator.WriteString(info)
-					if ast.GetNextNode(node) == nil {
-						r.inlineAccumulator.WriteString("\n")
-					}
-					return ast.SkipChildren
-				}
-
-				r.inlineAccumulator.WriteString(rendered)
-				r.inlineAccumulator.WriteString(info)
-				if ast.GetNextNode(node) == nil {
-					r.inlineAccumulator.WriteString("\n")
-				}
-
-			default:
-				r.inlineAccumulator.WriteString(info)
+			if rendered {
+				r.inlineAccumulator.WriteString("\n")
+				r.inlineAccumulator.WriteString(str)
+				r.inlineAccumulator.WriteString("\n\n")
+			} else {
+				r.inlineAccumulator.WriteString(str)
+				r.inlineAccumulator.WriteString("\n")
 			}
+
 			return ast.SkipChildren
 		}
 
@@ -492,8 +485,6 @@ func (r *renderer) renderFormattedCodeBlock(w io.Writer, code string) {
 }
 
 func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
-	z := html.NewTokenizer(bytes.NewReader(node.Literal))
-
 	var buf bytes.Buffer
 
 	flushInline := func() {
@@ -506,134 +497,186 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 		_, _ = fmt.Fprint(&buf, out, "\n\n")
 	}
 
-	for {
-		switch z.Next() {
-		case html.ErrorToken:
-			if z.Err() == io.EOF {
-				// normal end of the block
-				flushInline()
-				_, _ = fmt.Fprint(w, buf.String())
-				return
-			}
-			// if there is another error, fallback to a simple render
-			r.inlineAccumulator.Reset()
+	doc, err := html.Parse(bytes.NewReader(node.Literal))
+	if err != nil {
+		// if there is a parsing error, fallback to a simple render
+		r.inlineAccumulator.Reset()
+		content := Red(string(node.Literal))
+		out, _ := text.WrapWithPad(content, r.lineWidth, r.pad())
+		_, _ = fmt.Fprint(w, out, "\n\n")
+		return
+	}
 
-			content := Red(string(node.Literal))
-			out, _ := text.WrapWithPad(content, r.lineWidth, r.pad())
-			_, _ = fmt.Fprint(w, out, "\n\n")
-			return
+	htmlWalker.WalkFunc(doc, func(node *html.Node, entering bool) htmlWalker.WalkStatus {
+		switch node.Type {
+		case html.CommentNode, html.DoctypeNode:
+			// Not rendered
 
-		case html.TextToken:
-			t := z.Text()
-			if strings.TrimSpace(string(t)) == "" {
-				continue
-			}
-			r.inlineAccumulator.Write(t)
+		case html.DocumentNode:
 
-		case html.StartTagToken: // <tag ...>
-			name, _ := z.TagName()
-			switch string(name) {
+		case html.ElementNode:
+			switch node.Data {
+			case "html", "body":
+				return htmlWalker.GoToNext
 
-			case "hr":
-				flushInline()
-				r.renderHorizontalRule(&buf)
+			case "head":
+				return htmlWalker.SkipChildren
 
-			case "div":
-				flushInline()
-				// align left by default
-				r.inlineAlign = text.AlignLeft
-				r.handleDivHTMLAttr(z)
+			case "div", "p":
+				if entering {
+					flushInline()
+					// align left by default
+					r.inlineAlign = text.AlignLeft
+					r.handleDivHTMLAttr(node.Attr)
+				} else {
+					content := r.inlineAccumulator.String()
+					r.inlineAccumulator.Reset()
+					if len(content) == 0 {
+						return htmlWalker.GoToNext
+					}
+					// remove all line breaks, those are fully managed in HTML
+					content = strings.Replace(content, "\n", "", -1)
+					content, _ = text.WrapWithPadAlign(content, r.lineWidth, r.pad(), r.inlineAlign)
+					_, _ = fmt.Fprint(&buf, content, "\n\n")
+					r.inlineAlign = text.NoAlign
+				}
 
-			case "h1", "h2", "h3", "h4", "h5", "h6":
-				// handled in closing tag
-				flushInline()
+			case "h1":
+				if !entering {
+					r.renderHeading(&buf, 1)
+				}
+			case "h2":
+				if !entering {
+					r.renderHeading(&buf, 2)
+				}
+			case "h3":
+				if !entering {
+					r.renderHeading(&buf, 3)
+				}
+			case "h4":
+				if !entering {
+					r.renderHeading(&buf, 4)
+				}
+			case "h5":
+				if !entering {
+					r.renderHeading(&buf, 5)
+				}
+			case "h6":
+				if !entering {
+					r.renderHeading(&buf, 6)
+				}
 
 			case "img":
 				flushInline()
-				src, title := getImgHTMLAttr(z)
-				rendered, err := r.renderImage(src, title, r.lineWidth-r.leftPad)
-				if err != nil {
-					r.inlineAccumulator.WriteString(Red(string(z.Raw())))
-					continue
-				}
-				padded := text.LeftPadLines(rendered, r.leftPad)
+				src, title := getImgHTMLAttr(node.Attr)
+				str, _ := r.renderImage(src, title, r.lineWidth-r.leftPad)
+				padded := text.LeftPadLines(str, r.leftPad)
 				_, _ = fmt.Fprintln(&buf, padded)
 
-			// ol + li
-			// dl + (dt+dd)
-			// ul + li
-
-			// a
-			// p
-
-			// details
-			// summary
-
-			default:
-				r.inlineAccumulator.WriteString(Red(string(z.Raw())))
-			}
-		case html.EndTagToken: // </tag>
-			name, _ := z.TagName()
-			switch string(name) {
-
-			case "h1":
-				r.renderHeading(&buf, 1)
-			case "h2":
-				r.renderHeading(&buf, 2)
-			case "h3":
-				r.renderHeading(&buf, 3)
-			case "h4":
-				r.renderHeading(&buf, 4)
-			case "h5":
-				r.renderHeading(&buf, 5)
-			case "h6":
-				r.renderHeading(&buf, 6)
-
-			case "div":
-				content := r.inlineAccumulator.String()
-				r.inlineAccumulator.Reset()
-				if len(content) == 0 {
-					continue
-				}
-				// remove all line breaks, those are fully managed in HTML
-				content = strings.Replace(content, "\n", "", -1)
-				content, _ = text.WrapWithPadAlign(content, r.lineWidth, r.pad(), r.inlineAlign)
-				_, _ = fmt.Fprint(&buf, content, "\n\n")
-				r.inlineAlign = text.NoAlign
-
-			case "hr", "img":
-				// handled in opening tag
-
-			default:
-				r.inlineAccumulator.WriteString(Red(string(z.Raw())))
-			}
-
-		case html.SelfClosingTagToken: // <tag ... />
-			name, _ := z.TagName()
-			switch string(name) {
 			case "hr":
 				flushInline()
 				r.renderHorizontalRule(&buf)
 
+			case "ul", "ol":
+				if !entering {
+					if node.NextSibling == nil {
+						_, _ = fmt.Fprint(&buf, "\n")
+						return htmlWalker.GoToNext
+					}
+					switch node.NextSibling.Data {
+					case "ul", "ol":
+					default:
+						_, _ = fmt.Fprint(&buf, "\n")
+					}
+				}
+
+			case "li":
+				if entering {
+					switch node.Parent.Data {
+					case "ul":
+						r.indent = r.pad() + Green("• ")
+						r.addPad("  ")
+
+					case "ol":
+						itemNumber := 1
+						previous := node.PrevSibling
+						for previous != nil {
+							itemNumber++
+							previous = previous.PrevSibling
+						}
+						prefix := fmt.Sprintf("%d. ", itemNumber)
+						r.indent = r.pad() + Green(prefix)
+						r.addPad(strings.Repeat(" ", text.Len(prefix)))
+
+					default:
+						r.inlineAccumulator.WriteString(Red(renderRawHtml(node)))
+						return htmlWalker.GoToNext
+					}
+				} else {
+					content := r.inlineAccumulator.String()
+					r.inlineAccumulator.Reset()
+					out, _ := text.WrapWithPadIndent(content, r.lineWidth, r.indent, r.pad())
+					r.indent = ""
+					_, _ = fmt.Fprint(&buf, out, "\n")
+					r.popPad()
+				}
+
+			case "a":
+				if entering {
+					r.inlineAccumulator.WriteString("[")
+				} else {
+					href, alt := getAHTMLAttr(node.Attr)
+					r.inlineAccumulator.WriteString("](")
+					r.inlineAccumulator.WriteString(Blue(href))
+					if len(alt) > 0 {
+						r.inlineAccumulator.WriteString(" ")
+						r.inlineAccumulator.WriteString(alt)
+					}
+					r.inlineAccumulator.WriteString(")")
+				}
+
+			case "br":
+				if entering {
+					r.inlineAccumulator.WriteString("\n")
+				}
+
 			default:
-				r.inlineAccumulator.WriteString(Red(string(z.Raw())))
+				r.inlineAccumulator.WriteString(Red(renderRawHtml(node)))
 			}
 
-		case html.CommentToken, html.DoctypeToken:
-			// Not rendered
+		case html.TextNode:
+			t := strings.TrimSpace(node.Data)
+			t = strings.ReplaceAll(t, "\n", "")
+			r.inlineAccumulator.WriteString(t)
 
 		default:
 			panic("unhandled case")
 		}
-	}
+
+		return htmlWalker.GoToNext
+	})
+
+	flushInline()
+	_, _ = fmt.Fprint(w, buf.String())
+	r.inlineAccumulator.Reset()
+
+	// 		// ol + li
+	// 		// dl + (dt+dd)
+	// 		// ul + li
+	//
+	// 		// a
+	// 		// p
+	//
+	// 		// details
+	// 		// summary
+	//
 }
 
-func (r *renderer) handleDivHTMLAttr(z *html.Tokenizer) {
-	for {
-		key, value, more := z.TagAttr()
-		switch string(key) {
+func (r *renderer) handleDivHTMLAttr(attrs []html.Attribute) {
+	for _, attr := range attrs {
+		switch attr.Key {
 		case "align":
-			switch string(value) {
+			switch attr.Val {
 			case "left":
 				r.inlineAlign = text.AlignLeft
 			case "center":
@@ -642,37 +685,98 @@ func (r *renderer) handleDivHTMLAttr(z *html.Tokenizer) {
 				r.inlineAlign = text.AlignRight
 			}
 		}
-
-		if !more {
-			break
-		}
 	}
 }
 
-func getImgHTMLAttr(z *html.Tokenizer) (src, title string) {
-	for {
-		key, value, more := z.TagAttr()
-		switch string(key) {
+func getImgHTMLAttr(attrs []html.Attribute) (src, title string) {
+	for _, attr := range attrs {
+		switch attr.Key {
 		case "src":
-			src = string(value)
+			src = attr.Val
 		case "alt":
-			title = string(value)
-		}
-
-		if !more {
-			break
+			title = attr.Val
 		}
 	}
 	return
 }
 
-func (r *renderer) renderImage(dest string, title string, lineWidth int) (string, error) {
-	reader, err := imageFromDestination(dest)
-	if err != nil {
-		return "", fmt.Errorf("failed to open: %v", err)
+func getAHTMLAttr(attrs []html.Attribute) (href, alt string) {
+	for _, attr := range attrs {
+		switch attr.Key {
+		case "href":
+			href = attr.Val
+		case "alt":
+			alt = attr.Val
+		}
+	}
+	return
+}
+
+func renderRawHtml(node *html.Node) string {
+	var result strings.Builder
+	openContent := make([]string, 0, 8)
+
+	openContent = append(openContent, node.Data)
+	for _, attr := range node.Attr {
+		openContent = append(openContent, fmt.Sprintf("%s=\"%s\"", attr.Key, attr.Val))
 	}
 
-	x := r.lineWidth - r.leftPad
+	result.WriteString("<")
+	result.WriteString(strings.Join(openContent, " "))
+
+	if node.FirstChild == nil {
+		result.WriteString("/>")
+		return result.String()
+	}
+
+	result.WriteString(">")
+
+	child := node.FirstChild
+	for child != nil {
+		if child.Type == html.TextNode {
+			t := strings.TrimSpace(child.Data)
+			result.WriteString(t)
+			child = child.NextSibling
+			continue
+		}
+
+		switch node.Data {
+		case "ul", "p":
+			result.WriteString("\n  ")
+		}
+
+		result.WriteString(renderRawHtml(child))
+		child = child.NextSibling
+	}
+
+	switch node.Data {
+	case "ul", "p":
+		result.WriteString("\n")
+	}
+
+	result.WriteString("</")
+	result.WriteString(node.Data)
+	result.WriteString(">")
+
+	return result.String()
+}
+
+func (r *renderer) renderImage(dest string, title string, lineWidth int) (result string, rendered bool) {
+	title = strings.ReplaceAll(title, "\n", "")
+	title = strings.TrimSpace(title)
+	dest = strings.ReplaceAll(dest, "\n", "")
+	dest = strings.TrimSpace(dest)
+
+	fallback := func() (string, bool) {
+		return fmt.Sprintf("![%s](%s)", title, Blue(dest)), false
+	}
+
+	reader, err := imageFromDestination(dest)
+	if err != nil {
+		return fallback()
+	}
+
+	x := lineWidth
 
 	if r.imageDithering == ansimage.DitheringWithChars || r.imageDithering == ansimage.DitheringWithBlocks {
 		// not sure why this is needed by ansimage
@@ -683,10 +787,13 @@ func (r *renderer) renderImage(dest string, title string, lineWidth int) (string
 		stdcolor.Black, ansimage.ScaleModeFit, r.imageDithering)
 
 	if err != nil {
-		return "", fmt.Errorf("failed to open: %v", err)
+		return fallback()
 	}
 
-	return img.Render(), nil
+	if title != "" {
+		return fmt.Sprintf("%s%s: %s", img.Render(), title, Blue(dest)), true
+	}
+	return fmt.Sprintf("%s%s", img.Render(), Blue(dest)), true
 }
 
 func imageFromDestination(dest string) (io.ReadCloser, error) {

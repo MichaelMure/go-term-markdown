@@ -6,8 +6,6 @@
 
     foo
 
-    [31m<div style=">"/>[0m
-
     bar
 
     [31m</div>[0m

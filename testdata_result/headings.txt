@@ -21,7 +21,8 @@
     link]([34mhttp://example.com[0m)[0m
 
     [92m1.3.4 image
-    ![[32mhttp://example.com/img.png[0m]([34mimg[0m)[0m
+    ![img]([34mhttp://example.com/img.png[0m)
+    [0m
 
     [92m1.3.5 link + img
     []([34mhttp://example.com[0m)[0m

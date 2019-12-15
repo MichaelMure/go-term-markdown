@@ -1,22 +1,14 @@
     [32;1m1 Markdown: Syntax[0m
     ────────────────────────────────────
 
-    [31m<ul id="ProjectSubmenu">[0m[31m<li>[0m[31m<a
-    href="/projects/markdown/"
-    title="Markdown Project
-    Page">[0mMain[31m</a>[0m[31m</li>[0m[31m<li>[0m[31m<a
-    href="/projects/markdown/basics"
-    title="Markdown
-    Basics">[0mBasics[31m</a>[0m[31m</li>[0m[31m<li>[0m[31m<a
-    class="selected" title="Markdown
-    Syntax
-    Documentation">[0mSyntax[31m</a>[0m[31m</li>[0m[31m<li>[0m[31m<a
-    href="/projects/markdown/license"
-    title="Pricing and License
-    Information">[0mLicense[31m</a>[0m[31m</li>[0m[31m<li>[0m[31m<a
-    href="/projects/markdown/dingus"
-    title="Online Markdown Web
-    Form">[0mDingus[31m</a>[0m[31m</li>[0m[31m</ul>[0m
+    [32m• [0m[Main]([34m/projects/markdown/[0m)
+    [32m• [0m[Basics]([34m/projects/markdown/basics
+      [0m)
+    [32m• [0m[Syntax]([34m[0m)
+    [32m• [0m[License]([34m/projects/markdown/licen
+      se[0m)
+    [32m• [0m[Dingus]([34m/projects/markdown/dingus
+      [0m)
 
     [32m• [0m[Overview]([34m#overview[0m)
       [32m• [0m[Philosophy]([34m#philosophy[0m)
