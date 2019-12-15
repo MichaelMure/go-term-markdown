@@ -276,7 +276,17 @@ func (r *renderer) RenderNode(w io.Writer, node ast.Node, entering bool) ast.Wal
 		if entering {
 			r.inlineAccumulator.WriteString(boldOn)
 		} else {
-			r.inlineAccumulator.WriteString(boldOff)
+			// This is super silly but some terminals, instead of having
+			// the ANSI code SGR 21 do "bold off" like the logic would guide,
+			// do "double underline" instead. This is madness.
+
+			// To resolve that problem, we take a snapshot of the escape state,
+			// remove the bold, then output "reset all" + snapshot
+			es := text.EscapeState{}
+			es.Witness(r.inlineAccumulator.String())
+			es.Bold = false
+			r.inlineAccumulator.WriteString(resetAll)
+			r.inlineAccumulator.WriteString(es.String())
 		}
 
 	case *ast.Del:

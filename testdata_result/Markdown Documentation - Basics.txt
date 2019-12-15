@@ -35,7 +35,7 @@
     your own Markdown-formatted text and
     translate it to XHTML.
 
-    [1mNote:[21m This document is itself
+    [1mNote:[0m[0m This document is itself
     written using Markdown; you can [see
     the source for it by adding '.text'
     to the URL]([34m/projects/markdown/basi
