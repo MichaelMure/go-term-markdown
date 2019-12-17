@@ -115,7 +115,6 @@ type renderer struct {
 	// the child nodes (Link, Text, Image, formatting ...). The result
 	// is then rendered appropriately when exiting the node.
 	inlineAccumulator strings.Builder
-	inlineAlign       text.Alignment
 
 	// record and render the heading numbering
 	headingNumbering headingNumbering
@@ -537,9 +536,6 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 			case "div", "p":
 				if entering {
 					flushInline()
-					// align left by default
-					r.inlineAlign = text.AlignLeft
-					r.handleDivHTMLAttr(node.Attr)
 				} else {
 					content := r.inlineAccumulator.String()
 					r.inlineAccumulator.Reset()
@@ -548,9 +544,9 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 					}
 					// remove all line breaks, those are fully managed in HTML
 					content = strings.Replace(content, "\n", "", -1)
-					content, _ = text.WrapWithPadAlign(content, r.lineWidth, r.pad(), r.inlineAlign)
+					align := getDivHTMLAttr(node.Attr)
+					content, _ = text.WrapWithPadAlign(content, r.lineWidth, r.pad(), align)
 					_, _ = fmt.Fprint(&buf, content, "\n\n")
-					r.inlineAlign = text.NoAlign
 				}
 
 			case "h1":
@@ -713,20 +709,21 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 	//
 }
 
-func (r *renderer) handleDivHTMLAttr(attrs []html.Attribute) {
+func getDivHTMLAttr(attrs []html.Attribute) text.Alignment {
 	for _, attr := range attrs {
 		switch attr.Key {
 		case "align":
 			switch attr.Val {
 			case "left":
-				r.inlineAlign = text.AlignLeft
+				return text.AlignLeft
 			case "center":
-				r.inlineAlign = text.AlignCenter
+				return text.AlignCenter
 			case "right":
-				r.inlineAlign = text.AlignRight
+				return text.AlignRight
 			}
 		}
 	}
+	return text.AlignLeft
 }
 
 func getImgHTMLAttr(attrs []html.Attribute) (src, title string) {
