@@ -69,20 +69,10 @@
     ├──────────┼───────────┼───────────┤
     │[0mEmphasis,[0m │  [0mStrong[0m   │[0mStrikethrou[0m│
     │[0maka[0m       │ [0memphasis,[0m │[0mgh uses two[0m│
-    │[0mitalics, w[0m│[0maka bold, w[0m│[0mtildes.[31m<s>S[0m│
-    │[0mith[31m<em>ast[0m│[0mith[31m<strong>[0m│[31mcratch this[0m│
-    │[31merisks</em[0m│[31masterisks</[0m│[31m.</s>[0mScratc[0m│
-    │[31m>[0masterisks[0m│[31mstrong>[0maste[0m│[0mh this.[31m<s>S[0m│
-    │[0m[31m<em>asteri[0m│[0mrisks[31m<stron[0m│     [31mcratch[0m│
-    │[31msks</em>[0mor[0m│[31mg>asterisks[0m│  [31mthis.</s>[0m[0m│
-    │[0m[31m<em>unders[0m│[31m</strong>[0mor[0m│           │
-    │[31mcores</em>[0m│[0m[31m<strong>und[0m│           │
-    │[31m[0munderscore[0m│[31merscores</s[0m│           │
-    │[0ms[31m<em>under[0m│[31mtrong>[0munder[0m│           │
-    │[31mscores</em[0m│[0mscores[31m<stro[0m│           │
-    │[31m>[0m.[0m        │[31mng>undersco[0m│           │
-    │          │[31mres</strong[0m│           │
-    │          │    [31m>[0m.[0m     │           │
+    │[0mitalics, w[0m│[0maka bold, w[0m│[0mtildes.[9mScra[0m│
+    │[0mith[3masteris[0m│[0mith[1masterisk[0m│  [9mtch this.[29m[0m│
+    │[3mks[23mor[3munders[0m│[1ms[0m[0mor[1mundersco[0m│           │
+    │[3mcores[23m.[0m    │   [1mres[0m[0m.[0m    │           │
     ├──────────┼───────────┼───────────┤
     │[0m![GitHub L[0m│     [0m[0m      │           [0m[0m│
     │[0mogo]([34m/imag[0m│           │           │

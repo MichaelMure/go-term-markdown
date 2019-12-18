@@ -525,9 +525,9 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 	}
 
 	htmlWalker.WalkFunc(doc, func(node *html.Node, entering bool) htmlWalker.WalkStatus {
-		if node.Type != html.TextNode {
-			fmt.Println(node.Type, "(", node.Data, ")", entering)
-		}
+		// if node.Type != html.TextNode {
+		// 	fmt.Println(node.Type, "(", node.Data, ")", entering)
+		// }
 
 		switch node.Type {
 		case html.CommentNode, html.DoctypeNode:
@@ -690,6 +690,37 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 
 					align := getTdHTMLAttr(node.Attr)
 					r.table.AddBodyCell(content, align)
+				}
+
+			case "strong", "b":
+				if entering {
+					r.inlineAccumulator.WriteString(boldOn)
+				} else {
+					// This is super silly but some terminals, instead of having
+					// the ANSI code SGR 21 do "bold off" like the logic would guide,
+					// do "double underline" instead. This is madness.
+
+					// To resolve that problem, we take a snapshot of the escape state,
+					// remove the bold, then output "reset all" + snapshot
+					es := text.EscapeState{}
+					es.Witness(r.inlineAccumulator.String())
+					es.Bold = false
+					r.inlineAccumulator.WriteString(resetAll)
+					r.inlineAccumulator.WriteString(es.String())
+				}
+
+			case "i", "em":
+				if entering {
+					r.inlineAccumulator.WriteString(italicOn)
+				} else {
+					r.inlineAccumulator.WriteString(italicOff)
+				}
+
+			case "s":
+				if entering {
+					r.inlineAccumulator.WriteString(crossedOutOn)
+				} else {
+					r.inlineAccumulator.WriteString(crossedOutOff)
 				}
 
 			default:
