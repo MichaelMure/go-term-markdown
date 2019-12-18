@@ -1,0 +1,4 @@
+corpus/
+crashers/
+suppressions/
+fuzzing-fuzz.zip
