@@ -627,15 +627,18 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 
 					default:
 						r.inlineAccumulator.WriteString(Red(renderRawHtml(node)))
-						return htmlWalker.GoToNext
+						return htmlWalker.SkipChildren
 					}
 				} else {
-					content := r.inlineAccumulator.String()
-					r.inlineAccumulator.Reset()
-					out, _ := text.WrapWithPadIndent(content, r.lineWidth, r.indent, r.pad())
-					r.indent = ""
-					_, _ = fmt.Fprint(&buf, out, "\n")
-					r.popPad()
+					switch node.Parent.Data {
+					case "ul", "ol":
+						content := r.inlineAccumulator.String()
+						r.inlineAccumulator.Reset()
+						out, _ := text.WrapWithPadIndent(content, r.lineWidth, r.indent, r.pad())
+						r.indent = ""
+						_, _ = fmt.Fprint(&buf, out, "\n")
+						r.popPad()
+					}
 				}
 
 			case "a":
