@@ -268,6 +268,9 @@ func drawRow(w io.Writer, pad string, cells []tableCell, columnWidths []int, tru
 	// Wrap each cell content into multiple lines, depending on
 	// how wide each cell is.
 	for i, cell := range cells[:len(columnWidths)] {
+		if columnWidths[i] == 0 {
+			continue
+		}
 		wrapped, lines := text.Wrap(cell.content, columnWidths[i])
 		contents[i] = strings.Split(wrapped, "\n")
 		maxHeight = max(maxHeight, lines)
