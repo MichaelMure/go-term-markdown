@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 	"unicode"
 
 	"github.com/MichaelMure/go-term-text"
@@ -912,8 +913,12 @@ func (r *renderer) renderImage(dest string, title string, lineWidth int) (result
 }
 
 func imageFromDestination(dest string) (io.ReadCloser, error) {
+	client := http.Client{
+		Timeout: 5 * time.Second,
+	}
+
 	if strings.HasPrefix(dest, "http://") || strings.HasPrefix(dest, "https://") {
-		res, err := http.Get(dest)
+		res, err := client.Get(dest)
 		if err != nil {
 			return nil, err
 		}
