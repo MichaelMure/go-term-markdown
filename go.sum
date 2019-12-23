@@ -1,5 +1,5 @@
-github.com/MichaelMure/go-term-text v0.2.2 h1:MPXBS5H0FnG3f1OAensJN3uhHvc28+GrA8SP+MazMT4=
-github.com/MichaelMure/go-term-text v0.2.2/go.mod h1:o2Z5T3b28F4kwAojGvvNdbzjHf9t18vbQ7E2pmTe2Ww=
+github.com/MichaelMure/go-term-text v0.2.4 h1:h+lAsjG5o3oNvaJeh7OzE8zdSiB/VyJo9JzSnncrZv4=
+github.com/MichaelMure/go-term-text v0.2.4/go.mod h1:o2Z5T3b28F4kwAojGvvNdbzjHf9t18vbQ7E2pmTe2Ww=
 github.com/alecthomas/assert v0.0.0-20170929043011-405dbfeb8e38 h1:smF2tmSOzy2Mm+0dGI2AIUHY+w0BUc+4tn40djz7+6U=
 github.com/alecthomas/assert v0.0.0-20170929043011-405dbfeb8e38/go.mod h1:r7bzyVFMNntcxPZXK3/+KdruV1H5KSlyVY0gc+NgInI=
 github.com/alecthomas/chroma v0.6.4 h1:Gn37/7W4a1qkmKLzfUpDy2rt3jt4X8CWycb4Gm7L360=
@@ -54,4 +54,6 @@ golang.org/x/sys v0.0.0-20181128092732-4ed8d59d0b35 h1:YAFjXN64LMvktoUZH9zgY4lGc
 golang.org/x/sys v0.0.0-20181128092732-4ed8d59d0b35/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
 golang.org/x/sys v0.0.0-20190215142949-d0b11bdaac8a h1:1BGLXjeY4akVXGgbC9HugT3Jv3hCI0z56oJR5vAMgBU=
 golang.org/x/sys v0.0.0-20190215142949-d0b11bdaac8a/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
+golang.org/x/sys v0.0.0-20190412213103-97732733099d h1:+R4KGOnez64A81RvjARKc4UT5/tI9ujCIVX+P5KiHuI=
+golang.org/x/sys v0.0.0-20190412213103-97732733099d/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
