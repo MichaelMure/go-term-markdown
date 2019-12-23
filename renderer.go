@@ -405,6 +405,9 @@ func (r *renderer) RenderNode(w io.Writer, node ast.Node, entering bool) ast.Wal
 		if _, ok := node.Parent.(*ast.TableBody); ok && entering {
 			r.table.NextBodyRow()
 		}
+		if _, ok := node.Parent.(*ast.TableFooter); ok && entering {
+			r.table.NextBodyRow()
+		}
 
 	default:
 		panic(fmt.Sprintf("Unknown node type %T", node))
