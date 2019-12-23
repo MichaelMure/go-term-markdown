@@ -45,10 +45,6 @@ func (tr *tableRenderer) NextBodyRow() {
 
 func (tr *tableRenderer) AddBodyCell(content string, alignement CellAlign) {
 	row := tr.body[len(tr.body)-1]
-	column := len(row)
-	if alignement == CellAlignCopyHeader {
-		alignement = tr.header[column].alignment
-	}
 	row = append(row, tableCell{
 		content:   content,
 		alignment: alignement,
@@ -64,10 +60,12 @@ func (tr *tableRenderer) normalize() {
 		width = max(width, len(row))
 	}
 
+	// grow the header if needed
 	for len(tr.header) < width {
 		tr.header = append(tr.header, tableCell{})
 	}
 
+	// grow lines if needed
 	for i := range tr.body {
 		for len(tr.body[i]) < width {
 			tr.body[i] = append(tr.body[i], tableCell{})
@@ -75,8 +73,19 @@ func (tr *tableRenderer) normalize() {
 	}
 }
 
+func (tr *tableRenderer) copyAlign() {
+	for i, row := range tr.body {
+		for j, cell := range row {
+			if cell.alignment == CellAlignCopyHeader {
+				tr.body[i][j].alignment = tr.header[j].alignment
+			}
+		}
+	}
+}
+
 func (tr *tableRenderer) Render(w io.Writer, leftPad int, lineWidth int) {
 	tr.normalize()
+	tr.copyAlign()
 
 	columnWidths, truncated := tr.columnWidths(lineWidth - leftPad)
 	pad := strings.Repeat(" ", leftPad)
