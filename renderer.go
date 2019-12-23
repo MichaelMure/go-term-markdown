@@ -398,10 +398,7 @@ func (r *renderer) RenderNode(w io.Writer, node ast.Node, entering bool) ast.Wal
 			}
 		}
 
-	case *ast.TableHeader:
-		// nothing to do
-
-	case *ast.TableBody:
+	case *ast.TableHeader, *ast.TableBody, *ast.TableFooter:
 		// nothing to do
 
 	case *ast.TableRow:
