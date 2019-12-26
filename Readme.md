@@ -11,9 +11,48 @@
 
 Note: Markdown being originally designed to render as HTML, rendering in a terminal is occasionally challenging and some adaptation had to be made. 
 
+Features:
+- formatting
+- lists
+- tables
+- images
+- code blocks with syntax highlighting
+- basic HTML support
+
+Note: this renderer is packaged as a standalone terminal viewer at https://github.com/MichaelMure/mdr/
+
+## Usage
+
+```go
+import (
+	"fmt"
+	"io/ioutil"
+
+	markdown "github.com/MichaelMure/go-term-markdown"
+)
+
+func main() {
+	path := "Readme.md"
+	source, err := ioutil.ReadFile(path)
+	if err != nil {
+		panic(err)
+	}
+
+	result := markdown.Render(string(source), 80, 6)
+
+	fmt.Println(result)
+}
+```
+
 ## Example
 
-> TODO
+Here is the [Readme](https://github.com/MichaelMure/go-term-text/blob/v0.2.4/Readme.md) of `go-term-text` rendered with `go-term-markdown`:
+
+![rendering example](misc/result.png)
+
+Here is an example of table rendering:
+
+![table rendering](misc/table.png)
 
 ## Origin
 
