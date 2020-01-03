@@ -10,10 +10,10 @@
     [32mMarkdown
       [39mText-to-HTML conversion tool
 
-    [32mWith a link
-    [url]([34mhttp://example.com[0m)
-      [39mThat's a definition list with an
-      url in the header
+    [32mWith a link[0m
+    [32m[url]([34mhttp://example.com[0m)
+      [39mThat's a definition list with an[0m
+      [39murl in the header
 
     [32m• [0m[x] Write the press release
     [32m• [0m[ ] Update the website

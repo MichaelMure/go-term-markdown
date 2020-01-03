@@ -1,6 +1,6 @@
-    ![]([34mhttps://cdn.rawgit.com/MichaelMu
-    re/git-bug/master/misc/logo/logo-alp
-              ha-flat-bg.svg[0m)
+    ![]([34mhttps://cdn.rawgit.com/MichaelMu[0m
+    [34mre/git-bug/master/misc/logo/logo-alp[0m
+    [34m          ha-flat-bg.svg[0m)
 
     [32;1m1 git-bug[0m
     ────────────────────────────────────
@@ -78,9 +78,9 @@
 
     [31m<details>[0m[31m<summary>[0mPre-compiled
     binaries[31m</summary>[0m
-    [32m1. [0mGo to the [release page]([34mhttps://
-       github.com/MichaelMure/git-bug/re
-       leases/latest[0m) and download the
+    [32m1. [0mGo to the [release page]([34mhttps://[0m
+       [34mgithub.com/MichaelMure/git-bug/re[0m
+       [34mleases/latest[0m) and download the
        appropriate binary for your
        system.
     [32m2. [0mCopy the binary anywhere in your
@@ -94,8 +94,8 @@
 
     [31m<details>[0m[31m<summary>[0mLinux
     packages[31m</summary>[0m
-    [32m• [0m[Archlinux (AUR)]([34mhttps://aur.arch
-      linux.org/packages/?K=git-bug[0m)
+    [32m• [0m[Archlinux (AUR)]([34mhttps://aur.arch[0m
+      [34mlinux.org/packages/?K=git-bug[0m)
 
     [31m</details>[0m
 
@@ -133,16 +133,16 @@
     You can now use commands like [44;3mshow[0m,
     [44;3mcomment[0m, [44;3mopen[0m or [44;3mclose[0m to display
     and modify bugs. For more details
-    about each command, you can run [44;3mgit
-    bug <command> --help[0m or read the
+    about each command, you can run [44;3mgit[0m
+    [3;44mbug <command> --help[0m or read the
     [command's
     documentation]([34mdoc/md/git-bug.md[0m).
 
     [32;1m1.3 Interactive terminal UI[0m
 
     An interactive terminal UI is
-    available using the command [44;3mgit bug
-    termui[0m to browse and edit bugs.
+    available using the command [44;3mgit bug[0m
+    [3;44mtermui[0m to browse and edit bugs.
 
 
     [48;2;29;29;28m[38;2;28;28;28m▄[48;2;29;29;28m[38;2;28;28;28m▄[48;2;29;29;28m[38;2;28;28;28m▄[48;2;29;29;28m[38;2;28;28;28m▄[48;2;28;28;28m[38;2;28;28;28m▄[48;2;28;28;29m[38;2;28;28;28m▄[48;2;28;28;28m[38;2;28;28;28m▄[48;2;28;28;29m[38;2;28;28;28m▄[48;2;28;28;29m[38;2;28;28;28m▄[48;2;28;28;29m[38;2;28;28;28m▄[48;2;28;29;29m[38;2;28;28;28m▄[48;2;28;28;29m[38;2;28;28;28m▄[48;2;28;28;29m[38;2;28;28;28m▄[48;2;28;28;29m[38;2;28;28;28m▄[48;2;28;28;29m[38;2;28;28;28m▄[48;2;28;28;29m[38;2;28;28;28m▄[48;2;28;28;29m[38;2;28;28;28m▄[48;2;29;28;28m[38;2;28;28;28m▄[48;2;29;28;28m[38;2;28;28;28m▄[48;2;28;29;29m[38;2;28;28;28m▄[48;2;28;28;28m[38;2;28;28;28m▄[48;2;28;28;28m[38;2;28;28;28m▄[48;2;28;28;28m[38;2;28;28;28m▄[48;2;28;28;28m[38;2;28;28;28m▄[48;2;28;28;28m[38;2;28;28;28m▄[48;2;28;28;28m[38;2;28;28;28m▄[48;2;28;28;28m[38;2;28;28;28m▄[48;2;28;28;28m[38;2;28;28;28m▄[48;2;28;28;28m[38;2;28;28;28m▄[48;2;28;28;28m[38;2;28;28;28m▄[48;2;28;28;28m[38;2;28;28;28m▄[48;2;28;28;28m[38;2;28;28;28m▄[48;2;28;28;28m[38;2;28;28;28m▄[48;2;28;28;28m[38;2;28;28;28m▄[48;2;28;28;28m[38;2;28;28;28m▄[48;2;28;28;28m[38;2;28;28;28m▄[0m
@@ -262,10 +262,10 @@
 
     [32;1m1.7 Misc[0m
 
-    [32m• [0m[Bash completion]([34m../misc/bash_com
-      pletion[0m)
-    [32m• [0m[Zsh completion]([34m../misc/zsh_compl
-      etion[0m)
+    [32m• [0m[Bash completion]([34m../misc/bash_com[0m
+      [34mpletion[0m)
+    [32m• [0m[Zsh completion]([34m../misc/zsh_compl[0m
+      [34metion[0m)
     [32m• [0m[ManPages]([34mdoc/man[0m)
 
     [32;1m1.8 Planned features[0m
@@ -279,8 +279,8 @@
     [32;1m1.9 Contribute[0m
 
     PRs accepted. Drop by the [Gitter lo
-    bby]([34mhttps://gitter.im/the-git-bug/L
-    obby[0m) for a chat or browse the
+    bby]([34mhttps://gitter.im/the-git-bug/L[0m
+    [34mobby[0m) for a chat or browse the
     issues to see what is worked on or
     discussed.
 
@@ -295,8 +295,8 @@
     The git repository will then be
     available:
 
-    [32;1m┃ [0m[36m# Note that $GOPATH defaults to
-    [32;1m┃ [0m$HOME/go[0m
+    [32;1m┃ [0m[36m# Note that $GOPATH defaults to[0m
+    [32;1m┃ [0m[36m$HOME/go[0m
     [32;1m┃ [0m$ [32mcd[0m [34m$GOPATH[0m/src/github.com/Michae
     [32;1m┃ [0mlMure/git-bug/
 
@@ -311,78 +311,78 @@
     [32;1m1.10 Contributors ❤ [0m
 
     This project exists thanks to all
-    the people who contribute. [31m<a href="
-    https://github.com/MichaelMure/git-b
-    ug/graphs/contributors">[0m[31m<img src="ht
-    tps://opencollective.com/git-bug/con
-    tributors.svg?width=890&button=false
-    " />[0m[31m</a>[0m
+    the people who contribute. [31m<a href="[0m
+    [31mhttps://github.com/MichaelMure/git-b[0m
+    [31mug/graphs/contributors">[0m[31m<img src="ht[0m
+    [31mtps://opencollective.com/git-bug/con[0m
+    [31mtributors.svg?width=890&button=false[0m
+    [31m" />[0m[31m</a>[0m
 
     [32;1m1.11 Backers[0m
 
     Thank you to all our backers! 🙏
-    [[Become a backer]([34mhttps://opencolle
-    ctive.com/git-bug#backer[0m)]
+    [[Become a backer]([34mhttps://opencolle[0m
+    [34mctive.com/git-bug#backer[0m)]
 
-    [31m<a href="https://opencollective.com/
-    git-bug#backers"
-    target="_blank">[0m[31m<img src="https://op
-    encollective.com/git-bug/tiers/backe
-    r.svg?width=890">[0m[31m</a>[0m
+    [31m<a href="https://opencollective.com/[0m
+    [31mgit-bug#backers"[0m
+    [31mtarget="_blank">[0m[31m<img src="https://op[0m
+    [31mencollective.com/git-bug/tiers/backe[0m
+    [31mr.svg?width=890">[0m[31m</a>[0m
 
     [32;1m1.12 Sponsors[0m
 
     Support this project by becoming a
     sponsor. Your logo will show up here
     with a link to your website.
-    [[Become a sponsor]([34mhttps://opencoll
-    ective.com/git-bug#sponsor[0m)]
+    [[Become a sponsor]([34mhttps://opencoll[0m
+    [34mective.com/git-bug#sponsor[0m)]
 
-    [31m<a href="https://opencollective.com/
-    git-bug/sponsor/0/website"
-    target="_blank">[0m[31m<img src="https://op
-    encollective.com/git-bug/tiers/spons
-    or/0/avatar.svg">[0m[31m</a>[0m[31m<a href="https:
-    //opencollective.com/git-bug/sponsor
-    /1/website" target="_blank">[0m[31m<img src
-    ="https://opencollective.com/git-bug
-    /tiers/sponsor/1/avatar.svg">[0m[31m</a>[0m[31m<a
-    href="https://opencollective.com/git
-    -bug/sponsor/2/website"
-    target="_blank">[0m[31m<img src="https://op
-    encollective.com/git-bug/tiers/spons
-    or/2/avatar.svg">[0m[31m</a>[0m[31m<a href="https:
-    //opencollective.com/git-bug/sponsor
-    /3/website" target="_blank">[0m[31m<img src
-    ="https://opencollective.com/git-bug
-    /tiers/sponsor/3/avatar.svg">[0m[31m</a>[0m[31m<a
-    href="https://opencollective.com/git
-    -bug/sponsor/4/website"
-    target="_blank">[0m[31m<img src="https://op
-    encollective.com/git-bug/tiers/spons
-    or/4/avatar.svg">[0m[31m</a>[0m[31m<a href="https:
-    //opencollective.com/git-bug/sponsor
-    /5/website" target="_blank">[0m[31m<img src
-    ="https://opencollective.com/git-bug
-    /tiers/sponsor/5/avatar.svg">[0m[31m</a>[0m[31m<a
-    href="https://opencollective.com/git
-    -bug/sponsor/6/website"
-    target="_blank">[0m[31m<img src="https://op
-    encollective.com/git-bug/tiers/spons
-    or/6/avatar.svg">[0m[31m</a>[0m[31m<a href="https:
-    //opencollective.com/git-bug/sponsor
-    /7/website" target="_blank">[0m[31m<img src
-    ="https://opencollective.com/git-bug
-    /tiers/sponsor/7/avatar.svg">[0m[31m</a>[0m[31m<a
-    href="https://opencollective.com/git
-    -bug/sponsor/8/website"
-    target="_blank">[0m[31m<img src="https://op
-    encollective.com/git-bug/tiers/spons
-    or/8/avatar.svg">[0m[31m</a>[0m[31m<a href="https:
-    //opencollective.com/git-bug/sponsor
-    /9/website" target="_blank">[0m[31m<img src
-    ="https://opencollective.com/git-bug
-    /tiers/sponsor/9/avatar.svg">[0m[31m</a>[0m
+    [31m<a href="https://opencollective.com/[0m
+    [31mgit-bug/sponsor/0/website"[0m
+    [31mtarget="_blank">[0m[31m<img src="https://op[0m
+    [31mencollective.com/git-bug/tiers/spons[0m
+    [31mor/0/avatar.svg">[0m[31m</a>[0m[31m<a href="https:[0m
+    [31m//opencollective.com/git-bug/sponsor[0m
+    [31m/1/website" target="_blank">[0m[31m<img src[0m
+    [31m="https://opencollective.com/git-bug[0m
+    [31m/tiers/sponsor/1/avatar.svg">[0m[31m</a>[0m[31m<a[0m
+    [31mhref="https://opencollective.com/git[0m
+    [31m-bug/sponsor/2/website"[0m
+    [31mtarget="_blank">[0m[31m<img src="https://op[0m
+    [31mencollective.com/git-bug/tiers/spons[0m
+    [31mor/2/avatar.svg">[0m[31m</a>[0m[31m<a href="https:[0m
+    [31m//opencollective.com/git-bug/sponsor[0m
+    [31m/3/website" target="_blank">[0m[31m<img src[0m
+    [31m="https://opencollective.com/git-bug[0m
+    [31m/tiers/sponsor/3/avatar.svg">[0m[31m</a>[0m[31m<a[0m
+    [31mhref="https://opencollective.com/git[0m
+    [31m-bug/sponsor/4/website"[0m
+    [31mtarget="_blank">[0m[31m<img src="https://op[0m
+    [31mencollective.com/git-bug/tiers/spons[0m
+    [31mor/4/avatar.svg">[0m[31m</a>[0m[31m<a href="https:[0m
+    [31m//opencollective.com/git-bug/sponsor[0m
+    [31m/5/website" target="_blank">[0m[31m<img src[0m
+    [31m="https://opencollective.com/git-bug[0m
+    [31m/tiers/sponsor/5/avatar.svg">[0m[31m</a>[0m[31m<a[0m
+    [31mhref="https://opencollective.com/git[0m
+    [31m-bug/sponsor/6/website"[0m
+    [31mtarget="_blank">[0m[31m<img src="https://op[0m
+    [31mencollective.com/git-bug/tiers/spons[0m
+    [31mor/6/avatar.svg">[0m[31m</a>[0m[31m<a href="https:[0m
+    [31m//opencollective.com/git-bug/sponsor[0m
+    [31m/7/website" target="_blank">[0m[31m<img src[0m
+    [31m="https://opencollective.com/git-bug[0m
+    [31m/tiers/sponsor/7/avatar.svg">[0m[31m</a>[0m[31m<a[0m
+    [31mhref="https://opencollective.com/git[0m
+    [31m-bug/sponsor/8/website"[0m
+    [31mtarget="_blank">[0m[31m<img src="https://op[0m
+    [31mencollective.com/git-bug/tiers/spons[0m
+    [31mor/8/avatar.svg">[0m[31m</a>[0m[31m<a href="https:[0m
+    [31m//opencollective.com/git-bug/sponsor[0m
+    [31m/9/website" target="_blank">[0m[31m<img src[0m
+    [31m="https://opencollective.com/git-bug[0m
+    [31m/tiers/sponsor/9/avatar.svg">[0m[31m</a>[0m
 
     [32;1m1.13 License[0m
 

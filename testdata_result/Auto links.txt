@@ -1,12 +1,12 @@
-    Link: [http://example.com/]([34mhttp://e
-    xample.com/[0m).
+    Link: [http://example.com/]([34mhttp://e[0m
+    [34mxample.com/[0m).
 
     With an ampersand: [http://example.c
-    om/?foo=1&bar=2]([34mhttp://example.com/
-    ?foo=1&bar=2[0m)
+    om/?foo=1&bar=2]([34mhttp://example.com/[0m
+    [34m?foo=1&bar=2[0m)
     [32m• [0mIn a list?
-    [32m• [0m[http://example.com/]([34mhttp://examp
-      le.com/[0m)
+    [32m• [0m[http://example.com/]([34mhttp://examp[0m
+      [34mle.com/[0m)
     [32m• [0mIt should.
 
     [32;1m┃ [0mBlockquoted: [http://example.com/]

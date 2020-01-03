@@ -3,15 +3,15 @@
 
     [32m• [0m[Main]([34m/projects/markdown/[0m)
     [32m• [0m[Basics]([34m[0m)
-    [32m• [0m[Syntax]([34m/projects/markdown/syntax
-      [0m)
-    [32m• [0m[License]([34m/projects/markdown/licen
-      se[0m)
-    [32m• [0m[Dingus]([34m/projects/markdown/dingus
-      [0m)
+    [32m• [0m[Syntax]([34m/projects/markdown/syntax[0m
+      [34m[0m)
+    [32m• [0m[License]([34m/projects/markdown/licen[0m
+      [34mse[0m)
+    [32m• [0m[Dingus]([34m/projects/markdown/dingus[0m
+      [34m[0m)
 
-    [32;1m1.1 Getting the Gist of Markdown's
-    Formatting Syntax[0m
+    [32;1m1.1 Getting the Gist of Markdown's[0m
+    [1;32mFormatting Syntax[0m
 
     This page offers a brief overview of
     what it's like to use Markdown. The
@@ -38,8 +38,8 @@
     [1mNote:[0m[0m This document is itself
     written using Markdown; you can [see
     the source for it by adding '.text'
-    to the URL]([34m/projects/markdown/basi
-    cs.text[0m).
+    to the URL]([34m/projects/markdown/basi[0m
+    [34mcs.text[0m).
 
     [32;1m1.2 Paragraphs, Headers, Blockquotes[0m
 

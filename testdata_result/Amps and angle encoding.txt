@@ -8,8 +8,8 @@
 
     6 > 5.
 
-    Here's a [link]([34mhttp://example.com/?
-    foo=1&bar=2[0m) with an ampersand in
+    Here's a [link]([34mhttp://example.com/?[0m
+    [34mfoo=1&bar=2[0m) with an ampersand in
     the URL.
 
     Here's a link with an amersand in

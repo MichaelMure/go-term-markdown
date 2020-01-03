@@ -11,8 +11,8 @@
     Another one, tagged as well with the
     language name
 
-    [32;1m┃ [0m[90m#include[0m [90m<stdio.h>[0m[90m
-    [32;1m┃ [0m[0m[35mint[0m [94mmain[0m()
+    [32;1m┃ [0m[90m#include[0m [90m<stdio.h>[0m[90m[0m
+    [32;1m┃ [0m[90m[0m[35mint[0m [94mmain[0m()
     [32;1m┃ [0m{
     [32;1m┃ [0m   printf([31m"Hello, World!"[0m);
     [32;1m┃ [0m   [1m[32mreturn[0m [90m0[0m;

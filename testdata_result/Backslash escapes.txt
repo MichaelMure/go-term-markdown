@@ -122,8 +122,8 @@
     backslash-backtick sequence: [44;3m\`[0m
 
     This is a tag with unescaped
-    backticks [31m<span
-    attr='`ticks`'>[0mbar[31m</span>[0m.
+    backticks [31m<span[0m
+    [31mattr='`ticks`'>[0mbar[31m</span>[0m.
 
-    This is a tag with backslashes [31m<span
-    attr='\\backslashes\\'>[0mbar[31m</span>[0m.
+    This is a tag with backslashes [31m<span[0m
+    [31mattr='\\backslashes\\'>[0mbar[31m</span>[0m.
