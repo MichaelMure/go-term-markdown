@@ -63,7 +63,7 @@
 
     [32;1m1.1 Install[0m
 
-    [31m<details>[0m[31m<summary>[0mgo get[31m</summary>[0m
+    [31m<details/>[0m[31m<summary/>[0mgo get
 
     [32;1m┃ [0mgo get -u
     [32;1m┃ [0mgithub.com/MichaelMure/git-bug
@@ -74,10 +74,10 @@
     [32;1m┃ [0m[32mexport[0m [34mPATH[0m[90m=[0m[34m$PATH[0m:[1m[32m$([0mgo env
     [32;1m┃ [0mGOROOT[1m[32m)[0m/bin:[1m[32m$([0mgo env GOPATH[1m[32m)[0m/bin
 
-    [31m</details>[0m
 
-    [31m<details>[0m[31m<summary>[0mPre-compiled
-    binaries[31m</summary>[0m
+
+    [31m<details/>[0m[31m<summary/>[0mPre-compiled
+    binaries
     [32m1. [0mGo to the [release page]([34mhttps://[0m
        [34mgithub.com/MichaelMure/git-bug/re[0m
        [34mleases/latest[0m) and download the
@@ -90,14 +90,13 @@
 
     That's all !
 
-    [31m</details>[0m
 
-    [31m<details>[0m[31m<summary>[0mLinux
-    packages[31m</summary>[0m
+
+    [31m<details/>[0m[31m<summary/>[0mLinux packages
     [32m• [0m[Archlinux (AUR)]([34mhttps://aur.arch[0m
       [34mlinux.org/packages/?K=git-bug[0m)
 
-    [31m</details>[0m
+
 
     [32;1m1.2 CLI usage[0m
 
@@ -311,12 +310,11 @@
     [32;1m1.10 Contributors ❤ [0m
 
     This project exists thanks to all
-    the people who contribute. [31m<a href="[0m
-    [31mhttps://github.com/MichaelMure/git-b[0m
-    [31mug/graphs/contributors">[0m[31m<img src="ht[0m
-    [31mtps://opencollective.com/git-bug/con[0m
-    [31mtributors.svg?width=890&button=false[0m
-    [31m" />[0m[31m</a>[0m
+    the people who contribute. []([34mhttps:[0m
+    [34m//github.com/MichaelMure/git-bug/gra[0m
+    [34mphs/contributors[0m)[31m<img src="https://o[0m
+    [31mpencollective.com/git-bug/contributo[0m
+    [31mrs.svg?width=890&button=false"/>[0m
 
     [32;1m1.11 Backers[0m
 
@@ -324,11 +322,10 @@
     [[Become a backer]([34mhttps://opencolle[0m
     [34mctive.com/git-bug#backer[0m)]
 
-    [31m<a href="https://opencollective.com/[0m
-    [31mgit-bug#backers"[0m
-    [31mtarget="_blank">[0m[31m<img src="https://op[0m
-    [31mencollective.com/git-bug/tiers/backe[0m
-    [31mr.svg?width=890">[0m[31m</a>[0m
+    []([34mhttps://opencollective.com/git-bu[0m
+    [34mg#backers[0m)[31m<img src="https://opencoll[0m
+    [31mective.com/git-bug/tiers/backer.svg?[0m
+    [31mwidth=890"/>[0m
 
     [32;1m1.12 Sponsors[0m
 
@@ -338,51 +335,43 @@
     [[Become a sponsor]([34mhttps://opencoll[0m
     [34mective.com/git-bug#sponsor[0m)]
 
-    [31m<a href="https://opencollective.com/[0m
-    [31mgit-bug/sponsor/0/website"[0m
-    [31mtarget="_blank">[0m[31m<img src="https://op[0m
-    [31mencollective.com/git-bug/tiers/spons[0m
-    [31mor/0/avatar.svg">[0m[31m</a>[0m[31m<a href="https:[0m
-    [31m//opencollective.com/git-bug/sponsor[0m
-    [31m/1/website" target="_blank">[0m[31m<img src[0m
+    []([34mhttps://opencollective.com/git-bu[0m
+    [34mg/sponsor/0/website[0m)[31m<img src="https:[0m
+    [31m//opencollective.com/git-bug/tiers/s[0m
+    [31mponsor/0/avatar.svg"/>[0m[]([34mhttps://ope[0m
+    [34mncollective.com/git-bug/sponsor/1/we[0m
+    [34mbsite[0m)[31m<img src="https://opencollecti[0m
+    [31mve.com/git-bug/tiers/sponsor/1/avata[0m
+    [31mr.svg"/>[0m[]([34mhttps://opencollective.co[0m
+    [34mm/git-bug/sponsor/2/website[0m)[31m<img src[0m
     [31m="https://opencollective.com/git-bug[0m
-    [31m/tiers/sponsor/1/avatar.svg">[0m[31m</a>[0m[31m<a[0m
-    [31mhref="https://opencollective.com/git[0m
-    [31m-bug/sponsor/2/website"[0m
-    [31mtarget="_blank">[0m[31m<img src="https://op[0m
+    [31m/tiers/sponsor/2/avatar.svg"/>[0m[]([34mhtt[0m
+    [34mps://opencollective.com/git-bug/spon[0m
+    [34msor/3/website[0m)[31m<img src="https://open[0m
+    [31mcollective.com/git-bug/tiers/sponsor[0m
+    [31m/3/avatar.svg"/>[0m[]([34mhttps://opencolle[0m
+    [34mctive.com/git-bug/sponsor/4/website[0m)
+    [31m<img src="https://opencollective.com[0m
+    [31m/git-bug/tiers/sponsor/4/avatar.svg"[0m
+    [31m/>[0m[]([34mhttps://opencollective.com/git-[0m
+    [34mbug/sponsor/5/website[0m)[31m<img src="http[0m
+    [31ms://opencollective.com/git-bug/tiers[0m
+    [31m/sponsor/5/avatar.svg"/>[0m[]([34mhttps://o[0m
+    [34mpencollective.com/git-bug/sponsor/6/[0m
+    [34mwebsite[0m)[31m<img src="https://opencollec[0m
+    [31mtive.com/git-bug/tiers/sponsor/6/ava[0m
+    [31mtar.svg"/>[0m[]([34mhttps://opencollective.[0m
+    [34mcom/git-bug/sponsor/7/website[0m)[31m<img s[0m
+    [31mrc="https://opencollective.com/git-b[0m
+    [31mug/tiers/sponsor/7/avatar.svg"/>[0m[]([34mh[0m
+    [34mttps://opencollective.com/git-bug/sp[0m
+    [34monsor/8/website[0m)[31m<img src="https://op[0m
     [31mencollective.com/git-bug/tiers/spons[0m
-    [31mor/2/avatar.svg">[0m[31m</a>[0m[31m<a href="https:[0m
-    [31m//opencollective.com/git-bug/sponsor[0m
-    [31m/3/website" target="_blank">[0m[31m<img src[0m
-    [31m="https://opencollective.com/git-bug[0m
-    [31m/tiers/sponsor/3/avatar.svg">[0m[31m</a>[0m[31m<a[0m
-    [31mhref="https://opencollective.com/git[0m
-    [31m-bug/sponsor/4/website"[0m
-    [31mtarget="_blank">[0m[31m<img src="https://op[0m
-    [31mencollective.com/git-bug/tiers/spons[0m
-    [31mor/4/avatar.svg">[0m[31m</a>[0m[31m<a href="https:[0m
-    [31m//opencollective.com/git-bug/sponsor[0m
-    [31m/5/website" target="_blank">[0m[31m<img src[0m
-    [31m="https://opencollective.com/git-bug[0m
-    [31m/tiers/sponsor/5/avatar.svg">[0m[31m</a>[0m[31m<a[0m
-    [31mhref="https://opencollective.com/git[0m
-    [31m-bug/sponsor/6/website"[0m
-    [31mtarget="_blank">[0m[31m<img src="https://op[0m
-    [31mencollective.com/git-bug/tiers/spons[0m
-    [31mor/6/avatar.svg">[0m[31m</a>[0m[31m<a href="https:[0m
-    [31m//opencollective.com/git-bug/sponsor[0m
-    [31m/7/website" target="_blank">[0m[31m<img src[0m
-    [31m="https://opencollective.com/git-bug[0m
-    [31m/tiers/sponsor/7/avatar.svg">[0m[31m</a>[0m[31m<a[0m
-    [31mhref="https://opencollective.com/git[0m
-    [31m-bug/sponsor/8/website"[0m
-    [31mtarget="_blank">[0m[31m<img src="https://op[0m
-    [31mencollective.com/git-bug/tiers/spons[0m
-    [31mor/8/avatar.svg">[0m[31m</a>[0m[31m<a href="https:[0m
-    [31m//opencollective.com/git-bug/sponsor[0m
-    [31m/9/website" target="_blank">[0m[31m<img src[0m
-    [31m="https://opencollective.com/git-bug[0m
-    [31m/tiers/sponsor/9/avatar.svg">[0m[31m</a>[0m
+    [31mor/8/avatar.svg"/>[0m[]([34mhttps://opencol[0m
+    [34mlective.com/git-bug/sponsor/9/websit[0m
+    [34me[0m)[31m<img src="https://opencollective.c[0m
+    [31mom/git-bug/tiers/sponsor/9/avatar.sv[0m
+    [31mg"/>[0m
 
     [32;1m1.13 License[0m
 

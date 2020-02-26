@@ -18,7 +18,7 @@
 
     [32;1m┃ [0m</div>
 
-    [31m</div>[0m
+
 
     This should just be an HTML comment:
 

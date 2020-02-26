@@ -50,7 +50,7 @@ func TestRender(t *testing.T) {
 func Test__DoRender(t *testing.T) {
 	// This is not a real test, it's here to create the output testdata.
 	// uncomment to generate a new test case
-	t.SkipNow()
+	// t.SkipNow()
 
 	color.NoColor = false
 
@@ -67,9 +67,9 @@ func Test__DoRender(t *testing.T) {
 		_, file := filepath.Split(fullpath)
 		name := strings.TrimRight(file, ".md")
 
-		// if name != "Ordered and unordered lists" {
-		// 	return nil
-		// }
+		if name != "Backslash escapes" {
+			return nil
+		}
 
 		source, err := ioutil.ReadFile(path.Join(sourcepath, name+".md"))
 		require.NoError(t, err)

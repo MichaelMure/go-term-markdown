@@ -358,6 +358,9 @@ func (r *renderer) RenderNode(w io.Writer, node ast.Node, entering bool) ast.Wal
 	case *ast.HTMLBlock:
 		r.renderHTMLBlock(w, node)
 
+	case *ast.HTMLSpan:
+		r.renderHTMLSpan(node)
+
 	case *ast.CodeBlock:
 		r.renderCodeBlock(w, node)
 
@@ -370,9 +373,6 @@ func (r *renderer) RenderNode(w io.Writer, node ast.Node, entering bool) ast.Wal
 
 	case *ast.Code:
 		r.inlineAccumulator.WriteString(BlueBgItalic(string(node.Literal)))
-
-	case *ast.HTMLSpan:
-		r.inlineAccumulator.WriteString(Red(string(node.Literal)))
 
 	case *ast.Table:
 		if entering {
@@ -506,6 +506,103 @@ func (r *renderer) renderFormattedCodeBlock(w io.Writer, code string) {
 	_, _ = fmt.Fprintf(w, "\n\n")
 }
 
+func (r *renderer) renderHTMLSpan(node *ast.HTMLSpan) {
+	doc, err := html.Parse(bytes.NewReader(node.Literal))
+	if err != nil {
+		// if there is a parsing error, fallback to a simple render
+		r.inlineAccumulator.WriteString(Red(string(node.Literal)))
+		return
+	}
+
+	htmlWalker.WalkFunc(doc, func(node *html.Node, entering bool) htmlWalker.WalkStatus {
+		switch node.Type {
+		case html.CommentNode, html.DoctypeNode:
+			// Not rendered
+
+		case html.DocumentNode:
+
+		case html.ElementNode:
+			switch node.Data {
+			case "html", "body":
+				return htmlWalker.GoToNext
+
+			case "head":
+				return htmlWalker.SkipChildren
+
+			case "a":
+				if entering {
+					r.inlineAccumulator.WriteString("[")
+				} else {
+					href, alt := getAHTMLAttr(node.Attr)
+					r.inlineAccumulator.WriteString("](")
+					r.inlineAccumulator.WriteString(Blue(href))
+					if len(alt) > 0 {
+						r.inlineAccumulator.WriteString(" ")
+						r.inlineAccumulator.WriteString(alt)
+					}
+					r.inlineAccumulator.WriteString(")")
+				}
+
+			case "strong", "b":
+				if entering {
+					r.inlineAccumulator.WriteString(boldOn)
+				} else {
+					// This is super silly but some terminals, instead of having
+					// the ANSI code SGR 21 do "bold off" like the logic would guide,
+					// do "double underline" instead. This is madness.
+
+					// To resolve that problem, we take a snapshot of the escape state,
+					// remove the bold, then output "reset all" + snapshot
+					es := text.EscapeState{}
+					es.Witness(r.inlineAccumulator.String())
+					es.Bold = false
+					r.inlineAccumulator.WriteString(resetAll)
+					r.inlineAccumulator.WriteString(es.String())
+				}
+
+			case "i", "em":
+				if entering {
+					r.inlineAccumulator.WriteString(italicOn)
+				} else {
+					r.inlineAccumulator.WriteString(italicOff)
+				}
+
+			case "s":
+				if entering {
+					r.inlineAccumulator.WriteString(crossedOutOn)
+				} else {
+					r.inlineAccumulator.WriteString(crossedOutOff)
+				}
+
+			case "kbd":
+				if entering {
+					r.inlineAccumulator.WriteString("⦏")
+				} else {
+					r.inlineAccumulator.WriteString("⦎")
+				}
+
+			default:
+				if entering {
+					r.inlineAccumulator.WriteString(Red(renderRawHtml(node)))
+				}
+				return htmlWalker.SkipChildren
+			}
+
+		case html.TextNode:
+			if entering {
+				t := strings.TrimSpace(node.Data)
+				t = strings.ReplaceAll(t, "\n", "")
+				r.inlineAccumulator.WriteString(t)
+			}
+
+		default:
+			panic("unhandled case")
+		}
+
+		return htmlWalker.GoToNext
+	})
+}
+
 func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 	var buf bytes.Buffer
 
@@ -590,14 +687,18 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 				}
 
 			case "img":
-				flushInline()
-				src, title := getImgHTMLAttr(node.Attr)
-				str, _ := r.renderImage(src, title, r.lineWidth-len(r.pad()))
-				r.inlineAccumulator.WriteString(str)
+				if entering {
+					flushInline()
+					src, title := getImgHTMLAttr(node.Attr)
+					str, _ := r.renderImage(src, title, r.lineWidth-len(r.pad()))
+					r.inlineAccumulator.WriteString(str)
+				}
 
 			case "hr":
-				flushInline()
-				r.renderHorizontalRule(&buf)
+				if entering {
+					flushInline()
+					r.renderHorizontalRule(&buf)
+				}
 
 			case "ul", "ol":
 				if !entering {
@@ -731,14 +832,26 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 					r.inlineAccumulator.WriteString(crossedOutOff)
 				}
 
+			case "kbd":
+				if entering {
+					r.inlineAccumulator.WriteString("⦏")
+				} else {
+					r.inlineAccumulator.WriteString("⦎")
+				}
+
 			default:
-				r.inlineAccumulator.WriteString(Red(renderRawHtml(node)))
+				if entering {
+					r.inlineAccumulator.WriteString(Red(renderRawHtml(node)))
+				}
+				return htmlWalker.SkipChildren
 			}
 
 		case html.TextNode:
-			t := strings.TrimSpace(node.Data)
-			t = strings.ReplaceAll(t, "\n", "")
-			r.inlineAccumulator.WriteString(t)
+			if entering {
+				t := strings.TrimSpace(node.Data)
+				t = strings.ReplaceAll(t, "\n", "")
+				r.inlineAccumulator.WriteString(t)
+			}
 
 		default:
 			panic("unhandled case")
