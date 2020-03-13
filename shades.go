@@ -1,38 +1,33 @@
 package markdown
 
-var headingShades = []func(a ...interface{}) string{
+var defaultHeadingShades = []shadeFmt{
 	GreenBold,
 	GreenBold,
 	HiGreen,
 	Green,
 }
 
-// Return the color function corresponding to the level.
+var defaultQuoteShades = []shadeFmt{
+	GreenBold,
+	GreenBold,
+	HiGreen,
+	Green,
+}
+
+type shadeFmt func(a ...interface{}) string
+
+type levelShadeFmt func(level int) shadeFmt
+
+// Return a function giving the color function corresponding to the level.
 // Beware, level start counting from 1.
-func headingShade(level int) func(a ...interface{}) string {
-	if level < 1 {
-		level = 1
+func shade(shades []shadeFmt) levelShadeFmt {
+	return func(level int) shadeFmt {
+		if level < 1 {
+			level = 1
+		}
+		if level > len(shades) {
+			level = len(shades)
+		}
+		return shades[level-1]
 	}
-	if level > len(headingShades) {
-		level = len(headingShades)
-	}
-	return headingShades[level-1]
-}
-
-var quoteShades = []func(a ...interface{}) string{
-	GreenBold,
-	GreenBold,
-	HiGreen,
-	Green,
-}
-
-// Return the color function corresponding to the level.
-func quoteShade(level int) func(a ...interface{}) string {
-	if level < 1 {
-		level = 1
-	}
-	if level > len(quoteShades) {
-		level = len(quoteShades)
-	}
-	return quoteShades[level-1]
 }

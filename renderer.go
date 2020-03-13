@@ -119,17 +119,21 @@ type renderer struct {
 
 	// record and render the heading numbering
 	headingNumbering headingNumbering
+	headingShade     levelShadeFmt
 
 	blockQuoteLevel int
+	blockQuoteShade levelShadeFmt
 
 	table *tableRenderer
 }
 
 func newRenderer(lineWidth int, leftPad int, opts ...Options) *renderer {
 	r := &renderer{
-		lineWidth:      lineWidth,
-		leftPad:        leftPad,
-		padAccumulator: make([]string, 0, 10),
+		lineWidth:       lineWidth,
+		leftPad:         leftPad,
+		padAccumulator:  make([]string, 0, 10),
+		headingShade:    shade(defaultHeadingShades),
+		blockQuoteShade: shade(defaultQuoteShades),
 	}
 	for _, opt := range opts {
 		opt(r)
@@ -165,7 +169,7 @@ func (r *renderer) RenderNode(w io.Writer, node ast.Node, entering bool) ast.Wal
 		// set and remove a colored bar on the left
 		if entering {
 			r.blockQuoteLevel++
-			r.addPad(quoteShade(r.blockQuoteLevel)("┃ "))
+			r.addPad(r.blockQuoteShade(r.blockQuoteLevel)("┃ "))
 		} else {
 			r.blockQuoteLevel--
 			r.popPad()
@@ -431,7 +435,7 @@ func (r *renderer) renderHeading(w io.Writer, level int) {
 	// render the full line with the headingNumbering
 	r.headingNumbering.Observe(level)
 	content = fmt.Sprintf("%s %s", r.headingNumbering.Render(), content)
-	content = headingShade(level)(content)
+	content = r.headingShade(level)(content)
 
 	// wrap if needed
 	wrapped, _ := text.WrapWithPad(content, r.lineWidth, r.pad())
