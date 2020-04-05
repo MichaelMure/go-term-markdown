@@ -35,8 +35,7 @@
 
     [92m1.3.9 [3mbold[23m [1mbold[0m[0m[0m
 
-    [92m1.3.10 [31m<div>[0mfoo[31m</div>[0m[0m
+    [92m1.3.10 [31m<div/>[0mfoo[0m
 
-    [92m1.3.11 [31m<!-- This is a simple comment[0m
-    [31m-->[0m comment html[0m
+    [92m1.3.11  comment html[0m
 
