@@ -35,6 +35,8 @@ github.com/gomarkdown/markdown v0.0.0-20191123064959-2c17d62f5098 h1:Qxs3bNRWe8G
 github.com/gomarkdown/markdown v0.0.0-20191123064959-2c17d62f5098/go.mod h1:aii0r/K0ZnHv7G0KF7xy1v0A7s2Ljrb5byB7MO5p6TU=
 github.com/kyokomi/emoji v2.1.0+incompatible h1:+DYU2RgpI6OHG4oQkM5KlqD3Wd3UPEsX8jamTo1Mp6o=
 github.com/kyokomi/emoji v2.1.0+incompatible/go.mod h1:mZ6aGCD7yk8j6QY6KICwnZ2pxoszVseX1DNoGtU2tBA=
+github.com/kyokomi/emoji v2.2.2+incompatible h1:gaQFbK2+uSxOR4iGZprJAbpmtqTrHhSdgOyIMD6Oidc=
+github.com/kyokomi/emoji v2.2.2+incompatible/go.mod h1:mZ6aGCD7yk8j6QY6KICwnZ2pxoszVseX1DNoGtU2tBA=
 github.com/lucasb-eyer/go-colorful v1.0.3 h1:QIbQXiugsb+q10B+MI+7DI1oQLdmnep86tWFlaaUAac=
 github.com/lucasb-eyer/go-colorful v1.0.3/go.mod h1:R4dSotOR9KMtayYi1e77YzuveK+i7ruzyGqttikkLy0=
 github.com/mattn/go-colorable v0.0.9 h1:UVL0vNpWh04HeJXV0KLcaT7r06gOH2l4OW6ddYRUIY4=
