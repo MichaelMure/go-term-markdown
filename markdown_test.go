@@ -1,6 +1,7 @@
 package markdown
 
 import (
+	"bytes"
 	"io/ioutil"
 	"os"
 	"path"
@@ -36,9 +37,11 @@ func TestRender(t *testing.T) {
 			expected, err := ioutil.ReadFile(path.Join(resultpath, name+".txt"))
 			require.NoError(t, err)
 
-			output := Render(string(source), 40, 4)
+			var output bytes.Buffer
+			err = Render(&output, source, 40, 4)
+			require.NoError(t, err)
 
-			assert.Equal(t, string(expected), string(output))
+			assert.Equal(t, string(expected), output.String())
 		})
 
 		return nil
@@ -50,7 +53,7 @@ func TestRender(t *testing.T) {
 func Test__DoRender(t *testing.T) {
 	// This is not a real test, it's here to create the output testdata.
 	// uncomment to generate a new test case
-	t.SkipNow()
+	// t.SkipNow()
 
 	color.NoColor = false
 
@@ -74,9 +77,10 @@ func Test__DoRender(t *testing.T) {
 		source, err := ioutil.ReadFile(path.Join(sourcepath, name+".md"))
 		require.NoError(t, err)
 
-		output := Render(string(source), 40, 4)
+		var output bytes.Buffer
+		err = Render(&output, source, 40, 4)
 
-		err = ioutil.WriteFile(path.Join(resultpath, name+".txt"), output, 0666)
+		err = ioutil.WriteFile(path.Join(resultpath, name+".txt"), output.Bytes(), 0666)
 		require.NoError(t, err)
 
 		return nil

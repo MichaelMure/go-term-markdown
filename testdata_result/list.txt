@@ -7,17 +7,19 @@
     [32m4. [0mAnd another item.
 
     A definition list:
-    [32mMarkdown
-      [39mText-to-HTML conversion tool
 
-    [32mWith a link[0m
-    [32m[url]([34mhttp://example.com[0m)
-      [39mThat's a definition list with an[0m
-      [39murl in the header
+    Markdown
+    :  Text-to-HTML conversion tool
 
-    [32m• [0m[x] Write the press release
+    With a link
+    [url]([34mhttp://example.com[0m)
+    :  That's a definition list with an
+    url in the header
+
+    [32m• [0m[X] Write the press release
     [32m• [0m[ ] Update the website
     [32m• [0m[ ] Contact the media
-    [32m1. [0m[x] Write the press release
+
+    [32m1. [0m[X] Write the press release
     [32m2. [0m[ ] Update the website
     [32m3. [0m[ ] Contact the media
