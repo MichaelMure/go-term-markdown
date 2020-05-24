@@ -8,16 +8,26 @@
 
     6 > 5.
 
-    Here's a [link]([34mhttp://example.com/?[0m
-    [34mfoo=1&bar=2[0m) with an ampersand in
-    the URL.
+    [😘qsd qsd][UUUU😘 😘😘 [31m<i>[0m][1]
+    "title 😘😘"
 
-    Here's a link with an amersand in
-    the link text:
-    [AT&T]([34mhttp://att.com/[0m AT&T).
+    [1]: example.com😘
 
-    Here's an inline
-    [link]([34m/script?foo=1&bar=2[0m).
+    Here's a [link] [1][2] with an
+    ampersand in the URL.
 
-    Here's an inline
-    [link]([34m/script?foo=1&bar=2[0m).
+    [2]: http://example.com/?foo=1&bar=2
+
+    Here's a link with an ampersand in
+    the link text: [AT&T] [2][3].
+
+    [3]: http://att.com/ "AT&T"
+
+    Here's an inline [link][4].
+
+    [4]: /script?foo=1&bar=2
+
+    Here's an inline [link][5].
+
+    [5]: /script?foo=1&bar=2
+

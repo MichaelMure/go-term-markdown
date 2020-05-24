@@ -1,16 +1,31 @@
-    Foo [bar]([34m/url/[0m Title).
+    Foo [bar] [1][1].
 
-    Foo [bar]([34m/url/[0m Title).
+    [1]: /url/ "Title"
 
-    Foo [bar]([34m/url/[0m Title).
+    Foo [bar][2].
 
-    With [embedded [brackets]]([34m/url/[0m).
+    [2]: /url/ "Title"
 
-    Indented [once]([34m/url[0m).
+    Foo [bar]
+    [1][3].
 
-    Indented [twice]([34m/url[0m).
+    [3]: /url/ "Title"
 
-    Indented [thrice]([34m/url[0m).
+    With [embedded [brackets]] [b][4].
+
+    [4]: /url/
+
+    Indented [once][5].
+
+    [5]: /url
+
+    Indented [twice][6].
+
+    [6]: /url
+
+    Indented [thrice][7].
+
+    [7]: /url
 
     Indented [four][] times.
 
@@ -18,15 +33,26 @@
 
     ────────────────────────────────────
 
-    [this]([34mfoo[0m) should work
+    [this][8] [this][9] should work
 
-    So should [this]([34mfoo[0m).
+    [8]: foo
+    [9]: foo
 
-    And [this]([34mfoo[0m).
+    So should [this][10].
 
-    And [this]([34mfoo[0m).
+    [10]: foo
 
-    And [this]([34mfoo[0m).
+    And [this][11] [].
+
+    [11]: foo
+
+    And [this][12].
+
+    [12]: foo
+
+    And [this][13].
+
+    [13]: foo
 
     But not [that] [].
 
@@ -35,13 +61,18 @@
     Nor [that].
 
     [Something in brackets like
-    [this]([34mfoo[0m) should work]
+    [this][14] should work]
 
-    [Same with [this]([34mfoo[0m).]
+    [14]: foo
 
-    In this case,
-    [this]([34m/somethingelse/[0m) points to
+    [Same with [this][15].]
+
+    [15]: foo
+
+    In this case, [this][16] points to
     something else.
+
+    [16]: /somethingelse/
 
     Backslashing should suppress [this]
     and [this].
@@ -49,8 +80,13 @@
     ────────────────────────────────────
 
     Here's one where the [link
-    breaks]([34m/url/[0m) across lines.
+    breaks][17] across lines.
 
-    Here's another where the
-    [link]([34m/url/[0m) across lines, but with
-    a line-ending space.
+    [17]: /url/
+
+    Here's another where the [link
+    breaks][18] across lines, but with a
+    line-ending space.
+
+    [18]: /url/
+

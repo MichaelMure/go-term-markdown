@@ -1,5 +1,6 @@
-    [32;1m1 Markdown: Basics[0m
-    ────────────────────────────────────
+    ╔══════════════════════════════════╗
+    ║         Markdown: Basics         ║
+    ╚══════════════════════════════════╝
 
     [32m• [0m[Main]([34m/projects/markdown/[0m)
     [32m• [0m[Basics]([34m[0m)
@@ -10,59 +11,63 @@
     [32m• [0m[Dingus]([34m/projects/markdown/dingus[0m
       [34m[0m)
 
-    [32;1m1.1 Getting the Gist of Markdown's[0m
+    [32;1m1 Getting the Gist of Markdown's[0m
     [1;32mFormatting Syntax[0m
 
     This page offers a brief overview of
-    what it's like to use Markdown. The
-    [syntax
-    page]([34m/projects/markdown/syntax[0m
-    Markdown Syntax) provides complete,
-    detailed documentation for every
-    feature, but Markdown should be very
-    easy to pick up simply by looking
-    at a few examples of it in action.
-    The examples on this page are
-    written in a before/after style,
-    showing example syntax and the HTML
-    output produced by Markdown.
+    what it's like to use Markdown.
+    The [syntax page] [s][1] provides
+    complete, detailed documentation for
+    every feature, but Markdown should
+    be very easy to pick up simply by
+    looking at a few examples of it in
+    action. The examples on this page
+    are written in a before/after style,
+    showing example syntax and the
+    HTML output produced by Markdown.
+
+    [1]: /projects/markdown/syntax
+    "Markdown Syntax"
 
     It's also helpful to simply try
-    Markdown out; the
-    [Dingus]([34m/projects/markdown/dingus[0m
-    Markdown Dingus) is a web
-    application that allows you type
-    your own Markdown-formatted text and
-    translate it to XHTML.
+    Markdown out; the [Dingus] [d][2] is
+    a
+    web application that allows you type
+    your own Markdown-formatted text
+    and translate it to XHTML.
 
-    [1mNote:[0m[0m This document is itself
-    written using Markdown; you can [see
-    the source for it by adding '.text'
-    to the URL]([34m/projects/markdown/basi[0m
-    [34mcs.text[0m).
+    [2]: /projects/markdown/dingus
+    "Markdown Dingus"
 
-    [32;1m1.2 Paragraphs, Headers, Blockquotes[0m
+    [1mNote:[0m This document is itself
+    written using Markdown; you
+    can [see the source for it by adding
+    '.text' to the URL] [src][3].
+
+    [3]: /projects/markdown/basics.text
+
+    [32;1m2 Paragraphs, Headers, Blockquotes[0m
 
     A paragraph is simply one or more
     consecutive lines of text, separated
-    by one or more blank lines. (A
-    blank line is any line that looks
-    like a blank line -- a line
-    containing nothing spaces or tabs is
-    considered blank.) Normal
-    paragraphs should not be intended
-    with spaces or tabs.
+    by one or more blank lines. (A blank
+    line is any line that looks like a
+    blank line -- a line containing
+    nothing spaces or tabs is considered
+    blank.) Normal paragraphs should not
+    be intended with spaces or tabs.
 
     Markdown offers two styles of
     headers: [3mSetext[23m and [3matx[23m.
     Setext-style headers for [44;3m<h1>[0m and
-    [44;3m<h2>[0m are created by "underlining"
-    with equal signs ([44;3m=[0m) and hyphens
-    ([44;3m-[0m), respectively. To create an
-    atx-style header, you put 1-6 hash
-    marks ([44;3m#[0m) at the beginning of the
-    line -- the number of hashes equals
-    the resulting HTML header level.
+    [44;3m<h2>[0m are created by
+    "underlining" with equal signs ([44;3m=[0m)
+    and hyphens ([44;3m-[0m), respectively.
+    To create an atx-style header, you
+    put 1-6 hash marks ([44;3m#[0m) at the
+    beginning of the line -- the number
+    of hashes equals the resulting
+    HTML header level.
 
     Blockquotes are indicated using
     email-style '[44;3m>[0m' angle brackets.
@@ -122,7 +127,7 @@
     [32;1m┃ [0mblockquote</h2>
     [32;1m┃ [0m</blockquote>
 
-    [92m1.2.1 Phrase Emphasis[0m
+    [92m2.1 Phrase Emphasis[0m
 
     Markdown uses asterisks and
     underscores to indicate spans of
@@ -152,13 +157,13 @@
     [32;1m┃ [0mOr, if you prefer, <strong>use two
     [32;1m┃ [0munderscores instead</strong>.</p>
 
-    [32;1m1.3 Lists[0m
+    [32;1m3 Lists[0m
 
     Unordered (bulleted) lists use
     asterisks, pluses, and hyphens ([44;3m*[0m,
     [44;3m+[0m, and [44;3m-[0m) as list markers. These
-    three markers are interchangable;
-    this:
+    three markers are
+    interchangable; this:
 
     [32;1m┃ [0m*   Candy.
     [32;1m┃ [0m*   Gum.
@@ -204,8 +209,8 @@
     items, you'll get [44;3m<p>[0m tags for the
     list item text. You can create
     multi-paragraph list items by
-    indenting the paragraphs by 4 spaces
-    or 1 tab:
+    indenting
+    the paragraphs by 4 spaces or 1 tab:
 
     [32;1m┃ [0m*   A list item.
     [32;1m┃ [0m
@@ -223,17 +228,17 @@
     [32;1m┃ [0mlist.</p></li>
     [32;1m┃ [0m</ul>
 
-    [92m1.3.1 Links[0m
+    [92m3.1 Links[0m
 
     Markdown supports two styles for
     creating links: [3minline[23m and
     [3mreference[23m. With both styles, you use
-    square brackets to delimit the text
-    you want to turn into a link.
+    square brackets to delimit the
+    text you want to turn into a link.
 
     Inline-style links use parentheses
-    immediately after the link text. For
-    example:
+    immediately after the link text.
+    For example:
 
     [32;1m┃ [0mThis is an [example
     [32;1m┃ [0mlink](http://example.com/).
@@ -305,7 +310,7 @@
     [32;1m┃ [0mhref="http://www.nytimes.com/">The
     [32;1m┃ [0mNew York Times</a>.</p>
 
-    [92m1.3.2 Images[0m
+    [92m3.2 Images[0m
 
     Image syntax is very much like link
     syntax.
@@ -327,16 +332,16 @@
     [32;1m┃ [0m<img src="/path/to/img.jpg"
     [32;1m┃ [0malt="alt text" title="Title" />
 
-    [92m1.3.3 Code[0m
+    [92m3.3 Code[0m
 
     In a regular paragraph, you can
     create code span by wrapping text in
     backtick quotes. Any ampersands ([44;3m&[0m)
-    and angle brackets ([44;3m<[0m or [44;3m>[0m) will
-    automatically be translated into
-    HTML entities. This makes it easy to
-    use Markdown to write about HTML
-    example code:
+    and angle brackets ([44;3m<[0m or
+    [44;3m>[0m) will automatically be translated
+    into HTML entities. This makes
+    it easy to use Markdown to write
+    about HTML example code:
 
     [32;1m┃ [0mI strongly recommend against using
     [32;1m┃ [0many `<blink>` tags.
@@ -362,9 +367,10 @@
 
     To specify an entire block of
     pre-formatted code, indent every
-    line of the block by 4 spaces or 1
-    tab. Just like with code spans, [44;3m&[0m,
-    [44;3m<[0m, and [44;3m>[0m characters will be escaped
+    line of
+    the block by 4 spaces or 1 tab. Just
+    like with code spans, [44;3m&[0m, [44;3m<[0m,
+    and [44;3m>[0m characters will be escaped
     automatically.
 
     Markdown:
@@ -390,4 +396,3 @@
     [32;1m┃ [0mexample.&lt;/p&gt;
     [32;1m┃ [0m&lt;/blockquote&gt;
     [32;1m┃ [0m</code></pre>
-

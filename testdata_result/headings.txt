@@ -18,13 +18,15 @@
 
     [92m3.2 heading 3[0m
 
-    [92m3.3 link [my[0m
-    [92mlink]([34mhttp://example.com[0m)[0m
+    [92m3.3 link [my link][1][0m
+
+    [1]: http://example.com
 
     [92m3.4 image img[0m
 
-    [92m3.5 link + img[0m
-    [92m[img]([34mhttp://example.com[0m)[0m
+    [92m3.5 link + img [img][2][0m
+
+    [2]: http://example.com
 
     [92m3.6 code [44;3mìnt x = 7[0m[0m
 

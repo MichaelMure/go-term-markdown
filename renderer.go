@@ -102,7 +102,7 @@ TextBlock --> Text
 
 var _ mdrender.NodeRenderer = &renderer{}
 
-type renderer struct {
+type config struct {
 	// maximum line width allowed
 	lineWidth int
 	// constant left padding to apply
@@ -112,6 +112,14 @@ type renderer struct {
 	// Default is fine directly through a terminal
 	// DitheringWithBlocks is recommended if a terminal UI library is used
 	imageDithering ansimage.DitheringMode
+
+	headingShade levelShadeFmt
+
+	blockQuoteShade levelShadeFmt
+}
+
+type renderer struct {
+	config
 
 	// all the custom left paddings, without the fixed space from leftPad
 	padAccumulator []string
@@ -124,12 +132,11 @@ type renderer struct {
 	// is then rendered appropriately when exiting the node.
 	inlineAccumulator strings.Builder
 
-	// record and render the heading numbering
+	// record the heading numbering
 	headingNumbering headingNumbering
-	headingShade     levelShadeFmt
 
+	// record the depth of blockquotes
 	blockQuoteLevel int
-	blockQuoteShade levelShadeFmt
 
 	linksRefs *linkRefs
 
@@ -172,15 +179,17 @@ func (r *renderer) RegisterFuncs(reg mdrender.NodeRendererFuncRegisterer) {
 
 func newRenderer(lineWidth int, leftPad int, opts ...Options) *renderer {
 	r := &renderer{
-		lineWidth:       lineWidth,
-		leftPad:         leftPad,
-		padAccumulator:  make([]string, 0, 10),
-		headingShade:    shade(defaultHeadingShades),
-		blockQuoteShade: shade(defaultQuoteShades),
-		linksRefs:       NewLinkRefs(),
+		config: config{
+			lineWidth:       lineWidth,
+			leftPad:         leftPad,
+			headingShade:    shade(defaultHeadingShades),
+			blockQuoteShade: shade(defaultQuoteShades),
+		},
+		padAccumulator: make([]string, 0, 10),
+		linksRefs:      NewLinkRefs(),
 	}
 	for _, opt := range opts {
-		opt(r)
+		opt(&r.config)
 	}
 	return r
 }
@@ -201,7 +210,12 @@ func (r *renderer) render(w util.BufWriter, source []byte, node ast.Node, enteri
 
 	switch node := node.(type) {
 	case *ast.Document:
-		// Nothing to do
+		if !entering {
+			if r.linksRefs.Count() > 0 {
+				_, _ = fmt.Fprintln(w)
+				r.renderLinkRefsIfAny(w)
+			}
+		}
 
 	case *ast.Blockquote:
 		// set and remove a colored bar on the left
@@ -216,6 +230,11 @@ func (r *renderer) render(w util.BufWriter, source []byte, node ast.Node, enteri
 			if node.Parent().Kind() == ast.KindDocument && node.NextSibling() != nil {
 				_, _ = fmt.Fprintln(w)
 			}
+
+			// render the links if any after a blockquote attached to the root
+			if node.Parent().Kind() == ast.KindDocument {
+				r.renderLinkRefsIfAny(w)
+			}
 		}
 
 	case *ast.List:
@@ -225,6 +244,11 @@ func (r *renderer) render(w util.BufWriter, source []byte, node ast.Node, enteri
 			_, parentIsListItem := node.Parent().(*ast.ListItem)
 			if !parentIsListItem && node.NextSibling() != nil {
 				_, _ = fmt.Fprintln(w)
+			}
+
+			// render the links if any after a list attached to the root
+			if node.Parent().Kind() == ast.KindDocument {
+				r.renderLinkRefsIfAny(w)
 			}
 		}
 
@@ -266,18 +290,9 @@ func (r *renderer) render(w util.BufWriter, source []byte, node ast.Node, enteri
 		}
 
 	// TextBlock: block of text within something else (ListItem)
+	// OR a link ref definition block
 	case *ast.TextBlock:
 		if isLinkRefDefinition(node) {
-			if !entering {
-				r.linksRefs.Render(w, r.leftPad, r.lineWidth)
-				r.linksRefs.Reset()
-
-				// extra line break in some cases to separate elements in the terminal
-				// rendering.
-				if node.Parent().Kind() == ast.KindDocument && node.NextSibling() != nil {
-					_, _ = fmt.Fprintln(w)
-				}
-			}
 			break
 		}
 
@@ -319,12 +334,18 @@ func (r *renderer) render(w util.BufWriter, source []byte, node ast.Node, enteri
 			// rendering.
 			if node.Parent().Kind() == ast.KindDocument && node.NextSibling() != nil {
 				_, _ = fmt.Fprintln(w)
+
+				// also render the links if any
+				r.renderLinkRefsIfAny(w)
 			}
 		}
 
 	case *ast.Heading:
 		if !entering {
 			r.renderHeading(w, node.Level)
+
+			// render the links if any
+			r.renderLinkRefsIfAny(w)
 		}
 
 	case *ast.ThematicBreak:
@@ -368,24 +389,16 @@ func (r *renderer) render(w util.BufWriter, source []byte, node ast.Node, enteri
 		}
 
 	case *ast.Link:
-		// The spec say that the text
-
-		// TODO: resolve this madness
-
+		// links are forced into the inline ref (no destination) + list style later
+		// list of refs is written later when convenient
 		if entering {
 			r.inlineAccumulator.WriteString("[")
 		} else {
-			r.inlineAccumulator.WriteString("](")
-			r.inlineAccumulator.WriteString(Blue(string(node.Destination)))
-			if len(node.Title) > 0 {
-				r.inlineAccumulator.WriteString(" ")
-				r.inlineAccumulator.WriteString(string(node.Title))
-			}
-			r.inlineAccumulator.WriteString(")")
+			label := r.linksRefs.Add(string(node.Destination), string(node.Title))
+			r.inlineAccumulator.WriteString("][")
+			r.inlineAccumulator.WriteString(label)
+			r.inlineAccumulator.WriteString("]")
 		}
-
-	case *ast.AutoLink:
-		// TODO
 
 	case *ast.Image:
 	// TODO: only render if child of Document
@@ -493,6 +506,9 @@ func (r *renderer) render(w util.BufWriter, source []byte, node ast.Node, enteri
 		} else {
 			r.table.Render(w, r.leftPad, r.lineWidth)
 			r.table = nil
+
+			// render the links if any (table is always attached to the root)
+			r.renderLinkRefsIfAny(w)
 		}
 
 	case *extast.TableCell:
@@ -879,6 +895,11 @@ func (r *renderer) renderHTMLBlock(w io.Writer, source []byte, node *ast.HTMLBlo
 	//
 }
 
+func (r *renderer) renderLinkRefsIfAny(w io.Writer) {
+	r.linksRefs.Render(w, r.leftPad, r.lineWidth)
+	r.linksRefs.Reset()
+}
+
 func getDivHTMLAttr(attrs []html.Attribute) text.Alignment {
 	for _, attr := range attrs {
 		switch attr.Key {
@@ -1075,23 +1096,6 @@ func removeLineBreak(text string) string {
 		}
 	}
 	return strings.Join(lines, " ")
-}
-
-func shouldCleanText(node ast.Node) bool {
-	for node != nil {
-		switch node.(type) {
-		case *ast.Blockquote:
-			return false
-
-		case *ast.Heading, *ast.Image, *ast.Link,
-			*extast.TableCell, *ast.Document, *ast.ListItem:
-			return true
-		}
-
-		node = node.Parent()
-	}
-
-	panic("bad markdown document or missing case")
 }
 
 func accumulateSegments(lines *mdtext.Segments, source []byte) string {

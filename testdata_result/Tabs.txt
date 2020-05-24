@@ -1,7 +1,7 @@
-    [32m• [0mthis is a list item indented with
-      tabs
-    [32m• [0mthis is a list item indented with
-      spaces
+    [32m• [0mthis is a list item
+      indented with tabs
+    [32m• [0mthis is a list item
+      indented with spaces
 
     Code:
 
@@ -20,4 +20,3 @@
     [32;1m┃ [0m
     [32;1m┃ [0m+   this is an example list item
     [32;1m┃ [0m    indented with spaces
-

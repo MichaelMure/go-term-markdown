@@ -11,10 +11,11 @@
     Markdown
     :  Text-to-HTML conversion tool
 
-    With a link
-    [url]([34mhttp://example.com[0m)
+    With a link [url][1]
     :  That's a definition list with an
     url in the header
+
+    [1]: http://example.com
 
     [32m• [0m[X] Write the press release
     [32m• [0m[ ] Update the website
