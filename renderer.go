@@ -401,33 +401,37 @@ func (r *renderer) render(w util.BufWriter, source []byte, node ast.Node, enteri
 		}
 
 	case *ast.Image:
-	// TODO: only render if child of Document
-	// if entering {
-	// 	// the alt text/title is weirdly parsed and is actually
-	// 	// a child text of this node
-	// 	var title string
-	// 	if len(node.Children) == 1 {
-	// 		if t, ok := node.Children[0].(*ast.Text); ok {
-	// 			title = string(t.Literal)
-	// 		}
-	// 	}
-	//
-	// 	str, rendered := r.renderImage(
-	// 		string(node.Destination), title,
-	// 		r.lineWidth-r.leftPad,
-	// 	)
-	//
-	// 	if rendered {
-	// 		r.inlineAccumulator.WriteString("\n")
-	// 		r.inlineAccumulator.WriteString(str)
-	// 		r.inlineAccumulator.WriteString("\n\n")
-	// 	} else {
-	// 		r.inlineAccumulator.WriteString(str)
-	// 		r.inlineAccumulator.WriteString("\n")
-	// 	}
-	//
-	// 	return ast.SkipChildren
-	// }
+		// if it's attached to the root (ie, not inline) we shitty render it
+		t, nextIsText := node.NextSibling().(*ast.Text)
+		nextIsSoftBreak := nextIsText && t.SoftLineBreak()
+		isRootImage := node.Parent().Kind() == ast.KindParagraph && node.PreviousSibling() == nil && (node.NextSibling() == nil || nextIsSoftBreak)
+
+		if isRootImage {
+			if entering {
+				_ = r.renderImage(&r.inlineAccumulator, r.lineWidth-r.leftPad, string(node.Destination))
+				r.inlineAccumulator.WriteString("![")
+			} else {
+				r.inlineAccumulator.WriteString("][")
+				r.inlineAccumulator.WriteString(string(node.Destination))
+				r.inlineAccumulator.WriteString("]")
+				if len(node.Title) > 0 {
+					r.inlineAccumulator.WriteString(" \"")
+					r.inlineAccumulator.WriteString(string(node.Title))
+					r.inlineAccumulator.WriteString("\"")
+				}
+				r.inlineAccumulator.WriteString("\n")
+			}
+			return ast.WalkContinue, nil
+		}
+
+		if entering {
+			r.inlineAccumulator.WriteString("![")
+		} else {
+			label := r.linksRefs.Add(string(node.Destination), string(node.Title))
+			r.inlineAccumulator.WriteString("][")
+			r.inlineAccumulator.WriteString(label)
+			r.inlineAccumulator.WriteString("]")
+		}
 
 	// a single inline piece of text
 	case *ast.Text:
@@ -726,12 +730,6 @@ func (r *renderer) renderHTMLBlock(w io.Writer, source []byte, node *ast.HTMLBlo
 					r.renderHeading(&buf, 6)
 				}
 
-			case "img":
-				flushInline()
-				src, title := getImgHTMLAttr(node.Attr)
-				str, _ := r.renderImage(src, title, r.lineWidth-len(r.pad()))
-				r.inlineAccumulator.WriteString(str)
-
 			case "hr":
 				flushInline()
 				r.renderHorizontalRule(&buf)
@@ -1023,39 +1021,28 @@ func renderRawHtml(node *html.Node) string {
 	return result.String()
 }
 
-func (r *renderer) renderImage(dest string, title string, lineWidth int) (result string, rendered bool) {
-	title = strings.ReplaceAll(title, "\n", "")
-	title = strings.TrimSpace(title)
-	dest = strings.ReplaceAll(dest, "\n", "")
-	dest = strings.TrimSpace(dest)
-
-	fallback := func() (string, bool) {
-		return fmt.Sprintf("![%s](%s)", title, Blue(dest)), false
-	}
-
+func (r *renderer) renderImage(w io.Writer, width int, dest string) error {
 	reader, err := imageFromDestination(dest)
 	if err != nil {
-		return fallback()
+		return err
 	}
-
-	x := lineWidth
 
 	if r.imageDithering == ansimage.DitheringWithChars || r.imageDithering == ansimage.DitheringWithBlocks {
 		// not sure why this is needed by ansimage
 		// x *= 4
 	}
 
-	img, err := ansimage.NewScaledFromReader(reader, math.MaxInt32, x,
+	img, err := ansimage.NewScaledFromReader(reader, math.MaxInt32, width,
 		stdcolor.Black, ansimage.ScaleModeFit, r.imageDithering)
-
 	if err != nil {
-		return fallback()
+		return err
 	}
 
-	if title != "" {
-		return fmt.Sprintf("%s%s: %s", img.Render(), title, Blue(dest)), true
-	}
-	return fmt.Sprintf("%s%s", img.Render(), Blue(dest)), true
+	rendered := strings.TrimSpace(img.Render())
+
+	_, _ = io.WriteString(w, rendered)
+	_, _ = io.WriteString(w, "\n")
+	return nil
 }
 
 func imageFromDestination(dest string) (io.ReadCloser, error) {

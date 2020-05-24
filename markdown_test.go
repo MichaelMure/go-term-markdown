@@ -70,7 +70,12 @@ func Test__DoRender(t *testing.T) {
 		_, file := filepath.Split(fullpath)
 		name := strings.TrimRight(file, ".md")
 
-		// if name != "Ordered and unordered lists" {
+		// if name != "image" {
+		// 	// if name != "README" {
+		// 	// if name != "Amps and angle encoding" {
+		// 	// if name != "Links, shortcut references" {
+		// 	// if name != "Links, inline style" {
+		// 	// if name != "Table" {
 		// 	return nil
 		// }
 
