@@ -1,4 +1,5 @@
     A paragraph.
+
     [32;1m┃ [0mQuoted text.
     [32;1m┃ [0mQuoted text.
     [32;1m┃ [0mQuoted text
@@ -6,7 +7,10 @@
     [32;1m┃ [0m[32;1m┃ [0mQuoted quote.
     [32;1m┃ [0mQuoted text.
     [32;1m┃ [0mQuoted text.
+
     A paragraph.
+
     [32;1m┃ [0m[32m• [0mQuoted
     [32;1m┃ [0m[32m• [0mList
+
     A paragraph.

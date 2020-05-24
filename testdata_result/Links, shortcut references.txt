@@ -1,10 +1,21 @@
-    This is the [simple case]([34m/simple[0m).
+    This is the [simple case][1].
+
+    [1]: /simple
 
     This one has a [line
-    break]([34m/foo[0m).
+    break][2].
 
-    This one has a [line]([34m/foo[0m) with a
-    line-ending space.
+    [2]: /foo
 
-    [this]([34m/that[0m) and the
-    [other]([34m/other[0m)
+    This one has a [line
+    break][3] with a line-ending space.
+
+    [3]: /foo
+
+    [this][4] [that][5] and the
+    [other][6]
+
+    [4]: /this
+    [5]: /that
+    [6]: /other
+

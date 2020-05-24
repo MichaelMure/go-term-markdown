@@ -1,42 +1,46 @@
-    [32;1m1 heading 1[0m
-    ────────────────────────────────────
+    ╔══════════════════════════════════╗
+    ║            heading 1             ║
+    ╚══════════════════════════════════╝
 
-    [32;1m1.1 heading 2[0m
+    [32;1m1 heading 2[0m
 
-    [32;1m1.2 heading 2[0m
+    [32;1m2 heading 2[0m
 
-    [32;1m1.3 heading 2[0m
+    [32;1m3 heading 2[0m
 
-    [92m1.3.1 heading 3[0m
+    [92m3.1 heading 3[0m
 
-    [32m1.3.1.1 heading 4[0m
+    [32m3.1.1 heading 4[0m
 
-    [32m1.3.1.1.1 heading 5[0m
+    [32m3.1.1.1 heading 5[0m
 
-    [32m1.3.1.1.1.1 heading 6[0m
+    [32m3.1.1.1.1 heading 6[0m
 
-    [92m1.3.2 heading 3[0m
+    [92m3.2 heading 3[0m
 
-    [92m1.3.3 link [my[0m
-    [92mlink]([34mhttp://example.com[0m)[0m
+    [92m3.3 link [my link][1][0m
 
-    [92m1.3.4 image[0m
-    [92m![img]([34mhttp://example.com/img.png[0m)
-    [0m
+    [1]: http://example.com
 
-    [92m1.3.5 link + img[0m
-    [92m[]([34mhttp://example.com[0m)[0m
+    [92m3.4 image ![img][2][0m
 
-    [92m1.3.6 code [44;3mìnt x = 7[0m[0m
+    [2]: http://example.com/img.png
 
-    [92m1.3.7 [3memphasis[23m [3memphasis[23m[0m
+    [92m3.5 link + img [![img][3]][4][0m
 
-    [92m1.3.8 [9mstrikethrough[29m[0m
+    [3]: http://example.com/img.png
+    [4]: http://example.com
 
-    [92m1.3.9 [3mbold[23m [1mbold[0m[0m[0m
+    [92m3.6 code [44;3mìnt x = 7[0m[0m
 
-    [92m1.3.10 [31m<div>[0mfoo[31m</div>[0m[0m
+    [92m3.7 [3memphasis[23m [3memphasis[23m[0m
 
-    [92m1.3.11 [31m<!-- This is a simple comment[0m
+    [92m3.8 [9mstrikethrough[29m[0m
+
+    [92m3.9 [3mbold[23m [1mbold[0m[0m
+
+    [92m3.10 [31m<div>[0mfoo[31m</div>[0m[0m
+
+    [92m3.11 [31m<!-- This is a simple comment[0m
     [31m-->[0m comment html[0m
 

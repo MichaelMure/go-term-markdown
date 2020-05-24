@@ -1,14 +1,30 @@
-    Just a [URL]([34m/url/[0m).
+    Just a [URL][1].
 
-    [URL and title]([34m/url/[0m title).
+    [1]: /url/
 
-    [URL and title]([34m/url/[0m title preceded
-    by two spaces).
+    [URL and title][2].
 
-    [URL and title]([34m/url/[0m title preceded
-    by a tab).
+    [2]: /url/ "title"
 
-    [URL and title]([34m/url/[0m title has
-    spaces afterward).
+    [URL and title][3].
 
-    [Empty]().
+    [3]: /url/ "title preceded by two
+    spaces"
+
+    [URL and title][4].
+
+    [4]: /url/ "title preceded by a tab"
+
+    [URL and title][5].
+
+    [5]: /url/ "title has spaces
+    afterward"
+
+    [Empty][6].
+
+    [6]:
+
+    [][7].
+
+    [7]:
+

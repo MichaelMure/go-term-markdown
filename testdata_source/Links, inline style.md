@@ -10,3 +10,5 @@ Just a [URL](/url/).
 
 
 [Empty]().
+
+[]().

@@ -12,4 +12,3 @@
     Regular Text.
 
     [32;1m┃ [0mcode block on the last line
-

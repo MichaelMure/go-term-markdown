@@ -1,8 +1,8 @@
 package misc
 
 import (
-	"fmt"
 	"io/ioutil"
+	"os"
 
 	markdown "github.com/MichaelMure/go-term-markdown"
 )
@@ -14,7 +14,8 @@ func main() {
 		panic(err)
 	}
 
-	result := markdown.Render(string(source), 80, 6)
-
-	fmt.Println(result)
+	err = markdown.Render(os.Stdout, source, 80, 6)
+	if err != nil {
+		panic(err)
+	}
 }
