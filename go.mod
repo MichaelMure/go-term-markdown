@@ -10,6 +10,6 @@ require (
 	github.com/gomarkdown/markdown v0.0.0-20191123064959-2c17d62f5098
 	github.com/kyokomi/emoji v2.1.0+incompatible
 	github.com/mattn/go-runewidth v0.0.9
-	github.com/stretchr/testify v1.5.1
+	github.com/stretchr/testify v1.6.0
 	golang.org/x/net v0.0.0-20190813141303-74dc4d7220e7
 )
