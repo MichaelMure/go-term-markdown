@@ -4,7 +4,7 @@ go 1.12
 
 require (
 	github.com/MichaelMure/go-term-text v0.2.9
-	github.com/alecthomas/chroma v0.7.1
+	github.com/alecthomas/chroma v0.8.1
 	github.com/eliukblau/pixterm/pkg/ansimage v0.0.0-20191210081756-9fb6cf8c2f75
 	github.com/fatih/color v1.9.0
 	github.com/gomarkdown/markdown v0.0.0-20191123064959-2c17d62f5098
