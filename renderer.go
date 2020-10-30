@@ -127,7 +127,8 @@ type renderer struct {
 	table *tableRenderer
 }
 
-func newRenderer(lineWidth int, leftPad int, opts ...Options) *renderer {
+/// NewRenderer creates a new instance of the console renderer
+func NewRenderer(lineWidth int, leftPad int, opts ...Options) *renderer {
 	r := &renderer{
 		lineWidth:       lineWidth,
 		leftPad:         leftPad,
