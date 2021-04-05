@@ -9,7 +9,7 @@ require (
 	github.com/fatih/color v1.9.0
 	github.com/gomarkdown/markdown v0.0.0-20191123064959-2c17d62f5098
 	github.com/kyokomi/emoji v2.1.0+incompatible
-	github.com/mattn/go-runewidth v0.0.9
+	github.com/mattn/go-runewidth v0.0.12 // indirect
 	github.com/stretchr/testify v1.6.1
 	golang.org/x/net v0.0.0-20190813141303-74dc4d7220e7
 )
