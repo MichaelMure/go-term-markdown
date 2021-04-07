@@ -297,28 +297,31 @@ func drawRow(w io.Writer, pad string, cells []tableCell, columnWidths []int, tru
 
 				switch cells[j].alignment {
 				case CellAlignLeft:
-					_, _ = w.Write([]byte(formatting[j].String()))
+					_, _ = w.Write([]byte(formatting[j].FormatString()))
+					// accumulate the formatting
+					formatting[j].Witness(trimmed)
 					_, _ = w.Write([]byte(trimmed))
-					_, _ = w.Write([]byte(resetAll))
+					_, _ = w.Write([]byte(formatting[j].ResetString()))
 					_, _ = w.Write([]byte(strings.Repeat(" ", width-text.Len(trimmed))))
 
 				case CellAlignCenter:
 					spaces := width - text.Len(trimmed)
 					_, _ = w.Write([]byte(strings.Repeat(" ", spaces/2)))
-					_, _ = w.Write([]byte(formatting[j].String()))
+					_, _ = w.Write([]byte(formatting[j].FormatString()))
+					// accumulate the formatting
+					formatting[j].Witness(trimmed)
 					_, _ = w.Write([]byte(trimmed))
-					_, _ = w.Write([]byte(resetAll))
+					_, _ = w.Write([]byte(formatting[j].ResetString()))
 					_, _ = w.Write([]byte(strings.Repeat(" ", spaces-(spaces/2))))
 
 				case CellAlignRight:
 					_, _ = w.Write([]byte(strings.Repeat(" ", width-text.Len(trimmed))))
-					_, _ = w.Write([]byte(formatting[j].String()))
+					_, _ = w.Write([]byte(formatting[j].FormatString()))
+					// accumulate the formatting
+					formatting[j].Witness(trimmed)
 					_, _ = w.Write([]byte(trimmed))
-					_, _ = w.Write([]byte(resetAll))
+					_, _ = w.Write([]byte(formatting[j].ResetString()))
 				}
-
-				// accumulate the formatting
-				formatting[j].Witness(trimmed)
 			} else {
 				padding := strings.Repeat(" ", width-text.Len(content))
 				_, _ = w.Write([]byte(padding))

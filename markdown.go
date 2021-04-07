@@ -5,9 +5,9 @@ import (
 	"github.com/gomarkdown/markdown/parser"
 )
 
-/// Extensions returns the bitmask of extensions supported by this renderer.
-/// The output of this function can be used to instantiate a new markdown
-/// parser using the `NewWithExtensions` function.
+// Extensions returns the bitmask of extensions supported by this renderer.
+// The output of this function can be used to instantiate a new markdown
+// parser using the `NewWithExtensions` function.
 func Extensions() parser.Extensions {
 	extensions := parser.NoIntraEmphasis        // Ignore emphasis markers inside words
 	extensions |= parser.Tables                 // Parse tables

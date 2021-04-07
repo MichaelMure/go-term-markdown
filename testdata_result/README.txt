@@ -30,28 +30,28 @@
                  ug/Lobby)
 
     [44;3mgit-bug[0m is a bug tracker that:
-    [32m• [0m[1mfully embed in git[0m[0m: you only need
+    [32m• [0m[1mfully embed in git[0m: you only need
       your git repository to have a bug
       tracker
-    [32m• [0m[1mis distributed[0m[0m: use your normal
+    [32m• [0m[1mis distributed[0m: use your normal
       git remote to collaborate, push
       and pull your bugs !
-    [32m• [0m[1mworks offline[0m[0m: in a plane or under
+    [32m• [0m[1mworks offline[0m: in a plane or under
       the sea ? keep reading and writing
       bugs
-    [32m• [0m[1mprevent vendor locking[0m[0m: your usual
+    [32m• [0m[1mprevent vendor locking[0m: your usual
       service is down or went bad ? you
       already have a full backup
-    [32m• [0m[1mis fast[0m[0m: listing bugs or opening
+    [32m• [0m[1mis fast[0m: listing bugs or opening
       them is a matter of milliseconds
-    [32m• [0m[1mdoesn't pollute your project[0m[0m: no
+    [32m• [0m[1mdoesn't pollute your project[0m: no
       files are added in your project
-    [32m• [0m[1mintegrate with your tooling[0m[0m: use
+    [32m• [0m[1mintegrate with your tooling[0m: use
       the UI you like (CLI, terminal,
       web) or integrate with your
       existing tools through the CLI or
       the GraphQL API
-    [32m• [0m[1mbridge with other bug trackers[0m[0m:
+    [32m• [0m[1mbridge with other bug trackers[0m:
       [bridges]([34m#bridges[0m) exist to
       import and soon export to other
       trackers.
@@ -219,34 +219,34 @@
     [92m1.5.1 Importer implementations[0m
 
     ┌─────────────────┬──────┬─────────┐
-    │[0m[0m                 │[0mGithub[0m│[0mLaunchpad[0m│
+    │                 │Github│Launchpad│
     ╞═════════════════╪══════╪═════════╡
-    │[0m[1mincremental[0m[0m[31m<br/>[0m([0m│[0m✔[0m     │   [0m❌[0m    │
-    │[0mcan import more[0m  │      │         │
-    │[0mthan once)[0m       │      │         │
+    │[1mincremental[0m[31m<br/>[0m(│✔️    │   ❌    │
+    │can import more  │      │         │
+    │than once)       │      │         │
     ├─────────────────┼──────┼─────────┤
-    │[0m[1mwith resume[0m[0m[31m<br/>[0m([0m│[0m❌[0m    │   [0m❌[0m    │
-    │[0mdownload only new[0m│      │         │
-    │[0mdata)[0m            │      │         │
+    │[1mwith resume[0m[31m<br/>[0m(│❌    │   ❌    │
+    │download only new│      │         │
+    │data)            │      │         │
     ├─────────────────┼──────┼─────────┤
-    │[0m[1midentities[0m[0m[0m       │[0m✔[0m     │    [0m✔[0m    │
+    │[1midentities[0m       │✔️    │   ✔️    │
     ├─────────────────┼──────┼─────────┤
-    │[0midentities update[0m│[0m❌[0m    │   [0m❌[0m    │
+    │identities update│❌    │   ❌    │
     ├─────────────────┼──────┼─────────┤
-    │[0m[1mbug[0m[0m[0m              │[0m✔[0m     │    [0m✔[0m    │
+    │[1mbug[0m              │✔️    │   ✔️    │
     ├─────────────────┼──────┼─────────┤
-    │[0mcomments[0m         │[0m✔[0m     │    [0m✔[0m    │
+    │comments         │✔️    │   ✔️    │
     ├─────────────────┼──────┼─────────┤
-    │[0mcomment editions[0m │[0m✔[0m     │   [0m❌[0m    │
+    │comment editions │✔️    │   ❌    │
     ├─────────────────┼──────┼─────────┤
-    │[0mlabels[0m           │[0m✔[0m     │   [0m❌[0m    │
+    │labels           │✔️    │   ❌    │
     ├─────────────────┼──────┼─────────┤
-    │[0mstatus[0m           │[0m✔[0m     │   [0m❌[0m    │
+    │status           │✔️    │   ❌    │
     ├─────────────────┼──────┼─────────┤
-    │[0mtitle edition[0m    │[0m✔[0m     │   [0m❌[0m    │
+    │title edition    │✔️    │   ❌    │
     ├─────────────────┼──────┼─────────┤
-    │[0m[1mautomated test[0m   │[0m❌[0m    │   [0m❌[0m    │
-    │[1msuite[0m[0m[0m            │      │         │
+    │[1mautomated test[0m   │❌    │   ❌    │
+    │[1msuite[0m            │      │         │
     └─────────────────┴──────┴─────────┘
     [92m1.5.2 Exporter implementations[0m
 
@@ -308,7 +308,7 @@
     at [the dedicated
     Readme.]([34mwebui/Readme.md[0m)
 
-    [32;1m1.10 Contributors ❤ [0m
+    [32;1m1.10 Contributors ❤️ [0m
 
     This project exists thanks to all
     the people who contribute. [31m<a href="[0m

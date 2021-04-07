@@ -33,7 +33,7 @@
 
     [92m1.3.8 [9mstrikethrough[29m[0m
 
-    [92m1.3.9 [3mbold[23m [1mbold[0m[0m[0m
+    [92m1.3.9 [3mbold[23m [1mbold[0m[0m
 
     [92m1.3.10 [31m<div>[0mfoo[31m</div>[0m[0m
 

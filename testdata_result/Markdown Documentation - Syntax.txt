@@ -31,7 +31,7 @@
       [32m• [0m[Backslash Escapes]([34m#backslash[0m)
       [32m• [0m[Automatic Links]([34m#autolink[0m)
 
-    [1mNote:[0m[0m This document is itself
+    [1mNote:[0m This document is itself
     written using Markdown; you can [see
     the source for it by adding '.text'
     to the URL]([34m/projects/markdown/synt[0m

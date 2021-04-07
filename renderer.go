@@ -21,7 +21,7 @@ import (
 	"github.com/fatih/color"
 	md "github.com/gomarkdown/markdown"
 	"github.com/gomarkdown/markdown/ast"
-	"github.com/kyokomi/emoji"
+	"github.com/kyokomi/emoji/v2"
 	"golang.org/x/net/html"
 
 	htmlWalker "github.com/MichaelMure/go-term-markdown/html"
@@ -292,7 +292,7 @@ func (r *renderer) RenderNode(w io.Writer, node ast.Node, entering bool) ast.Wal
 			es.Witness(r.inlineAccumulator.String())
 			es.Bold = false
 			r.inlineAccumulator.WriteString(resetAll)
-			r.inlineAccumulator.WriteString(es.String())
+			r.inlineAccumulator.WriteString(es.FormatString())
 		}
 
 	case *ast.Del:
@@ -715,7 +715,7 @@ func (r *renderer) renderHTMLBlock(w io.Writer, node *ast.HTMLBlock) {
 					es.Witness(r.inlineAccumulator.String())
 					es.Bold = false
 					r.inlineAccumulator.WriteString(resetAll)
-					r.inlineAccumulator.WriteString(es.String())
+					r.inlineAccumulator.WriteString(es.FormatString())
 				}
 
 			case "i", "em":
