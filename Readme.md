@@ -40,7 +40,7 @@ func main() {
 
 	result := markdown.Render(string(source), 80, 6)
 
-	fmt.Println(result)
+	fmt.Println(string(result))
 }
 ```
 
