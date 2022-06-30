@@ -9,7 +9,7 @@ require (
 	github.com/fatih/color v1.13.0
 	github.com/gomarkdown/markdown v0.0.0-20220310201231-552c6011c0b8
 	github.com/kyokomi/emoji/v2 v2.2.9
-	github.com/stretchr/testify v1.7.1
+	github.com/stretchr/testify v1.8.0
 	golang.org/x/net v0.0.0-20220401154927-543a649e0bdd
 )
 
@@ -25,5 +25,5 @@ require (
 	github.com/rivo/uniseg v0.2.0 // indirect
 	golang.org/x/image v0.0.0-20220321031419-a8550c1d254a // indirect
 	golang.org/x/sys v0.0.0-20220330033206-e17cdc41300f // indirect
-	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
